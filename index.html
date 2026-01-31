@@ -1,123 +1,141 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
-
+<html lang="en">
 <head>
-
-  <!-- Google Tag Manager -->
-  <script>(function (w, d, s, l, i) {
-      w[l] = w[l] || []; w[l].push({
-        'gtm.start':
-          new Date().getTime(), event: 'gtm.js'
-      }); var f = d.getElementsByTagName(s)[0],
-        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-MNP5ZWV7');</script>
-  <!-- End Google Tag Manager -->
-
-  <!-- Basic Page Needs
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Anna Brežġis</title>
-  <meta name="description" content="Anna Brežġis - Personal website">
-  <meta name="author" content="Anna Brežġis">
-
-  <!-- Mobile Specific Metas
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- FONT
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
-
-  <!-- CSS
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
-    integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-  <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/barebones.css">
-  <link rel="stylesheet" href="css/skeleton-legacy.css">
-  <link rel="stylesheet" href="css/custom.css">
-
-  <!-- Scripts
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href="css/github-prettify-theme.css">
-  <link id="prettify-dark" rel="stylesheet" href="css/github-prettify-theme-dark.css" disabled>
-  <script src="js/smoothscroll.min.js"></script>
-
-  <!-- Favicon
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <!-- generics -->
-  <link rel="icon" href="assets/icons/favicon.png">
-
+  <meta name="description" content="Anna Brežġis — Computational Linguistics researcher at Brandeis University.">
+  <link rel="icon" type="image/png" href="assets/icons/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
+<body>
 
-<body id="page-top" class="code-snippets-visible">
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MNP5ZWV7" height="0" width="0"
-      style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <ul>
+      <li><a href="#home" class="nav-link active">Home</a></li>
+      <li><a href="#about" class="nav-link">About</a></li>
+      <li><a href="#research" class="nav-link">Research</a></li>
+      <li><a href="#blog" class="nav-link">Blog</a></li>
+    </ul>
+  </nav>
 
-  <!-- Primary Page Layout
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <div class="container">
-    <!-- Move the navbar to the top -->
-    <nav class="navbar" id="navbar">
-      <ul class="navbar-list">
-        <li class="navbar-item"><a class="navbar-link" href="#page-top">About</a></li>
-        <li class="navbar-item">
-          <a class="navbar-link" href="#" data-popover="codeNavPopover">Posts</a>
-          <div id="codeNavPopover" class="popover">
-            <ul class="popover-list">
-              <li class="popover-item">
-                <a class="popover-link" href="#themes">Comparative Analysis</a>
-              </li>
-              <li class="popover-item">
-                <a class="popover-link" href="#grid">Russian Soul</a>
-              </li>
-              <li class="popover-item">
-                <a class="popover-link" href="#grid">Sociolinguistics</a>
-              </li>
-            </ul>
-          </div>
-        </li>
-        <li class="navbar-item"><a class="navbar-link" href="/assets/pdfs/CV.pdf">CV</a></li>
-        <li class="navbar-item"><a class="navbar-link"
-            href="mailto:&#97;&#110;&#110;&#97;&#98;&#114;&#101;&#122;&#103;&#105;&#115;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">Contact</a>
-        </li>
-      </ul>
-    </nav>
-
-    <section class="header" id="top">
-      <div class="grid-container bio-split">
-        <div class="profile-photo">
-          <img src="assets/img/photo.png" alt="Anna Brežġis" class="circle-img">
-          <h2 class="name">Anna Brežġis</h2>
-          <h3 class="name-russian">Анна Брежгис</h3>
+  <!-- Home -->
+  <section id="home" class="section section-home">
+    <div class="home-content">
+      <div class="home-header">
+        <div class="photo-wrapper">
+          <img src="assets/img/photo.png" alt="Anna Brežġis" class="photo">
         </div>
-        <div class="bio">
-          <p>
-            Aspiring applied linguist with a passion for slavic languages and cognitive lingusitics. During my
-            undergraduate studies at Georgia State University, I worked with Dr. YouJin Kim on clause-level fluency
-            analysis and Dr. Viviana Cortes on qualitative analysis of corpus data. I am fascinated by the intersection
-            of language, symbols, and the mind.
-          </p>
-          <p><strong>On the hunt for a graduate position in applied linguistics! Please get in touch if you have
-              any leads.</strong></p>
+        <div class="home-name">
+          <h1 class="name-primary">Anna Brežġis</h1>
+          <p class="name-russian">Анна Брежгис</p>
         </div>
       </div>
-      <br>
-    </section>
-    <br>
-
-    <div class="docs-section" id="warning-banner">
-      <strong>This website is a work in progress!</strong> Please come back later!
+      <div class="home-text">
+        <div class="tagline">
+          <p>I'm a first-year MS student in Computational Linguistics at Brandeis University. My work lives at the intersection of language, meaning, and mind, drawing on linguistics, philosophy, psychology, and computation.</p>
+          <p>I'm interested in linguistic worldview and the relationship between language and cognition: how the structures we speak in shape the way we attend to the world. I approach these questions with both theoretical and computational tools.</p>
+          <p>I also think about how human-centric fields like linguistics and psychology can inform AI alignment and interpretability research.</p>
+        </div>
+        <div class="home-links">
+          <a href="https://github.com/brezgis" target="_blank" rel="noopener" class="link-pill" aria-label="GitHub">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            <span>GitHub</span>
+          </a>
+          <a href="https://twitter.com/annabrezgis" target="_blank" rel="noopener" class="link-pill" aria-label="Twitter">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+            <span>Twitter</span>
+          </a>
+          <a href="https://linkedin.com/in/brezgis" target="_blank" rel="noopener" class="link-pill" aria-label="LinkedIn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            <span>LinkedIn</span>
+          </a>
+          <a href="#" class="link-pill email-link" id="email-btn" aria-label="Email" onclick="revealEmail(event)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            <span id="email-text">Click for email</span>
+          </a>
+        </div>
+      </div>
     </div>
+    <div class="scroll-hint" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+    </div>
+  </section>
 
-    <script src="js/site.js"></script>
-    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <!-- About (hidden by default, shown via nav) -->
+  <section id="about" class="section section-about nav-section" style="display:none;">
+    <div class="container">
+      <h2 class="section-title">About</h2>
+      <div class="about-content">
+        <p>I grew up halfway between rural and urban North Georgia. These days, I'm living in the Greater Boston area, where I study how to write code, draw trees, and ask the good questions at Brandeis University.</p>
 
-    <!-- End Document
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <p>Books are a big part of my life, especially anything medium-esoteric and nerdy. The origins of (un)consciousness, human relationships, and everything in between. To me, the most interesting thing in the world is people. I love coffee of many kinds and various outdoor activities.</p>
+
+        <p>My BA is in Applied Linguistics from Georgia State University, along with an EFL certificate and some robust pedagogical training. In the 2024–2025 academic year, I worked as an RCALL fellow with Dr. YouJin Kim on a clause-level fluency study of L2 English speakers.</p>
+
+        <p>I worked in food service for 7 years, from 2018–2025. My last job of 3 years was at a casual fine dining restaurant, where I opened fancy bottles of wine and tried my best to make memories for other people.</p>
+
+        <div class="about-languages">
+          <p><span class="about-label">Languages:</span> Python, Java</p>
+          <p><span class="about-label">(Natural) languages:</span> Russian, Spanish</p>
+        </div>
+
+        <div class="about-tools">
+          <p><span class="about-label">Tools:</span> Git, LaTeX, HuggingFace Transformers</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Research (hidden by default, shown via nav) -->
+  <section id="research" class="section section-research nav-section" style="display:none;">
+    <div class="container">
+      <h2 class="section-title">Research</h2>
+      <p class="section-intro">My research interests center on the relationship between language and cognition: linguistic worldview, computational semantics, and how human-centric fields can inform AI development. More to come as the work develops.</p>
+    </div>
+  </section>
+
+  <!-- Blog -->
+  <section id="blog" class="section section-blog">
+    <div class="container">
+      <h2 class="section-title">Blog</h2>
+      <p class="section-intro">Thoughts on language, research, and the things in between. Coming soon.</p>
+      <div class="blog-preview">
+        <div class="blog-card placeholder-card">
+          <span class="blog-date">2026</span>
+          <h3>First post brewing...</h3>
+          <p>Stay tuned.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer (always visible) -->
+  <footer class="footer" id="footer">
+    <div class="container footer-inner">
+      <div class="footer-name">Anna Brežġis</div>
+      <div class="footer-links">
+        <a href="https://github.com/brezgis" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+        <a href="https://twitter.com/annabrezgis" target="_blank" rel="noopener" aria-label="Twitter">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+        </a>
+        <a href="https://linkedin.com/in/brezgis" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="#" class="email-link" onclick="revealEmail(event)" aria-label="Email">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        </a>
+      </div>
+      <div class="footer-note">Built by a strange loop for a strange loop.</div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
 </body>
-
 </html>
