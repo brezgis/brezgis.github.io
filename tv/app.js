@@ -205,16 +205,20 @@
       showBump(block.name, pos.remainingSec);
     } else {
       // Start loading video behind the bump; hideBump is called when video plays
-      pendingHideBump = true;
+      if (isShowingBump) {
+        pendingHideBump = true;
+        // Fallback: hide bump after 3s even if player doesn't fire
+        setTimeout(() => { if (pendingHideBump) { hideBump(); pendingHideBump = false; } }, 3000);
+      } else {
+        pendingHideBump = false;
+      }
       playVideo(pos.video.id, pos.seekTo, pos.video.title);
-      // Fallback: hide bump after 3s even if player doesn't fire
-      setTimeout(() => { if (pendingHideBump) { hideBump(); pendingHideBump = false; } }, 3000);
     }
 
-    // Schedule next check
+    // Schedule next check — always resync within 30s as a safety net
     clearTimeout(bumpTimeout);
     const checkInMs = (pos.remainingSec + 0.5) * 1000;
-    bumpTimeout = setTimeout(syncToSchedule, Math.min(checkInMs, 30000));
+    bumpTimeout = setTimeout(syncToSchedule, Math.min(checkInMs, 15000));
   }
 
   // ── YouTube Player ──────────────────────────────
