@@ -4,10 +4,7 @@
   'use strict';
 
   // ── Config ──────────────────────────────────────
-  const BUMP_DURATION = 20; // seconds per bump card
-  const BUMP_FADE_IN = 1500;
-  const BUMP_HOLD = 16000;
-  const BUMP_FADE_OUT = 2500;
+  const BUMP_DURATION = 12; // seconds per bump card
 
   const BLOCKS = [
     { name: 'morning',    start: 8,  end: 12, label: 'morning' },
@@ -27,6 +24,7 @@
   let bumpTimeout = null;
   let scheduleInterval = null;
   let isShowingBump = false;
+  let pendingHideBump = false;
 
   // ── DOM refs ────────────────────────────────────
   const $bump = document.getElementById('bump');
@@ -206,8 +204,11 @@
     if (pos.type === 'bump') {
       showBump(block.name, pos.remainingSec);
     } else {
-      hideBump();
+      // Start loading video behind the bump; hideBump is called when video plays
+      pendingHideBump = true;
       playVideo(pos.video.id, pos.seekTo, pos.video.title);
+      // Fallback: hide bump after 3s even if player doesn't fire
+      setTimeout(() => { if (pendingHideBump) { hideBump(); pendingHideBump = false; } }, 3000);
     }
 
     // Schedule next check
@@ -298,7 +299,8 @@
 
   function onPlayerStateChange(event) {
     if (event.data === 1) {
-      // Playing — start watching for end screen
+      // Playing — hide bump now that video is rendering
+      if (pendingHideBump) { hideBump(); pendingHideBump = false; }
       startEndCheck();
     }
     if (event.data === 0) {
@@ -375,6 +377,30 @@
     return msg.replace('[time]', timeStr);
   }
 
+  // ── Bump Audio ───────────────────────────────────
+  const BUMP_AUDIO_COUNT = 23;
+  let bumpAudio = null;
+
+  function playBumpAudio() {
+    const idx = Math.floor(Math.random() * BUMP_AUDIO_COUNT) + 1;
+    const padded = idx.toString().padStart(2, '0');
+    bumpAudio = new Audio(`audio/bump_${padded}.mp3`);
+    bumpAudio.volume = 0.5;
+    bumpAudio.onerror = () => { bumpAudio = null; }; // suppress browser error UI
+    // Delay audio slightly to sync with CSS opacity fade-in (1.2s transition)
+    setTimeout(() => {
+      if (bumpAudio) bumpAudio.play().catch(() => { bumpAudio = null; });
+    }, 300);
+  }
+
+  function stopBumpAudio() {
+    if (bumpAudio) {
+      bumpAudio.pause();
+      bumpAudio.currentTime = 0;
+      bumpAudio = null;
+    }
+  }
+
   function showBump(blockName, remainingSec) {
     if (isShowingBump) return;
     isShowingBump = true;
@@ -387,12 +413,14 @@
     const message = getBumpMessage(blockName);
     $bumpText.textContent = message;
     $bump.classList.add('active');
+    playBumpAudio();
     currentVideoId = null; // force reload after bump
   }
 
   function hideBump() {
     if (!isShowingBump) return;
     $bump.classList.remove('active');
+    stopBumpAudio();
     isShowingBump = false;
   }
 
@@ -442,6 +470,16 @@
     $muteBtn.classList.toggle('muted', isMuted);
     $muteBtn.textContent = isMuted ? '🔇' : '🔊';
   }
+
+  // ── Debug: test bump from console ────────────────
+  window.testBump = function() {
+    const block = getCurrentBlock();
+    showBump(block.name, BUMP_DURATION);
+    setTimeout(() => {
+      hideBump();
+      syncToSchedule();
+    }, BUMP_DURATION * 1000);
+  };
 
   // ── Go ──────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', init);
