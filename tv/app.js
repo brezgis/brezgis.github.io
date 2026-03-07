@@ -276,10 +276,34 @@
     syncToSchedule();
   }
 
+  // Watch for near-end to skip before YouTube shows end screen
+  let endCheckInterval = null;
+
+  function startEndCheck() {
+    clearInterval(endCheckInterval);
+    endCheckInterval = setInterval(() => {
+      if (!playerReady || isShowingBump) return;
+      try {
+        const duration = player.getDuration();
+        const current = player.getCurrentTime();
+        if (duration > 0 && current > 0 && (duration - current) < 3) {
+          // Less than 3 seconds left — force transition now
+          clearInterval(endCheckInterval);
+          currentVideoId = null;
+          syncToSchedule();
+        }
+      } catch(e) {}
+    }, 500);
+  }
+
   function onPlayerStateChange(event) {
-    // YT.PlayerState.ENDED = 0
+    if (event.data === 1) {
+      // Playing — start watching for end screen
+      startEndCheck();
+    }
     if (event.data === 0) {
       // Video ended naturally — resync
+      clearInterval(endCheckInterval);
       syncToSchedule();
     }
   }
