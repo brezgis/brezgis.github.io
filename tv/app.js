@@ -43,7 +43,10 @@
     initYouTube();
     startClock();
 
-    $muteBtn.addEventListener('click', toggleMute);
+    $muteBtn.addEventListener('click', function(e) {
+      e.stopPropagation(); // prevent document-level unmuteOnClick from firing
+      toggleMute();
+    });
 
     // show UI labels briefly on load
     setTimeout(() => {
