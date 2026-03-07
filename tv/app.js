@@ -4,10 +4,7 @@
   'use strict';
 
   // ── Config ──────────────────────────────────────
-  const BUMP_DURATION = 20; // seconds per bump card
-  const BUMP_FADE_IN = 1500;
-  const BUMP_HOLD = 16000;
-  const BUMP_FADE_OUT = 2500;
+  const BUMP_DURATION = 12; // seconds per bump card
 
   const BLOCKS = [
     { name: 'morning',    start: 8,  end: 12, label: 'morning' },
@@ -276,10 +273,34 @@
     syncToSchedule();
   }
 
+  // Watch for near-end to skip before YouTube shows end screen
+  let endCheckInterval = null;
+
+  function startEndCheck() {
+    clearInterval(endCheckInterval);
+    endCheckInterval = setInterval(() => {
+      if (!playerReady || isShowingBump) return;
+      try {
+        const duration = player.getDuration();
+        const current = player.getCurrentTime();
+        if (duration > 0 && current > 0 && (duration - current) < 3) {
+          // Less than 3 seconds left — force transition now
+          clearInterval(endCheckInterval);
+          currentVideoId = null;
+          syncToSchedule();
+        }
+      } catch(e) {}
+    }, 500);
+  }
+
   function onPlayerStateChange(event) {
-    // YT.PlayerState.ENDED = 0
+    if (event.data === 1) {
+      // Playing — start watching for end screen
+      startEndCheck();
+    }
     if (event.data === 0) {
       // Video ended naturally — resync
+      clearInterval(endCheckInterval);
       syncToSchedule();
     }
   }
@@ -351,6 +372,29 @@
     return msg.replace('[time]', timeStr);
   }
 
+  // ── Bump Audio ───────────────────────────────────
+  const BUMP_AUDIO_COUNT = 23;
+  let bumpAudio = null;
+
+  function playBumpAudio() {
+    const idx = Math.floor(Math.random() * BUMP_AUDIO_COUNT) + 1;
+    const padded = idx.toString().padStart(2, '0');
+    bumpAudio = new Audio(`audio/bump_${padded}.mp3`);
+    bumpAudio.volume = 0.5;
+    // Delay audio slightly to sync with CSS opacity fade-in (1.2s transition)
+    setTimeout(() => {
+      if (bumpAudio) bumpAudio.play().catch(() => {});
+    }, 300);
+  }
+
+  function stopBumpAudio() {
+    if (bumpAudio) {
+      bumpAudio.pause();
+      bumpAudio.currentTime = 0;
+      bumpAudio = null;
+    }
+  }
+
   function showBump(blockName, remainingSec) {
     if (isShowingBump) return;
     isShowingBump = true;
@@ -363,12 +407,14 @@
     const message = getBumpMessage(blockName);
     $bumpText.textContent = message;
     $bump.classList.add('active');
+    playBumpAudio();
     currentVideoId = null; // force reload after bump
   }
 
   function hideBump() {
     if (!isShowingBump) return;
     $bump.classList.remove('active');
+    stopBumpAudio();
     isShowingBump = false;
   }
 
@@ -418,6 +464,16 @@
     $muteBtn.classList.toggle('muted', isMuted);
     $muteBtn.textContent = isMuted ? '🔇' : '🔊';
   }
+
+  // ── Debug: test bump from console ────────────────
+  window.testBump = function() {
+    const block = getCurrentBlock();
+    showBump(block.name, BUMP_DURATION);
+    setTimeout(() => {
+      hideBump();
+      syncToSchedule();
+    }, BUMP_DURATION * 1000);
+  };
 
   // ── Go ──────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', init);
