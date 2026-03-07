@@ -647,6 +647,10 @@ a:hover {
   background: #2d4a3e;
 }
 
+.sharabara-card--honeypot {
+  background: #4a2d2d;
+}
+
 .sharabara-card-name {
   font-family: 'Space Mono', var(--sans);
   font-size: 1rem;
