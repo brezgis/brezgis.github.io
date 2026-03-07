@@ -24,6 +24,7 @@
   let bumpTimeout = null;
   let scheduleInterval = null;
   let isShowingBump = false;
+  let pendingHideBump = false;
 
   // ── DOM refs ────────────────────────────────────
   const $bump = document.getElementById('bump');
@@ -203,8 +204,11 @@
     if (pos.type === 'bump') {
       showBump(block.name, pos.remainingSec);
     } else {
-      hideBump();
+      // Start loading video behind the bump; hideBump is called when video plays
+      pendingHideBump = true;
       playVideo(pos.video.id, pos.seekTo, pos.video.title);
+      // Fallback: hide bump after 3s even if player doesn't fire
+      setTimeout(() => { if (pendingHideBump) { hideBump(); pendingHideBump = false; } }, 3000);
     }
 
     // Schedule next check
@@ -295,7 +299,8 @@
 
   function onPlayerStateChange(event) {
     if (event.data === 1) {
-      // Playing — start watching for end screen
+      // Playing — hide bump now that video is rendering
+      if (pendingHideBump) { hideBump(); pendingHideBump = false; }
       startEndCheck();
     }
     if (event.data === 0) {
