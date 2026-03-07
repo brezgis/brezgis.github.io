@@ -599,6 +599,17 @@ a:hover {
   letter-spacing: 0.03em;
 }
 
+.sharabara-def-source a {
+  color: var(--text-softer);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s ease;
+}
+
+.sharabara-def-source a:hover {
+  color: var(--accent);
+}
+
 .sharabara-projects {
   display: flex;
   flex-direction: column;
