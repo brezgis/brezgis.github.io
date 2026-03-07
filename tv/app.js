@@ -25,6 +25,7 @@
   let scheduleInterval = null;
   let isShowingBump = false;
   let pendingHideBump = false;
+  const removedVideos = new Set();
 
   // ── DOM refs ────────────────────────────────────
   const $bump = document.getElementById('bump');
@@ -42,7 +43,10 @@
     initYouTube();
     startClock();
 
-    $muteBtn.addEventListener('click', toggleMute);
+    $muteBtn.addEventListener('click', function(e) {
+      e.stopPropagation(); // prevent document-level unmuteOnClick from firing
+      toggleMute();
+    });
 
     // show UI labels briefly on load
     setTimeout(() => {
@@ -54,16 +58,28 @@
   async function loadData() {
     const blockNames = ['morning', 'afternoon', 'evening', 'latenight', 'deadhours'];
     const fetches = blockNames.map(name =>
-      fetch(`playlists/${name}.json`).then(r => r.json()).then(data => {
+      fetch(`playlists/${name}.json`).then(r => {
+        if (!r.ok) throw new Error(`Failed to load ${name}.json (${r.status})`);
+        return r.json();
+      }).then(data => {
         playlists[name] = data;
       })
     );
     fetches.push(
-      fetch('bumps.json').then(r => r.json()).then(data => {
+      fetch('bumps.json').then(r => {
+        if (!r.ok) throw new Error(`Failed to load bumps.json (${r.status})`);
+        return r.json();
+      }).then(data => {
         bumps = data;
       })
     );
-    await Promise.all(fetches);
+    try {
+      await Promise.all(fetches);
+    } catch (err) {
+      console.error('loadData failed:', err);
+      if ($loading) $loading.textContent = 'failed to load channel data — try refreshing';
+      throw err;
+    }
   }
 
   // ── Time helpers ────────────────────────────────
@@ -131,7 +147,7 @@
   function shuffleForToday(playlist, blockName) {
     const seed = getDaySeed() + blockName.charCodeAt(0) * 1000;
     const rng = seededRandom(seed);
-    const shuffled = [...playlist];
+    const shuffled = [...playlist].filter(v => !removedVideos.has(v.id));
     for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(rng() * (i + 1));
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
@@ -205,16 +221,20 @@
       showBump(block.name, pos.remainingSec);
     } else {
       // Start loading video behind the bump; hideBump is called when video plays
-      pendingHideBump = true;
+      if (isShowingBump) {
+        pendingHideBump = true;
+        // Fallback: hide bump after 3s even if player doesn't fire
+        setTimeout(() => { if (pendingHideBump) { hideBump(); pendingHideBump = false; } }, 3000);
+      } else {
+        pendingHideBump = false;
+      }
       playVideo(pos.video.id, pos.seekTo, pos.video.title);
-      // Fallback: hide bump after 3s even if player doesn't fire
-      setTimeout(() => { if (pendingHideBump) { hideBump(); pendingHideBump = false; } }, 3000);
     }
 
-    // Schedule next check
+    // Schedule next check — always resync within 30s as a safety net
     clearTimeout(bumpTimeout);
     const checkInMs = (pos.remainingSec + 0.5) * 1000;
-    bumpTimeout = setTimeout(syncToSchedule, Math.min(checkInMs, 30000));
+    bumpTimeout = setTimeout(syncToSchedule, Math.min(checkInMs, 15000));
   }
 
   // ── YouTube Player ──────────────────────────────
@@ -313,14 +333,9 @@
   function onPlayerError(event) {
     // Skip broken video — remove from playlist and resync
     console.warn('Player error:', event.data, 'video:', currentVideoId);
-    const block = getCurrentBlock();
-    const playlist = playlists[block.name];
-    if (playlist && playlist.length > 1) {
-      const idx = playlist.findIndex(v => v.id === currentVideoId);
-      if (idx !== -1) {
-        console.warn('Removing unavailable video:', playlist[idx].title);
-        playlist.splice(idx, 1);
-      }
+    if (currentVideoId) {
+      console.warn('Removing unavailable video:', currentVideoId);
+      removedVideos.add(currentVideoId);
     }
     currentVideoId = null;
     setTimeout(syncToSchedule, 500);
@@ -341,8 +356,6 @@
 
   function playVideo(videoId, seekTo, title) {
     if (!playerReady) return;
-
-    isShowingBump = false;
 
     if (currentVideoId !== videoId) {
       currentVideoId = videoId;
