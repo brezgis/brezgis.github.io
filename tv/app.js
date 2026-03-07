@@ -381,9 +381,10 @@
     const padded = idx.toString().padStart(2, '0');
     bumpAudio = new Audio(`audio/bump_${padded}.mp3`);
     bumpAudio.volume = 0.5;
+    bumpAudio.onerror = () => { bumpAudio = null; }; // suppress browser error UI
     // Delay audio slightly to sync with CSS opacity fade-in (1.2s transition)
     setTimeout(() => {
-      if (bumpAudio) bumpAudio.play().catch(() => {});
+      if (bumpAudio) bumpAudio.play().catch(() => { bumpAudio = null; });
     }, 300);
   }
 
