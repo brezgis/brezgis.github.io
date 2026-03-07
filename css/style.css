@@ -651,6 +651,10 @@ a:hover {
   background: #4a3d1a;
 }
 
+.sharabara-card--substrate {
+  background: #2d3352;
+}
+
 .sharabara-card-name {
   font-family: 'Space Mono', var(--sans);
   font-size: 1rem;
