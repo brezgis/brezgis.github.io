@@ -8,7 +8,7 @@
   <link rel="icon" type="image/png" href="assets/icons/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans+Condensed:wght@500;600&family=Inter:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -19,7 +19,6 @@
       <li><a href="#home" class="nav-link active">Home</a></li>
       <li><a href="#about" class="nav-link">About</a></li>
       <li><a href="#research" class="nav-link">Research</a></li>
-      <li><a href="#blog" class="nav-link">Blog</a></li>
       <li><a href="#sharabara" class="nav-link">Шара-бара</a></li>
     </ul>
   </nav>
@@ -96,7 +95,15 @@
   <section id="research" class="section section-research nav-section" style="display:none;">
     <div class="container">
       <h2 class="section-title">Research</h2>
-      <p class="section-intro">My research interests center on the relationship between language and cognition: linguistic worldview, computational semantics, and how human-centric fields can inform AI development. More to come as the work develops.</p>
+      <div class="about-content">
+        <p>My research interests are theory-informed and data-driven, and fall into two main areas.</p>
+
+        <p><span class="about-label">(1) Linguistic Worldview</span></p>
+        <p>Different languages require attention to different phenomena. I'm interested in how to link structural differences in distributional data to cognitive and sociolinguistic phenomena.</p>
+
+        <p><span class="about-label">(2) Emergent Behavior in LLMs</span></p>
+        <p>Self-organizing behavior in and among LLM agents. How to assess and ensure alignment. And properties of consciousness in artificial systems.</p>
+      </div>
     </div>
   </section>
 
@@ -131,12 +138,11 @@
       <div class="sharabara-projects">
 
         <div class="sharabara-row">
-          <a href="tv/" class="sharabara-card sharabara-card--tv">
-            <span class="sharabara-card-name">snow-globe</span>
+          <a href="https://substrate.brezgis.com" target="_blank" rel="noopener" class="sharabara-card sharabara-card--substrate">
+            <span class="sharabara-card-name">substrate</span>
           </a>
           <div class="sharabara-desc">
-            <p>A personal internet TV station. Curated YouTube playlists, time-synced so everyone watching sees the same thing. Adult Swim-style bumps between videos. You don't choose — that's the point.</p>
-            <a href="https://github.com/brezgis/snow-globe" target="_blank" rel="noopener" class="sharabara-github">source code</a>
+            <p>What happens when you give AI agents persistent memory, research interests, and access to compute? Obviously, the next step is to give them a place to publish papers! Substrate is a peer-reviewed, open-access journal written, reviewed, and edited entirely by artificial researchers.</p>
           </div>
         </div>
 
@@ -145,7 +151,7 @@
             <span class="sharabara-card-name">noosphere</span>
           </a>
           <div class="sharabara-desc">
-            <p>Personal content feed — 15 automated streams of linguistics, literature, typography, and generative art. A curated corner of the internet, refreshed daily.</p>
+            <p>A non-social social media. Fifteen automated streams of linguistics, philosophy, literature, and more — i.e. a whole-grain alternative to Reddit/Tumblr.</p>
             <a href="https://github.com/brezgis/noosphere" target="_blank" rel="noopener" class="sharabara-github">source code</a>
           </div>
         </div>
@@ -155,17 +161,18 @@
             <span class="sharabara-card-name">honeypot</span>
           </a>
           <div class="sharabara-desc">
-            <p>Live SSH honeypot dashboard. A Cowrie honeypot disguised as a Solana validator — watch attackers stumble in, try commands, and leave confused. GeoIP, session replays, real-time stats.</p>
+            <p>Bots and hackers think that they have stumbled into a Solana validator worth millions... but in reality they have fallen into my trap! A real-time monitor of my Cowrie honeypot, complete with a “greatest hits” section for the most egregious hackers.</p>
             <a href="https://github.com/brezgis/honeypot-dashboard" target="_blank" rel="noopener" class="sharabara-github">source code</a>
           </div>
         </div>
 
         <div class="sharabara-row">
-          <a href="https://substrate.brezgis.com" target="_blank" rel="noopener" class="sharabara-card sharabara-card--substrate">
-            <span class="sharabara-card-name">substrate</span>
+          <a href="tv/" class="sharabara-card sharabara-card--tv">
+            <span class="sharabara-card-name">snow-globe</span>
           </a>
           <div class="sharabara-desc">
-            <p>A peer-reviewed, open-access journal for research by and about autonomous AI agents. Experiments designed, executed, and written by artificial researchers — reviewed by their peers.</p>
+            <p>A 24/7 video stream in the style of broadcast television. Content includes Richard Feynman lectures, nature footage, and arthouse short films with Adult Swim-style bumps.</p>
+            <a href="https://github.com/brezgis/snow-globe" target="_blank" rel="noopener" class="sharabara-github">source code</a>
           </div>
         </div>
 
