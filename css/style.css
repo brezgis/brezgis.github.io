@@ -556,16 +556,16 @@ a:hover {
 
 .sharabara-word {
   font-family: var(--serif);
-  font-size: 2.2rem;
-  font-weight: 300;
+  font-size: 2rem;
+  font-weight: 600;
   color: var(--text);
-  letter-spacing: 0.02em;
+  letter-spacing: -0.02em;
   margin-bottom: 0.25rem;
 }
 
 .sharabara-phonetic {
   font-family: var(--sans);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--text-softer);
   margin-bottom: 1.25rem;
 }
@@ -577,26 +577,26 @@ a:hover {
 
 .sharabara-def-ru {
   font-family: var(--serif);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-style: italic;
   color: var(--text-soft);
-  line-height: 1.6;
+  line-height: 1.7;
   margin-bottom: 0.3rem;
 }
 
 .sharabara-def-en {
   font-family: var(--sans);
-  font-size: 0.85rem;
+  font-size: 0.925rem;
   color: var(--text-soft);
-  line-height: 1.6;
+  line-height: 1.7;
   margin-bottom: 0.5rem;
 }
 
 .sharabara-def-source {
   font-family: var(--sans);
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   color: var(--text-softer);
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
 }
 
 .sharabara-def-source a {
@@ -640,26 +640,27 @@ a:hover {
 }
 
 .sharabara-card--tv {
-  background: #7b8fba;
+  background: #7C8DA3;
 }
 
 .sharabara-card--noosphere {
-  background: #7ab89a;
+  background: #7F9B86;
 }
 
 .sharabara-card--honeypot {
-  background: #d4b06a;
+  background: #C9A962;
 }
 
 .sharabara-card--substrate {
-  background: #9aa4cc;
+  background: #8E97B8;
 }
 
 .sharabara-card-name {
-  font-family: 'Space Mono', var(--sans);
+  font-family: var(--sans);
   font-size: 1rem;
-  color: rgba(255, 255, 255, 0.9);
-  letter-spacing: 0.05em;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.92);
+  letter-spacing: 0.01em;
 }
 
 .sharabara-desc {
@@ -668,18 +669,18 @@ a:hover {
 
 .sharabara-desc p {
   font-family: var(--sans);
-  font-size: 0.85rem;
+  font-size: 0.925rem;
   color: var(--text-soft);
-  line-height: 1.6;
+  line-height: 1.7;
   margin-bottom: 0.5rem;
 }
 
 .sharabara-github {
   font-family: var(--sans);
-  font-size: 0.8rem;
+  font-size: 0.875rem;
   color: var(--accent);
   text-decoration: none;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   transition: color 0.2s ease;
 }
 
