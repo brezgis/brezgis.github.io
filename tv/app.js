@@ -5,6 +5,7 @@
 
   // ── Config ──────────────────────────────────────
   const BUMP_DURATION = 12; // seconds per bump card
+  const GUIDE_CHANCE = 0.17; // odds a given bump is the TV guide instead of a text card
 
   const BLOCKS = [
     { name: 'morning',    start: 8,  end: 12, label: 'morning' },
@@ -30,6 +31,9 @@
   // ── DOM refs ────────────────────────────────────
   const $bump = document.getElementById('bump');
   const $bumpText = document.getElementById('bump-text');
+  const $guideGrid = document.querySelector('#bump-guide .guide-grid');
+  const $guideClock = document.querySelector('#bump-guide .guide-clock');
+  const $guideTicker = document.querySelector('#bump-guide .guide-ticker span');
   const $blockLabel = document.getElementById('block-label');
   const $clock = document.getElementById('clock');
   const $muteBtn = document.getElementById('mute-btn');
@@ -53,6 +57,15 @@
       $blockLabel.classList.add('visible');
       $clock.classList.add('visible');
     }, 2000);
+
+    // Preview the TV guide directly: open /tv/#guide
+    if (location.hash === '#guide') {
+      setTimeout(() => {
+        $static.classList.add('off');
+        if ($loading) $loading.style.display = 'none';
+        window.testGuide(600);
+      }, 400);
+    }
   }
 
   async function loadData() {
@@ -245,7 +258,30 @@
   }
 
   window.onYouTubeIframeAPIReady = function () {
-    player = new YT.Player('yt-player', {
+    // Compute the initial video BEFORE creating the player.
+    // Without an initial videoId, YouTube shows a recommendation grid
+    // instead of a blank player, and loadVideoById may not recover.
+    const block = getCurrentBlock();
+    const playlist = playlists[block.name];
+    let initialVideoId;
+    let initialStart = 0;
+
+    if (playlist && playlist.length) {
+      const todaysPlaylist = shuffleForToday(playlist, block.name);
+      const blockStart = getBlockStartTime(block);
+      const elapsed = (new Date() - blockStart) / 1000;
+      const pos = computeSchedulePosition(todaysPlaylist, elapsed);
+      if (pos.type === 'video') {
+        initialVideoId = pos.video.id;
+        initialStart = Math.floor(pos.seekTo);
+      } else if (pos.nextVideo) {
+        // We're mid-bump — load the next video paused behind the bump overlay.
+        initialVideoId = pos.nextVideo.id;
+        initialStart = 0;
+      }
+    }
+
+    const playerConfig = {
       width: '100%',
       height: '100%',
       playerVars: {
@@ -258,13 +294,21 @@
         rel: 0,
         showinfo: 0,
         mute: 1,
+        origin: window.location.origin,
       },
       events: {
         onReady: onPlayerReady,
         onStateChange: onPlayerStateChange,
         onError: onPlayerError,
       },
-    });
+    };
+
+    if (initialVideoId) {
+      playerConfig.videoId = initialVideoId;
+      playerConfig.playerVars.start = initialStart;
+    }
+
+    player = new YT.Player('yt-player', playerConfig);
   };
 
   function onPlayerReady() {
@@ -414,6 +458,93 @@
     }
   }
 
+  // ── TV Guide bump ────────────────────────────────
+  function escHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => (
+      { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+    ));
+  }
+
+  // Three half-hour slot labels starting from the current half hour.
+  function guideSlots() {
+    const base = new Date();
+    base.setSeconds(0, 0);
+    base.setMinutes(base.getMinutes() < 30 ? 0 : 30);
+    const slots = [];
+    for (let i = 0; i < 3; i++) {
+      const d = new Date(base.getTime() + i * 30 * 60000);
+      const h = d.getHours() % 12 || 12;
+      const m = d.getMinutes().toString().padStart(2, '0');
+      slots.push(`${h}:${m}`);
+    }
+    return slots;
+  }
+
+  function pickShows(pool, n, used) {
+    const out = [];
+    let guard = 0;
+    while (out.length < n && guard < 200) {
+      const s = pool[Math.floor(Math.random() * pool.length)];
+      if (!used.has(s)) { used.add(s); out.push(s); }
+      guard++;
+    }
+    while (out.length < n) out.push('—');
+    return out;
+  }
+
+  function shuffled(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  // Returns true if the guide was rendered, false to fall back to a text bump.
+  function renderGuide(blockName) {
+    const g = bumps.guide;
+    if (!g || !Array.isArray(g.channels) || !Array.isArray(g.shows) || !g.shows.length) return false;
+
+    const blockLabel = (BLOCKS.find(b => b.name === blockName) || {}).label || 'now';
+    const slots = guideSlots();
+
+    const real = g.channels.filter(c => c.real).slice(0, 1);
+    const rest = shuffled(g.channels.filter(c => !c.real)).slice(0, 4);
+    const chosen = [...real, ...rest];
+    if (!chosen.length) return false;
+
+    const used = new Set();
+    let html = '<div class="guide-row guide-timerow"><span class="guide-cell guide-corner">CH</span>';
+    for (const s of slots) html += `<span class="guide-cell guide-time">${escHtml(s)}</span>`;
+    html += '</div>';
+
+    for (const ch of chosen) {
+      html += `<div class="guide-row"><span class="guide-cell guide-chan"><b>${escHtml(ch.num || '')}</b> ${escHtml(ch.name || '')}</span>`;
+      let cells;
+      if (ch.real) {
+        // Ground the real channel in the actual current block.
+        cells = [`${blockLabel} programming`, ...pickShows(g.shows, 2, used)];
+      } else {
+        cells = pickShows(g.shows, 3, used);
+      }
+      cells.forEach((c, ci) => {
+        html += `<span class="guide-cell guide-show${ci === 0 ? ' now' : ''}">${escHtml(c)}</span>`;
+      });
+      html += '</div>';
+    }
+
+    $guideGrid.innerHTML = html;
+    if ($guideClock) $guideClock.textContent = formatTime(new Date());
+    if ($guideTicker) {
+      const t = (g.ticker && g.ticker.length) ? g.ticker[Math.floor(Math.random() * g.ticker.length)] : '';
+      // Triple it so the marquee can scroll without a visible gap.
+      $guideTicker.textContent = `${t}   ${t}   ${t}`;
+    }
+    return true;
+  }
+
+  // ── Bump show/hide ───────────────────────────────
   function showBump(blockName, remainingSec) {
     if (isShowingBump) return;
     isShowingBump = true;
@@ -423,8 +554,13 @@
       player.pauseVideo();
     }
 
-    const message = getBumpMessage(blockName);
-    $bumpText.textContent = message;
+    // Occasionally run the TV guide instead of a plain text card.
+    if (Math.random() < GUIDE_CHANCE && renderGuide(blockName)) {
+      $bump.classList.add('guide-mode');
+    } else {
+      $bumpText.textContent = getBumpMessage(blockName);
+    }
+
     $bump.classList.add('active');
     playBumpAudio();
     currentVideoId = null; // force reload after bump
@@ -433,6 +569,7 @@
   function hideBump() {
     if (!isShowingBump) return;
     $bump.classList.remove('active');
+    $bump.classList.remove('guide-mode');
     stopBumpAudio();
     isShowingBump = false;
   }
@@ -492,6 +629,23 @@
       hideBump();
       syncToSchedule();
     }, BUMP_DURATION * 1000);
+  };
+
+  // Force the TV guide for testing: testGuide() or testGuide(20) to hold 20s.
+  window.testGuide = function(seconds) {
+    const block = getCurrentBlock();
+    if (isShowingBump) hideBump();
+    isShowingBump = true;
+    if (playerReady && player.getPlayerState && player.getPlayerState() === 1) player.pauseVideo();
+    if (renderGuide(block.name)) {
+      $bump.classList.add('guide-mode');
+    } else {
+      $bumpText.textContent = getBumpMessage(block.name);
+    }
+    $bump.classList.add('active');
+    playBumpAudio();
+    currentVideoId = null;
+    setTimeout(() => { hideBump(); syncToSchedule(); }, (seconds || BUMP_DURATION) * 1000);
   };
 
   // ── Go ──────────────────────────────────────────
