@@ -161,6 +161,12 @@
     initScrollHint();
     handleNavScroll();
     updateActiveNav();
+
+    // Deep-link support: visiting /#sharabara (etc.) opens that section directly.
+    const initialHash = decodeURIComponent(location.hash.slice(1));
+    if (initialHash && document.getElementById(initialHash)) {
+      showNavSection(initialHash);
+    }
   });
 
 })();
