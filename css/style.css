@@ -655,6 +655,10 @@ a:hover {
   background: #CC9A7A;
 }
 
+.sharabara-card--shore {
+  background: #5E9FA8;
+}
+
 .sharabara-card-name {
   font-family: var(--sans);
   font-size: 1.2rem;
