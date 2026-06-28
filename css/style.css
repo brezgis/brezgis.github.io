@@ -644,13 +644,7 @@ a:hover {
 }
 
 .sharabara-card--library {
-  background: linear-gradient(160deg, #3a2414 0%, #2c1a0e 100%);
-}
-
-.sharabara-card--library .sharabara-card-name {
-  font-family: var(--serif);
-  font-weight: 600;
-  color: #d6bd8c;
+  background: #9C8466;
 }
 
 .sharabara-card--noosphere {
