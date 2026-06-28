@@ -5,27 +5,44 @@
 (function () {
   'use strict';
 
-  // --- Email obfuscation ---
-  // Email is never in the HTML source; assembled on click.
+  // --- Email: assembled on click (never in the HTML source), copied to the
+  // clipboard, and revealed as selectable text. Same behavior in the hero
+  // button and the footer link. ---
+  function copyToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).then(() => true).catch(() => false);
+    }
+    // Fallback for insecure origins / older browsers
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      return Promise.resolve(ok);
+    } catch (_) {
+      return Promise.resolve(false);
+    }
+  }
+
   function revealEmail(e) {
     e.preventDefault();
-    const user = 'anna';
-    const domain = 'brezgis.com';
-    const addr = user + '@' + domain;
-
-    // Update the main hero email button text — plain text only, no mailto
-    const textEl = document.getElementById('email-text');
-    if (textEl) {
-      textEl.textContent = addr;
-    }
-
-    // Also update any other email-link elements that were clicked
+    const addr = 'anna' + '@' + 'brezgis.com';
     const clicked = e.currentTarget;
-    if (clicked && clicked !== document.getElementById('email-btn')) {
-      clicked.textContent = addr;
-      clicked.onclick = null;
+    // Hero button keeps its icon and writes into the inner span; the footer
+    // link has no inner text node, so we write into the link itself.
+    const label = clicked.querySelector('#email-text') || clicked;
+
+    copyToClipboard(addr).then((ok) => {
       clicked.style.cursor = 'text';
-    }
+      label.textContent = ok ? 'Copied ✓' : addr;
+      if (ok) {
+        window.setTimeout(() => { label.textContent = addr; }, 1100);
+      }
+    });
   }
 
   // Expose to onclick handlers
@@ -70,9 +87,11 @@
 
   // --- Scroll-triggered fade-in ---
   function initFadeIn() {
-    const elements = document.querySelectorAll(
+    // Skip the Blog section and the nav-swapped sections — they have their own
+    // nav-only entrance animation instead of the scroll-triggered fade.
+    const elements = Array.from(document.querySelectorAll(
       '.section-title, .section-intro, .about-content p, .research-card, .blog-card'
-    );
+    )).filter((el) => !el.closest('#blog') && !el.closest('.nav-section'));
 
     elements.forEach((el) => el.classList.add('fade-in'));
 
@@ -115,21 +134,27 @@
   function showNavSection(id) {
     // Hide all nav-only sections
     navSections.forEach(s => s.style.display = 'none');
-    
+
     if (id === 'home' || id === 'blog') {
-      // Show scroll sections, hide nav sections
+      // Show scroll sections, then jump (no animation) to the requested one so
+      // it sits at the top as if it were its own page. We use scrollTo() with
+      // the element's document offset rather than scrollIntoView(), because
+      // scrollIntoView honors `scroll-padding-top` (80px) and would drop the
+      // title 80px lower than Research — which is positioned via scrollTo(0).
       scrollSections.forEach(s => s.style.display = '');
       const target = document.getElementById(id);
-      if (target) target.scrollIntoView({ behavior: 'smooth' });
+      if (target) {
+        const y = target.getBoundingClientRect().top + window.pageYOffset;
+        window.scrollTo({ top: y, behavior: 'instant' });
+      }
     } else {
       // Hide scroll sections except we keep them but show the nav section
       // Actually: hide home/blog, show the requested section
       scrollSections.forEach(s => s.style.display = 'none');
-      document.querySelector('.scroll-hint').style.display = 'none';
       const target = document.getElementById(id);
       if (target) {
         target.style.display = '';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0 });
       }
     }
 
@@ -140,15 +165,36 @@
     });
   }
 
+  // Gentle staggered entrance for a section — played ONLY when you open it
+  // from the nav bar, never on manual scroll.
+  function playEnter(id) {
+    const sec = document.getElementById(id);
+    if (!sec) return;
+    sec.classList.remove('nav-enter');
+    void sec.offsetWidth; // force reflow so the animation restarts each time
+    sec.classList.add('nav-enter');
+  }
+
   navLinks.forEach((link) => {
     link.addEventListener('click', (e) => {
       const href = link.getAttribute('href');
       if (href && href.startsWith('#')) {
         e.preventDefault();
-        showNavSection(href.slice(1));
+        const id = href.slice(1);
+        showNavSection(id);
+        playEnter(id);
       }
     });
   });
+
+  // The hero's "see more" chevron opens Blog the same way the nav tab does.
+  const scrollHint = document.querySelector('.scroll-hint');
+  if (scrollHint) {
+    scrollHint.addEventListener('click', () => {
+      showNavSection('blog');
+      playEnter('blog');
+    });
+  }
 
   // --- Init ---
   window.addEventListener('scroll', () => {
@@ -162,10 +208,14 @@
     handleNavScroll();
     updateActiveNav();
 
-    // Deep-link support: visiting /#sharabara (etc.) opens that section directly.
+    // Deep-link support: visiting /#sharabara (etc.) — e.g. clicking a nav tab
+    // from a blog post page — opens that section directly, with its entrance.
     const initialHash = decodeURIComponent(location.hash.slice(1));
     if (initialHash && document.getElementById(initialHash)) {
       showNavSection(initialHash);
+      playEnter(initialHash);
+    } else {
+      playEnter('home');
     }
   });
 
