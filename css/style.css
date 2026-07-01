@@ -485,6 +485,8 @@ a:hover {
 
   .section-home {
     padding-top: calc(var(--nav-height) + 2rem);
+    /* reserve room at the bottom so the scroll-hint chevron can't overlap the links */
+    padding-bottom: 5rem;
   }
 
   .name-primary {
@@ -527,9 +529,21 @@ a:hover {
     grid-template-columns: 1fr;
   }
 
+  /* the 4 social pills as a tidy 2x2 grid instead of a tall single-file stack */
   .home-links {
-    flex-direction: column;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    width: 100%;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .home-links .link-pill {
+    justify-content: center;
+    white-space: nowrap;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
   }
 }
 
