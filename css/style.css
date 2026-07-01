@@ -663,6 +663,10 @@ a:hover {
   background: #5E9FA8;
 }
 
+.sharabara-card--recursite {
+  background: #877BB0;
+}
+
 .sharabara-card-name {
   font-family: var(--sans);
   font-size: 1.2rem;
