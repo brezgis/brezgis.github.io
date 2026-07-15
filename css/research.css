@@ -1,0 +1,204 @@
+/* ============================================
+   Research page — template scaffolding
+   The .tpl-* classes are placeholder styling and
+   disappear as real content replaces the slots.
+   ============================================ */
+
+/* --- Overview blurb above the action row --- */
+.research-overview {
+  max-width: 680px;
+  margin-bottom: 1.5rem;
+}
+
+/* --- Action row: quiet serif links (variant C) --- */
+.research-actions {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.25rem;
+}
+
+.research-quiet {
+  font-family: var(--serif);
+  font-size: 1.02rem;
+  font-style: italic;
+  color: var(--accent-hover);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color 0.2s ease;
+}
+
+.research-quiet:hover {
+  color: var(--text);
+}
+
+.research-quiet-sep {
+  font-family: var(--sans);
+  color: var(--text-softer);
+}
+
+/* Pill buttons — kept for dev-buttons.html (variant B); remove if unused */
+.research-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-soft);
+  background: var(--card-bg);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.research-btn:hover {
+  color: var(--accent-hover);
+  border-color: var(--accent);
+  background: var(--accent-light);
+  box-shadow: 0 2px 12px rgba(122, 139, 111, 0.12);
+}
+
+.research-btn svg {
+  flex-shrink: 0;
+}
+
+/* --- Section rule (the line used on other pages) --- */
+.research-rule {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2.5rem 0;
+}
+
+/* --- Description sections --- */
+.research-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+  max-width: 680px;
+}
+
+/* A touch more breathing room between prose paragraphs */
+.research-overview p,
+.research-body p {
+  margin-bottom: 1.3rem;
+}
+.research-body p:last-child,
+.research-sub p:last-child {
+  margin-bottom: 0;
+}
+
+.research-heading {
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  margin-bottom: 0.85rem;
+}
+
+.research-subheading {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  margin: 1.4rem 0 0.7rem;
+}
+
+/* nested (2.5)-style sub-block, indented under its parent section */
+.research-sub {
+  margin-left: 1.4rem;
+}
+
+/* Inline links within the research prose — underlined */
+.research-body a {
+  color: var(--accent-hover);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color 0.2s ease;
+}
+
+.research-body a:hover {
+  color: var(--text);
+}
+
+/* --- Template slots (placeholder boxes) --- */
+.tpl-slot {
+  border: 1.5px dashed var(--border);
+  border-radius: 10px;
+  padding: 1.15rem 1.4rem;
+  background: rgba(255, 255, 255, 0.55);
+  max-width: 680px;
+}
+
+.tpl-label {
+  display: block;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  margin-bottom: 0.3rem;
+}
+
+.tpl-hint {
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--text-softer);
+  line-height: 1.65;
+}
+
+.tpl-heading {
+  color: var(--text-softer);
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* --- Current-work feed --- */
+.research-feed {
+  scroll-margin-top: 90px; /* clear the floating navbar on jump */
+}
+
+.research-feed-intro {
+  margin-bottom: 1.5rem;
+}
+
+.research-feed .postlist {
+  max-width: 680px;
+}
+
+/* Placeholder feed rows: same ledger geometry as the blog, dimmed */
+.tpl-row .postlist-title,
+.tpl-row .postlist-sum,
+.tpl-row .postlist-date {
+  color: var(--text-softer);
+}
+
+.tpl-dim {
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* --- Nav entrance stagger for the new structure --- */
+@media (prefers-reduced-motion: no-preference) {
+  .nav-enter .research-overview,
+  .nav-enter .research-actions,
+  .nav-enter .research-block,
+  .nav-enter .research-feed {
+    animation: navEnter 0.5s ease both;
+  }
+  .section-research.nav-enter .research-overview { animation-delay: 0.11s; }
+  .section-research.nav-enter .research-actions { animation-delay: 0.17s; }
+  .section-research.nav-enter .research-block:nth-child(1) { animation-delay: 0.23s; }
+  .section-research.nav-enter .research-block:nth-child(2) { animation-delay: 0.29s; }
+  .section-research.nav-enter .research-block:nth-child(3) { animation-delay: 0.35s; }
+  .section-research.nav-enter .research-feed { animation-delay: 0.41s; }
+}

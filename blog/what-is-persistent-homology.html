@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What is Persistent Homology? — Anna Brežġis</title>
+  <meta name="description" content="Persistent homology is the tool I reach for when I want to ask data a question that statistics cannot phrase…">
+  <link rel="icon" type="image/png" href="../assets/icons/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="stylesheet" href="../css/ph-widgets.css">
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <ul>
+      <li><a href="../index.html#home" class="nav-link">Home</a></li>
+      <li><a href="../index.html#research" class="nav-link">Research</a></li>
+      <li><a href="../index.html#blog" class="nav-link active">Blog</a></li>
+      <li><a href="../index.html#sharabara" class="nav-link">Шара-бара</a></li>
+    </ul>
+  </nav>
+
+  <article class="post">
+    <div class="container post-container">
+      <a class="post-back" href="../index.html#blog">← All posts</a>
+      <header class="post-header">
+        <p class="post-date">July 2026</p>
+        <h1 class="post-title">What is Persistent Homology?</h1>
+      </header>
+      <div class="post-body">
+<p>Persistent homology is the tool I reach for when I want to ask data a question that statistics cannot phrase: <em>what shape are you?</em> This post is the ten-minute version, with toys. Everything below is computed live in your browser — click things. If you want the full guided tour (the Vietoris–Rips complex, the ℤ/2 linear algebra, stepping through the actual matrix reduction), I made a separate full-screen version: <a href="https://brezgis.com/ph-explainer/">The Shape of a Point Cloud</a>.</p>
+<h2>The question statistics can&rsquo;t ask</h2>
+<p>Here are twenty-four measurements — two features of some cells, two sensor readings, whatever you like. Your eye needs a tenth of a second to notice the important thing about them: <em>these points sit on a loop.</em></p>
+<figure class="ph-fig" id="ph-shape">
+<div class="fig-panel"><canvas id="shape-canvas" class="plane" height="360" aria-label="A scatter of points arranged in a rough ring."></canvas></div>
+<div class="controls" role="group" aria-label="Summaries to overlay">
+<button class="chip" data-overlay="mean">the average</button>
+<button class="chip" data-overlay="trend">the trend line</button>
+<button class="chip" data-overlay="eye">what your eye sees</button>
+</div>
+</figure>
+
+<p>The average lands in the one place where there is <em>no</em> data. The trend line shrugs. Means, variances, and regressions summarize <em>where</em> the data is; none of them can say the sentence &ldquo;there is a hole in the middle.&rdquo; That sentence is a statement about <strong>shape</strong>, and the branch of math that makes it precise is topology. Persistent homology is topology turned into something you can run on a matrix.</p>
+<p>Why expect data to have a shape at all? Because measurements are usually many, but the dials behind them are few — a face photographed under a turning light is a million pixels, yet only one angle truly varies. This is the <em>manifold hypothesis</em>: high-dimensional data tends to lie near a low-dimensional shape, because the process that generated it had only a few degrees of freedom. Anything periodic traces a loop. Shapes are what generating processes look like from the outside.</p>
+<h2>Give the dust a body</h2>
+<p>A finite set of points is topologically just dust. The classic trick: grow a disk of radius <em>r</em> around every point and study the union of disks instead. Drag the slider.</p>
+<figure class="ph-fig" id="ph-grow">
+<div class="fig-panel"><canvas id="grow-canvas" class="plane" height="380" aria-label="Points with growing disks around them, merging into blobs as the radius increases."></canvas></div>
+<div class="controls">
+<label>radius <em>r</em>
+<input type="range" id="grow-r" min="0" max="0.30" step="0.001" value="0.02">
+</label>
+<span class="readout" id="grow-read">r = 0.02</span>
+</div>
+</figure>
+
+<p>Small <em>r</em>: dust. Large <em>r</em>: one featureless blob. Somewhere in between, the union of disks briefly <em>becomes the shape your eye saw</em>. So which radius is the right one? Here is the idea that makes the whole subject work: <strong>refuse to choose.</strong> Sweep <em>r</em> from zero to huge and keep a diary of every topological event along the way — when each feature appears (its <em>birth</em>) and when it disappears (its <em>death</em>). That diary is called a <strong>barcode</strong>.</p>
+<h2>Reading a barcode</h2>
+<p>The simplest features are connected components, counted by H<sub>0</sub>. At <em>r</em> = 0 every point is its own island; as disks grow, islands merge, and each merge ends one island&rsquo;s story. Draw each lifespan as a horizontal bar:</p>
+<figure class="ph-fig" id="ph-merge">
+<div class="fig-panel">
+<canvas id="merge-canvas" class="plane" height="330" aria-label="Two clusters of points with a few stragglers, with disks growing as the slider moves."></canvas>
+<canvas id="merge-bars" height="190" aria-label="Barcode of connected components. Each bar is one component's lifespan. Hover a bar to highlight its component."></canvas>
+</div>
+<div class="controls">
+<label>radius <em>r</em>
+<input type="range" id="merge-r" min="0" max="0.32" step="0.001" value="0.015">
+</label>
+<span class="readout" id="merge-read">r = 0.015</span>
+<span class="spacer"></span>
+<span class="counter">hover a bar ⤴</span>
+</div>
+</figure>
+
+<p><strong>Hover a bar</strong> to light up the island whose life it records. The short bars die young — points that quickly joined a neighbor; that is the texture of noise. The two long bars are the two genuine clusters. And one bar never dies: at the end everything is a single blob, and that component lives forever.</p>
+<p>The more interesting characters are the holes themselves, counted by H<sub>1</sub>. A loop is <em>born</em> at the radius where a ring of disks first closes, and <em>dies</em> at the radius where its middle fills in:</p>
+<figure class="ph-fig" id="ph-loops">
+<div class="controls" role="group" aria-label="Choose a point cloud">
+<button class="chip active" data-shape="ring">one ring</button>
+<button class="chip" data-shape="eight">figure eight</button>
+<button class="chip" data-shape="random">random scatter</button>
+</div>
+<div class="fig-panel">
+<canvas id="loops-canvas" class="plane" height="330" aria-label="A point cloud with edges and filled triangles appearing as the radius grows."></canvas>
+<canvas id="loops-bars" height="150" aria-label="Barcode of loops. Hover a bar to highlight the loop it records."></canvas>
+</div>
+<div class="controls">
+<label>radius <em>r</em>
+<input type="range" id="loops-r" min="0" max="0.30" step="0.001" value="0.06">
+</label>
+<span class="readout" id="loops-read">r = 0.06</span>
+<span class="spacer"></span>
+<span class="counter">hover a bar ⤴</span>
+</div>
+</figure>
+
+<p>Switch to the figure eight: two holes, two long bars. Switch to random scatter: little loops flicker into existence by accident and are filled almost immediately. This is the entire reading lesson: <strong>long bars are features of the data; short bars are accidents of the sampling.</strong> And it comes with a warranty — the <em>stability theorem</em> says that perturbing the points a little moves no bar&rsquo;s endpoints by more than a little, which is why you may trust a barcode computed from noisy data.</p>
+<p>Under the hood, none of this needs the plane. The algorithm only ever reads <em>pairwise distances</em>, builds a growing family of simplicial complexes from them, and reduces one boundary matrix over ℤ/2 — the whole subject is a null space and a quotient, which is exactly why I can point it at data in ℝ<sup>1000</sup>. If you want to see the matrix reduction happen column by column (it is genuinely satisfying), that is §7–8 of <a href="https://brezgis.com/ph-explainer/">the full tour</a>.</p>
+<h2>Your turn</h2>
+<p>Click to place points (click a point to remove it). The complex, both barcodes, and the persistence diagram recompute as you draw. Draw two rings and check for two long H<sub>1</sub> bars. Try to draw the letter B.</p>
+<figure class="ph-fig" id="ph-sandbox">
+<div class="controls" role="group" aria-label="Presets">
+<button class="chip" data-preset="ring">ring</button>
+<button class="chip" data-preset="eight">two rings</button>
+<button class="chip" data-preset="clusters">clusters</button>
+<button class="chip" data-preset="random">random</button>
+<button class="chip" data-preset="clear">clear</button>
+<span class="spacer"></span>
+<span class="counter" id="sand-count">0 / 60 points</span>
+</div>
+<div class="fig-panel">
+<canvas id="sand-canvas" class="plane" height="380" aria-label="Drawing area. Click to add points, click a point to remove it."></canvas>
+<canvas id="sand-bars" height="270" aria-label="Barcodes of components and loops for the drawn points, or the persistence diagram."></canvas>
+</div>
+<div class="controls">
+<label>radius <em>r</em>
+<input type="range" id="sand-r" min="0" max="0.30" step="0.001" value="0.05">
+</label>
+<span class="readout" id="sand-read">r = 0.05</span>
+<span class="spacer"></span>
+<span role="group" aria-label="View">
+<button class="chip active" data-view="bars">barcodes</button>
+<button class="chip" data-view="diagram">diagram</button>
+</span>
+</div>
+<figcaption>Hover any bar or diagram point to see its feature in the plane. H<sub>0</sub> in the lighter blue, H<sub>1</sub> in the darker.</figcaption>
+</figure>
+
+<h2>Why I care</h2>
+<p>In my own work the &ldquo;point cloud&rdquo; is usually the latent space of a language model — token or sentence embeddings, attention patterns, activations. Those spaces are high-dimensional, noisy, and have no ground-truth geometry, but they plausibly <em>do</em> have shape: the processes that generate language have structure, and the manifold hypothesis says that structure should leave fingerprints. Topology is attractive here precisely because it needs no alignment between spaces — you can compare the shape of two embedding spaces without ever putting them in the same coordinates.</p>
+<h2>Resources</h2>
+<p>Tools I use for persistent homology on model internals. I maintain forks for most of these, because they are often not built for LLM analysis — the data is noisy and does not have any ground-truth representation the way biological data does.</p>
+<ul>
+<li><a href="https://github.com/berenslab/eff-ph">eff-ph</a> — effective PH pipelines; evaluated on toy examples and biological data with ground truth.</li>
+<li><a href="https://github.com/plus-rkwitt/flooder">flooder</a> — fast GPU-friendly filtration construction for large point clouds.</li>
+<li><a href="https://github.com/FoxHound0x00/hole">HOLE</a> — visualizing the topology of neural nets in H<sub>0</sub>; originally evaluated on image-classification networks.</li>
+<li><a href="https://github.com/angelinatsai04/mitll_clinic/tree/adam_spring">PH on attention maps</a> — persistent homology applied to transformer attention maps.</li>
+</ul>
+<p>TDA for NLP is a niche but quickly growing area. Start with Adaku Uchendu and Thai Le&rsquo;s survey, <a href="https://arxiv.org/abs/2411.10298">Unveiling Topological Structures from Language: A Comprehensive Survey of Topological Data Analysis Applications in NLP</a>, and her companion list, <a href="https://github.com/AdaUchendu/AwesomeTDA4NLP">AwesomeTDA4NLP</a>.</p>
+<p>And for the mathematics itself: Robert Ghrist&rsquo;s essay <a href="https://www2.math.upenn.edu/~ghrist/preprints/barcodes.pdf">Barcodes: the persistent topology of data</a> is the classic next step; Edelsbrunner &amp; Harer&rsquo;s <em>Computational Topology</em> is the standard textbook; <a href="https://github.com/Ripser/ripser">Ripser</a> is what the professionals use.</p>
+<script src="../js/ph/engine.js"></script>
+<script src="../js/ph/viz.js"></script>
+<script src="../js/ph/widgets.js"></script>
+      </div>
+    </div>
+  </article>
+
+  <footer class="footer" id="footer">
+    <div class="container footer-inner">
+      <div class="footer-name">Anna Brežġis</div>
+      <div class="footer-links">
+        <a href="https://github.com/brezgis" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+        <a href="https://twitter.com/annabrezgis" target="_blank" rel="noopener" aria-label="Twitter">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+        </a>
+        <a href="https://linkedin.com/in/brezgis" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="#" class="email-link" onclick="revealEmail(event)" aria-label="Email">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        </a>
+      </div>
+      <div class="footer-note">Built by a strange loop for a strange loop.</div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      function copy(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          return navigator.clipboard.writeText(text).then(function () { return true; }).catch(function () { return false; });
+        }
+        try {
+          var ta = document.createElement('textarea');
+          ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+          document.body.appendChild(ta); ta.select();
+          var ok = document.execCommand('copy');
+          document.body.removeChild(ta);
+          return Promise.resolve(ok);
+        } catch (err) { return Promise.resolve(false); }
+      }
+      window.revealEmail = function (e) {
+        e.preventDefault();
+        var addr = 'anna' + '@' + 'brezgis.com';
+        var clicked = e.currentTarget;
+        var label = clicked.querySelector('#email-text') || clicked;
+        copy(addr).then(function (ok) {
+          clicked.style.cursor = 'text';
+          label.textContent = ok ? 'Copied \u2713' : addr;
+          if (ok) window.setTimeout(function () { label.textContent = addr; }, 1100);
+        });
+      };
+    })();
+  </script>
+  <script>
+    (function () {
+      var imgs = document.querySelectorAll('.post-body figure img, .post-body .fig-pair-imgs img');
+      if (!imgs.length) return;
+      var box = document.createElement('div');
+      box.className = 'lightbox';
+      box.innerHTML = '<button class="lightbox-close" type="button" aria-label="Close">&times;</button><img alt="">';
+      document.body.appendChild(box);
+      var boxImg = box.querySelector('img');
+      function open(im) { boxImg.src = im.currentSrc || im.src; boxImg.alt = im.alt || ''; box.classList.add('open'); document.body.style.overflow = 'hidden'; }
+      function close() { box.classList.remove('open'); document.body.style.overflow = ''; boxImg.removeAttribute('src'); }
+      imgs.forEach(function (im) { im.addEventListener('click', function () { open(im); }); });
+      box.querySelector('.lightbox-close').addEventListener('click', close);
+      box.addEventListener('click', function (e) { if (e.target === box) close(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && box.classList.contains('open')) close(); });
+    })();
+  </script>
+
+</body>
+</html>

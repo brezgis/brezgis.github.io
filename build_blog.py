@@ -42,7 +42,7 @@ POST_TMPL = """<!DOCTYPE html>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   {fonts}
   <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="stylesheet" href="../css/blog.css">{extra_css}
 </head>
 <body>
 
@@ -187,6 +187,11 @@ def load_posts():
         meta["date_short"] = dt.strftime("%b %Y")
         meta["_body"] = body
         meta["excerpt"] = make_excerpt(body)
+        # posts don't carry hand-written summaries; the preview everywhere is
+        # the opening words of the text itself (summary: stays as an override
+        # for the <meta name=description> tag only)
+        if not meta["summary"]:
+            meta["summary"] = meta["excerpt"]
         posts.append(meta)
     posts.sort(key=lambda m: m["_dt"], reverse=True)
     return posts
@@ -207,9 +212,15 @@ def render_posts(posts):
     for m in posts:
         md.reset()
         body_html = md.convert(m["_body"])
+        # optional frontmatter `css: path.css, other.css` -> extra head links
+        extra_css = "".join(
+            '\n  <link rel="stylesheet" href="{}">'.format(html.escape(u.strip()))
+            for u in m.get("css", "").split(",") if u.strip()
+        )
         out = POST_TMPL.format(
             title=html.escape(m["title"]),
             summary=html.escape(m["summary"]),
+            extra_css=extra_css,
             fonts=FONTS,
             date_display=html.escape(m["date_display"]),
             draft_badge=' <span class="post-draft-badge">draft</span>' if m["draft"] else "",

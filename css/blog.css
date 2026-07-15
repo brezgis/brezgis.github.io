@@ -158,6 +158,36 @@ a.blog-card {
   letter-spacing: 0.02em;
 }
 
+/* --- Elevator pitches: ellipsis "bring-down" for the repeated greeting --- */
+.post-body .pitches {
+  display: grid;
+  grid-template-columns: max-content 1fr; /* col 1 == width of "Hi, I'm Anna." */
+  column-gap: 0.6rem;
+  row-gap: 1.05rem;
+  align-items: baseline;
+  margin: 2rem 0;
+  padding-left: 1.1rem;
+  border-left: 3px solid var(--accent);
+  font-size: 1.2rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--text);
+}
+.post-body .pitches .pfx {
+  white-space: nowrap;
+  text-align: right; /* ellipsis lands where "Hi, I'm Anna." ends */
+}
+.post-body .pitches .pfx:not(.greet) { /* the ellipses */
+  font-style: normal;
+  color: var(--accent-hover);
+  letter-spacing: 0.06em;
+}
+.post-body .pitches .aside {
+  margin-top: -0.55rem; /* pin tight under the TDA line */
+  font-size: 0.98rem;
+  color: var(--text-softer);
+}
+
 .post-body ul,
 .post-body ol {
   margin: 0 0 1.5rem 1.4rem;

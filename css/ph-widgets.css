@@ -1,0 +1,91 @@
+/* ph-widgets.css — embeddable persistent-homology widgets.
+   Extracted from the standalone "Shape of a Point Cloud" page (ph-explainer);
+   token values and control metrics match the original exactly.
+
+   The canvas code (js/ph/viz.js) reads its colors from CSS custom properties
+   on :root at draw time. These token names are the ph-teach set and do not
+   collide with the site's own tokens (--bg, --text, --accent, …). The blog
+   is light-only, so only light values are defined. */
+
+:root {
+  --paper: #fcfcfd;        /* widget panel background                  */
+  --ink: #1c2733;          /* points                                   */
+  --ink-soft: #57687c;
+  --ink-faint: #93a3b5;
+  --hair: #e2e9f2;         /* hairlines, panel border                  */
+  --h0: #2e7cd6;           /* components — cyan-leaning blue           */
+  --h1: #2b52b5;           /* loops — royal blue                       */
+  --wash: #e9f1fa;         /* union-of-disks fill                      */
+  --wash-tri: #d3e2f5;     /* filled triangles                         */
+  --sweep: #2e7cd6;
+  --hi: #0f1b2d;           /* hover emphasis                           */
+  --ph-mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace;
+}
+
+figure.ph-fig {
+  margin: 2.6rem 0;
+}
+.ph-fig .fig-panel {
+  border: 1px solid var(--hair);
+  border-radius: 3px;
+  background: var(--paper);
+  overflow: hidden;
+}
+.ph-fig canvas { display: block; width: 100%; touch-action: none; }
+.ph-fig .plane { cursor: crosshair; }
+.ph-fig figcaption {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+  margin-top: 0.6rem;
+}
+
+.ph-fig .controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1rem;
+  padding: 0.7rem 0.2rem 0.2rem;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+.ph-fig .controls label { display: flex; align-items: center; gap: 0.5rem; }
+
+.ph-fig button.chip {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid var(--hair);
+  border-radius: 3px;
+  padding: 0.34rem 0.7rem;
+  cursor: pointer;
+}
+.ph-fig button.chip:hover { border-color: var(--h0); color: var(--h0); }
+.ph-fig button.chip.active {
+  border-color: var(--h0);
+  color: var(--h0);
+  font-weight: 600;
+}
+.ph-fig button.chip:focus-visible,
+.ph-fig input[type="range"]:focus-visible {
+  outline: 2px solid var(--h0);
+  outline-offset: 2px;
+}
+
+.ph-fig input[type="range"] {
+  accent-color: var(--h0);
+  width: 11rem;
+  max-width: 45vw;
+}
+.ph-fig .readout {
+  font-family: var(--ph-mono);
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+  min-width: 6.5ch;
+}
+.ph-fig .spacer { flex: 1; }
+.ph-fig .counter { font-family: var(--ph-mono); font-size: 0.78rem; color: var(--ink-faint); }

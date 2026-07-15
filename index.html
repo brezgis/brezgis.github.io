@@ -11,6 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/blog.css">
+  <link rel="stylesheet" href="css/research.css">
 </head>
 <body>
 
@@ -92,17 +93,77 @@
   </section>
 
   <!-- Research (hidden by default, shown via nav) -->
+  <!-- TEMPLATE: structure only, no content yet. Action links are variant C
+       (quiet serif links) — see dev-buttons.html for the alternatives. -->
   <section id="research" class="section section-research nav-section" style="display:none;">
     <div class="container">
-      <h2 class="section-title">Research</h2>
-      <div class="about-content">
-        <p>My research interests are theory-informed and data-driven, and fall into two main areas.</p>
+      <h2 class="section-title">Research <span class="draft-tag">draft</span></h2>
 
-        <p><span class="about-label">(1) Linguistic Worldview</span></p>
-        <p>Different languages require attention to different phenomena. I'm interested in how to link structural differences in distributional data to cognitive and sociolinguistic phenomena.</p>
+      <!-- Overview text (Anna, July 2026) -->
+      <div class="research-overview">
+        <p>My research uses language models as tools for studying human language and culture at scale. My work incorporates ideas from linguistic relativity, representation analysis, and geometric and topological methods.</p>
+        <p>These are not separate research interests so much as different perspectives on the same question: <strong>whether languages organize meaning and experience in systematically distinct ways, and whether those differences leave measurable traces in linguistic data and their latent representations.</strong></p>
+      </div>
 
-        <p><span class="about-label">(2) Emergent Behavior in LLMs</span></p>
-        <p>Self-organizing behavior in and among LLM agents. How to assess and ensure alignment. And properties of consciousness in artificial systems.</p>
+      <!-- Action row — pill buttons (variant B), just under the overview -->
+      <div class="research-actions">
+        <a href="#research-feed" class="research-btn"
+           onclick="document.getElementById('research-feed').scrollIntoView({behavior:'smooth'}); return false;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+          <span>Current Work</span>
+        </a>
+        <a href="assets/cv.pdf" class="research-btn" title="PDF coming soon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+          <span>CV</span>
+        </a>
+      </div>
+
+      <hr class="research-rule">
+
+      <!-- Research description sections -->
+      <div class="research-body">
+        <div class="research-block">
+          <h3 class="research-heading">(1) Linguistic Relativity / Linguistic Worldview</h3>
+          <p>I take the soft, non-deterministic view of linguistic relativity (following the <a href="https://journals.umcs.pl/et">Lublin School of Ethnolinguistics</a>) that languages make particular distinctions more habitual, salient, or obligatory to express. Languages differ in how they divide color space, lexicalize emotions, categorize objects, encode social relationships, and describe time, motion, agency, and evidence. The combined impact of these defining patterns forms culturally and historically distinct ways of construing experience &mdash; i.e., a linguistic worldview.</p>
+          <p>These phenomena have traditionally been studied through the humanistic, highly interpretive disciplines of ethnography, anthropology, and native-speaker intuition. Computational methods offer another scale of analysis. If culturally meaningful distinctions are systematic, they should leave traces in the collocational relationships between words and concepts.</p>
+        </div>
+
+        <div class="research-block">
+          <h3 class="research-heading">(2) Representation Analysis / Interpretability</h3>
+          <p>Language models form latent, internal representations of concepts from training on large collections of human language. These representations are not designed semantic systems, but rather emerge from the content of the training data and the environment of architecture and learning objectives.</p>
+          <p>Because models&rsquo; latent representations are shaped by the distributional patterns inherent in language, they become a new kind of empirical artifact for understanding how human concepts are organized. I am interested in how human-interpretable concepts are structured within latent space, and how stable or robust they are across architectures and languages.</p>
+          <p>I am most interested in approaches that involve:</p>
+          <div class="research-sub">
+            <h4 class="research-subheading">(2.5) Topological Data Analysis / Geometric Data Analysis</h4>
+            <p>Embedding spaces are high-dimensional, noisy, and difficult to compare. Because a semantic space is defined only by its content, its axes are arbitrary, and aligning two spaces to a shared frame is lossy or distortionary.</p>
+            <p>One way we can approximate is by evaluating a space by its geometric or topological invariants. My work mainly employs persistent homology, which tracks features that survive across continuous scaling.</p>
+            <p><a href="blog/what-is-persistent-homology.html">Learn more about topological data analysis here.</a></p>
+          </div>
+        </div>
+
+        <div class="research-block">
+          <h3 class="research-heading">(3) Language and Cognition</h3>
+          <p>Any symbolic system (mathematics, computation, DNA, etc.) selects which distinctions are efficient to express and compresses those which are effortful. In doing so, it makes some features necessary and some nearly unexpressible. Language does not escape this constraint, and therefore its structure can tell us what the human mind optimizes for: patterns of attention and association.</p>
+        </div>
+      </div>
+
+      <hr class="research-rule">
+
+      <!-- Current work: blogpost-style feed -->
+      <div id="research-feed" class="research-feed">
+        <h3 class="research-heading">Current work</h3>
+        <p class="section-intro research-feed-intro">Projects, papers, and preprints accumulate here, ledger-style like the blog.</p>
+        <ul class="postlist">
+          <li>
+            <div class="postlist-row tpl-row">
+              <span class="postlist-date">Mon 2026</span>
+              <span class="postlist-main">
+                <span class="postlist-title tpl-dim">&#10216; Project or paper title &#10217;</span>
+                <span class="postlist-sum tpl-dim">&#10216; One-line summary. A small &ldquo;what this is&rdquo; tag can sit here too: course project, pilot study, preprint. &#10217;</span>
+              </span>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   </section>
@@ -115,6 +176,10 @@
       <div class="blog-preview">
         <!-- BLOG:CARDS:START -->
         <ul class="postlist">
+        <li><a class="postlist-row" href="blog/acl2026-hallway-track.html">
+          <span class="postlist-date">Jul 2026</span>
+          <span class="postlist-main"><span class="postlist-title">The Hallway Track: an ACL 2026 Retrospective</span><span class="postlist-sum">Alongside the formal program of academic conferences runs the Hallway Track, an informal venue for scholarly exchange occurring between scheduled…</span></span>
+        </a></li>
         <li><a class="postlist-row" href="blog/lincoln-lab.html">
           <span class="postlist-date">May 2026</span>
           <span class="postlist-main"><span class="postlist-title">A Summer at MIT Lincoln Laboratory</span><span class="postlist-sum">This summer, I will be interning in the AI Technology and Systems group at MIT Lincoln Laboratory.</span></span>
@@ -167,12 +232,12 @@
         </div>
 
         <div class="sharabara-row">
-          <a href="https://noosphere.brezgis.com" target="_blank" rel="noopener" class="sharabara-card sharabara-card--noosphere">
-            <span class="sharabara-card-name">noosphere</span>
+          <a href="https://lv.brezgis.com" target="_blank" rel="noopener" class="sharabara-card sharabara-card--brezgi">
+            <span class="sharabara-card-name">brezgi-lv</span>
           </a>
           <div class="sharabara-desc">
-            <p>A non-social social media. Over a dozen automated streams of linguistics, philosophy, literature, and more — i.e. a whole-grain alternative to Reddit/Tumblr.</p>
-            <a href="https://github.com/brezgis/noosphere" target="_blank" rel="noopener" class="sharabara-github">repo</a>
+            <p>One spot of Vidzeme earth at four moments in time &mdash; AD 50, AD 950, 1860, and 1935. Real terrain, real rivers, procedural everything else. The aurochs were there first.</p>
+            <a href="https://github.com/brezgis/brezgis-lv" target="_blank" rel="noopener" class="sharabara-github">repo</a>
           </div>
         </div>
 
@@ -220,14 +285,36 @@
         </div>
 
         <div class="sharabara-row">
+          <a href="https://noosphere.brezgis.com" target="_blank" rel="noopener" class="sharabara-card sharabara-card--noosphere">
+            <span class="sharabara-card-name">noosphere</span>
+          </a>
+          <div class="sharabara-desc">
+            <p>A non-social social media. Over a dozen automated streams of linguistics, philosophy, literature, and more — i.e. a whole-grain alternative to Reddit/Tumblr.</p>
+            <a href="https://github.com/brezgis/noosphere" target="_blank" rel="noopener" class="sharabara-github">repo</a>
+          </div>
+        </div>
+
+        <div class="sharabara-row">
           <a href="https://recursite.brezgis.com" target="_blank" rel="noopener" class="sharabara-card sharabara-card--recursite">
             <span class="sharabara-card-name">recursite</span>
           </a>
           <div class="sharabara-desc">
-            <p>The 90&rsquo;s called. They want their HTML back.</p>
+            <p>The &rsquo;90s called. They want their HTML back.</p>
             <a href="https://github.com/brezgis/recursite" target="_blank" rel="noopener" class="sharabara-github">repo</a>
           </div>
         </div>
+
+        <!-- ph-explainer held back — reworking before shipping (Anna, 2026-07-14):
+        <div class="sharabara-row">
+          <a href="https://brezgis.com/ph-explainer/" target="_blank" rel="noopener" class="sharabara-card sharabara-card--pointcloud">
+            <span class="sharabara-card-name">ph-explainer</span>
+          </a>
+          <div class="sharabara-desc">
+            <p>The Shape of a Point Cloud: a full-screen interactive tour of persistent homology. Grow disks around data, read barcodes, and watch a matrix notice a hole &mdash; all computed live in the browser.</p>
+            <a href="https://github.com/brezgis/ph-explainer" target="_blank" rel="noopener" class="sharabara-github">repo</a>
+          </div>
+        </div>
+        -->
 
       </div>
     </div>
@@ -254,6 +341,14 @@
       <div class="footer-note">Built by a strange loop for a strange loop.</div>
     </div>
   </footer>
+
+  <!-- DEV ONLY: quick links for template review — delete before merging to main -->
+  <div style="position:fixed; bottom:1rem; right:1rem; z-index:2000; display:flex; align-items:center; gap:0.7rem; background:rgba(255,255,255,0.94); border:1px solid var(--border); border-radius:999px; padding:0.45rem 1rem; font-family:var(--sans); font-size:0.8rem; box-shadow:0 2px 14px rgba(0,0,0,0.08);">
+    <span style="color:var(--text-softer); text-transform:uppercase; letter-spacing:0.1em; font-size:0.65rem; font-weight:600;">dev</span>
+    <a href="#research" style="color:var(--accent-hover); font-weight:500;">research template</a>
+    <span style="color:var(--border);">|</span>
+    <a href="dev-buttons.html" style="color:var(--accent-hover); font-weight:500;">button variations</a>
+  </div>
 
   <script src="js/main.js"></script>
 </body>

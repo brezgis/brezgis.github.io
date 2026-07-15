@@ -1,0 +1,141 @@
+---
+title: What is Persistent Homology?
+date: 2026-07-10
+slug: what-is-persistent-homology
+css: ../css/ph-widgets.css
+---
+
+Persistent homology is the tool I reach for when I want to ask data a question that statistics cannot phrase: *what shape are you?* This post is the ten-minute version, with toys. Everything below is computed live in your browser — click things. If you want the full guided tour (the Vietoris–Rips complex, the ℤ/2 linear algebra, stepping through the actual matrix reduction), I made a separate full-screen version: [The Shape of a Point Cloud](https://brezgis.com/ph-explainer/).
+
+## The question statistics can't ask
+
+Here are twenty-four measurements — two features of some cells, two sensor readings, whatever you like. Your eye needs a tenth of a second to notice the important thing about them: *these points sit on a loop.*
+
+<figure class="ph-fig" id="ph-shape">
+<div class="fig-panel"><canvas id="shape-canvas" class="plane" height="360" aria-label="A scatter of points arranged in a rough ring."></canvas></div>
+<div class="controls" role="group" aria-label="Summaries to overlay">
+<button class="chip" data-overlay="mean">the average</button>
+<button class="chip" data-overlay="trend">the trend line</button>
+<button class="chip" data-overlay="eye">what your eye sees</button>
+</div>
+</figure>
+
+The average lands in the one place where there is *no* data. The trend line shrugs. Means, variances, and regressions summarize *where* the data is; none of them can say the sentence "there is a hole in the middle." That sentence is a statement about **shape**, and the branch of math that makes it precise is topology. Persistent homology is topology turned into something you can run on a matrix.
+
+Why expect data to have a shape at all? Because measurements are usually many, but the dials behind them are few — a face photographed under a turning light is a million pixels, yet only one angle truly varies. This is the *manifold hypothesis*: high-dimensional data tends to lie near a low-dimensional shape, because the process that generated it had only a few degrees of freedom. Anything periodic traces a loop. Shapes are what generating processes look like from the outside.
+
+## Give the dust a body
+
+A finite set of points is topologically just dust. The classic trick: grow a disk of radius *r* around every point and study the union of disks instead. Drag the slider.
+
+<figure class="ph-fig" id="ph-grow">
+<div class="fig-panel"><canvas id="grow-canvas" class="plane" height="380" aria-label="Points with growing disks around them, merging into blobs as the radius increases."></canvas></div>
+<div class="controls">
+<label>radius <em>r</em>
+<input type="range" id="grow-r" min="0" max="0.30" step="0.001" value="0.02">
+</label>
+<span class="readout" id="grow-read">r = 0.02</span>
+</div>
+</figure>
+
+Small *r*: dust. Large *r*: one featureless blob. Somewhere in between, the union of disks briefly *becomes the shape your eye saw*. So which radius is the right one? Here is the idea that makes the whole subject work: **refuse to choose.** Sweep *r* from zero to huge and keep a diary of every topological event along the way — when each feature appears (its *birth*) and when it disappears (its *death*). That diary is called a **barcode**.
+
+## Reading a barcode
+
+The simplest features are connected components, counted by H<sub>0</sub>. At *r* = 0 every point is its own island; as disks grow, islands merge, and each merge ends one island's story. Draw each lifespan as a horizontal bar:
+
+<figure class="ph-fig" id="ph-merge">
+<div class="fig-panel">
+<canvas id="merge-canvas" class="plane" height="330" aria-label="Two clusters of points with a few stragglers, with disks growing as the slider moves."></canvas>
+<canvas id="merge-bars" height="190" aria-label="Barcode of connected components. Each bar is one component's lifespan. Hover a bar to highlight its component."></canvas>
+</div>
+<div class="controls">
+<label>radius <em>r</em>
+<input type="range" id="merge-r" min="0" max="0.32" step="0.001" value="0.015">
+</label>
+<span class="readout" id="merge-read">r = 0.015</span>
+<span class="spacer"></span>
+<span class="counter">hover a bar ⤴</span>
+</div>
+</figure>
+
+**Hover a bar** to light up the island whose life it records. The short bars die young — points that quickly joined a neighbor; that is the texture of noise. The two long bars are the two genuine clusters. And one bar never dies: at the end everything is a single blob, and that component lives forever.
+
+The more interesting characters are the holes themselves, counted by H<sub>1</sub>. A loop is *born* at the radius where a ring of disks first closes, and *dies* at the radius where its middle fills in:
+
+<figure class="ph-fig" id="ph-loops">
+<div class="controls" role="group" aria-label="Choose a point cloud">
+<button class="chip active" data-shape="ring">one ring</button>
+<button class="chip" data-shape="eight">figure eight</button>
+<button class="chip" data-shape="random">random scatter</button>
+</div>
+<div class="fig-panel">
+<canvas id="loops-canvas" class="plane" height="330" aria-label="A point cloud with edges and filled triangles appearing as the radius grows."></canvas>
+<canvas id="loops-bars" height="150" aria-label="Barcode of loops. Hover a bar to highlight the loop it records."></canvas>
+</div>
+<div class="controls">
+<label>radius <em>r</em>
+<input type="range" id="loops-r" min="0" max="0.30" step="0.001" value="0.06">
+</label>
+<span class="readout" id="loops-read">r = 0.06</span>
+<span class="spacer"></span>
+<span class="counter">hover a bar ⤴</span>
+</div>
+</figure>
+
+Switch to the figure eight: two holes, two long bars. Switch to random scatter: little loops flicker into existence by accident and are filled almost immediately. This is the entire reading lesson: **long bars are features of the data; short bars are accidents of the sampling.** And it comes with a warranty — the *stability theorem* says that perturbing the points a little moves no bar's endpoints by more than a little, which is why you may trust a barcode computed from noisy data.
+
+Under the hood, none of this needs the plane. The algorithm only ever reads *pairwise distances*, builds a growing family of simplicial complexes from them, and reduces one boundary matrix over ℤ/2 — the whole subject is a null space and a quotient, which is exactly why I can point it at data in ℝ<sup>1000</sup>. If you want to see the matrix reduction happen column by column (it is genuinely satisfying), that is §7–8 of [the full tour](https://brezgis.com/ph-explainer/).
+
+## Your turn
+
+Click to place points (click a point to remove it). The complex, both barcodes, and the persistence diagram recompute as you draw. Draw two rings and check for two long H<sub>1</sub> bars. Try to draw the letter B.
+
+<figure class="ph-fig" id="ph-sandbox">
+<div class="controls" role="group" aria-label="Presets">
+<button class="chip" data-preset="ring">ring</button>
+<button class="chip" data-preset="eight">two rings</button>
+<button class="chip" data-preset="clusters">clusters</button>
+<button class="chip" data-preset="random">random</button>
+<button class="chip" data-preset="clear">clear</button>
+<span class="spacer"></span>
+<span class="counter" id="sand-count">0 / 60 points</span>
+</div>
+<div class="fig-panel">
+<canvas id="sand-canvas" class="plane" height="380" aria-label="Drawing area. Click to add points, click a point to remove it."></canvas>
+<canvas id="sand-bars" height="270" aria-label="Barcodes of components and loops for the drawn points, or the persistence diagram."></canvas>
+</div>
+<div class="controls">
+<label>radius <em>r</em>
+<input type="range" id="sand-r" min="0" max="0.30" step="0.001" value="0.05">
+</label>
+<span class="readout" id="sand-read">r = 0.05</span>
+<span class="spacer"></span>
+<span role="group" aria-label="View">
+<button class="chip active" data-view="bars">barcodes</button>
+<button class="chip" data-view="diagram">diagram</button>
+</span>
+</div>
+<figcaption>Hover any bar or diagram point to see its feature in the plane. H<sub>0</sub> in the lighter blue, H<sub>1</sub> in the darker.</figcaption>
+</figure>
+
+## Why I care
+
+In my own work the "point cloud" is usually the latent space of a language model — token or sentence embeddings, attention patterns, activations. Those spaces are high-dimensional, noisy, and have no ground-truth geometry, but they plausibly *do* have shape: the processes that generate language have structure, and the manifold hypothesis says that structure should leave fingerprints. Topology is attractive here precisely because it needs no alignment between spaces — you can compare the shape of two embedding spaces without ever putting them in the same coordinates.
+
+## Resources
+
+Tools I use for persistent homology on model internals. I maintain forks for most of these, because they are often not built for LLM analysis — the data is noisy and does not have any ground-truth representation the way biological data does.
+
+- [eff-ph](https://github.com/berenslab/eff-ph) — effective PH pipelines; evaluated on toy examples and biological data with ground truth.
+- [flooder](https://github.com/plus-rkwitt/flooder) — fast GPU-friendly filtration construction for large point clouds.
+- [HOLE](https://github.com/FoxHound0x00/hole) — visualizing the topology of neural nets in H<sub>0</sub>; originally evaluated on image-classification networks.
+- [PH on attention maps](https://github.com/angelinatsai04/mitll_clinic/tree/adam_spring) — persistent homology applied to transformer attention maps.
+
+TDA for NLP is a niche but quickly growing area. Start with Adaku Uchendu and Thai Le's survey, [Unveiling Topological Structures from Language: A Comprehensive Survey of Topological Data Analysis Applications in NLP](https://arxiv.org/abs/2411.10298), and her companion list, [AwesomeTDA4NLP](https://github.com/AdaUchendu/AwesomeTDA4NLP).
+
+And for the mathematics itself: Robert Ghrist's essay [Barcodes: the persistent topology of data](https://www2.math.upenn.edu/~ghrist/preprints/barcodes.pdf) is the classic next step; Edelsbrunner & Harer's *Computational Topology* is the standard textbook; [Ripser](https://github.com/Ripser/ripser) is what the professionals use.
+
+<script src="../js/ph/engine.js"></script>
+<script src="../js/ph/viz.js"></script>
+<script src="../js/ph/widgets.js"></script>

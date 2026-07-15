@@ -689,6 +689,14 @@ a:hover {
   background: #A65E4A;
 }
 
+.sharabara-card--pointcloud {
+  background: #5E7FB8;
+}
+
+.sharabara-card--brezgi {
+  background: #8A9A76; /* muted olive — lightened & desaturated to sit with the earth-tone neighbors */
+}
+
 .sharabara-card-name {
   font-family: var(--sans);
   font-size: 1.2rem;
