@@ -33,7 +33,7 @@ Let's set the scene. I came to ACL with my two best friends and classmates, Marc
   </figure>
   <figure>
     <img src="../assets/img/blog/acl-people-to-find.jpg" alt="A printed 'PhD advisor lookout — people to find' scouting sheet, with the names and notes below the heading blurred out and a caption reading 'I did not actually get to talk to these people, lol.'">
-    <figcaption>Ambitious plans were made.</figcaption>
+    <figcaption>A very normal amount of preparation.</figcaption>
   </figure>
 </div>
 
