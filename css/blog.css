@@ -280,6 +280,12 @@ a.blog-card {
 @media (max-width: 560px) {
   .post-figs { flex-direction: column; }
 }
+/* Smaller side-by-side pair (e.g. tall schedule printouts) */
+.post-body .post-figs.figs-sm {
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 /* --- Two photos sharing one caption --- */
 .post-body .fig-pair { margin: 1.75rem 0; }

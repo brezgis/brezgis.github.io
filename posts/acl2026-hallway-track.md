@@ -26,7 +26,7 @@ The secret is that the hallway actually extends far out into the surrounding con
 
 Let's set the scene. I came to ACL with my two best friends and classmates, Marc and Edith. None of us were presenting anything, but we decided to come to get the lay of the land in CL/NLP and do a bit of networking. This is a particularly salient summer for us as we are hunting for opportunities in anticipation of our graduation in the spring. In particular, I was on the hunt for a potential PhD advisor. So much so that I had Claude make me an advisor scouting sheet for my schedule printout.
 
-<div class="post-figs">
+<div class="post-figs figs-sm">
   <figure>
     <img src="../assets/img/blog/acl-schedule.jpg" alt="Anna's printed ACL 2026 schedule for Monday, marked up with highlighter and handwritten notes.">
     <figcaption>My personalized itinerary.</figcaption>
