@@ -2,6 +2,7 @@
 title: "The Hallway Track: an ACL 2026 Retrospective"
 date: 2026-07-10
 slug: acl2026-hallway-track
+summary: A photo-filled retrospective of the hallway track at ACL 2026 in San Diego — fireworks, Top Gun, tacos, a street poet, and the conversations that make a conference.
 draft: false
 ---
 

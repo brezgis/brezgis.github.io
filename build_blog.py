@@ -23,6 +23,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 POSTS_DIR = os.path.join(ROOT, "posts")
 BLOG_DIR = os.path.join(ROOT, "blog")
 INDEX = os.path.join(ROOT, "index.html")
+SITE_URL = "https://brezgis.com"  # for canonical + Open Graph absolute URLs
 
 EXCERPT_WORDS = 20  # how many leading words of each post show in the list
 
@@ -37,6 +38,7 @@ POST_TMPL = """<!DOCTYPE html>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{title} — Anna Brežġis</title>
   <meta name="description" content="{summary}">
+{social}
   <link rel="icon" type="image/png" href="../assets/icons/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -197,6 +199,44 @@ def load_posts():
     return posts
 
 
+def social_meta(m):
+    """Open Graph + Twitter-card tags so posts preview nicely when shared.
+
+    Uses a dedicated 1200x630 card at assets/img/blog/og-<slug>.jpg when one
+    exists; otherwise falls back to the post's first inline image, then to the
+    site portrait. og:image:width/height are only emitted for the known-size
+    dedicated card.
+    """
+    slug = m["slug"]
+    canonical = "{}/blog/{}.html".format(SITE_URL, slug)
+    card_rel = "assets/img/blog/og-{}.jpg".format(slug)
+    if os.path.exists(os.path.join(ROOT, card_rel)):
+        img = "{}/{}".format(SITE_URL, card_rel)
+        dims = ('\n  <meta property="og:image:width" content="1200">'
+                '\n  <meta property="og:image:height" content="630">')
+    else:
+        mm = re.search(r'src="\.\./(assets/[^"]+\.(?:jpg|jpeg|png|webp))"', m["_body"])
+        rel = mm.group(1) if mm else "assets/img/photo.png"
+        img = "{}/{}".format(SITE_URL, rel)
+        dims = ""
+    t = html.escape(m["title"])
+    d = html.escape(m["summary"])
+    return (
+        '  <link rel="canonical" href="{canon}">\n'
+        '  <meta property="og:type" content="article">\n'
+        '  <meta property="og:site_name" content="Anna Brežġis">\n'
+        '  <meta property="og:title" content="{t}">\n'
+        '  <meta property="og:description" content="{d}">\n'
+        '  <meta property="og:url" content="{canon}">\n'
+        '  <meta property="og:image" content="{img}">{dims}\n'
+        '  <meta name="twitter:card" content="summary_large_image">\n'
+        '  <meta name="twitter:site" content="@annabrezgis">\n'
+        '  <meta name="twitter:title" content="{t}">\n'
+        '  <meta name="twitter:description" content="{d}">\n'
+        '  <meta name="twitter:image" content="{img}">'
+    ).format(canon=canonical, t=t, d=d, img=img, dims=dims)
+
+
 def get_footer():
     """Reuse the homepage footer verbatim so post pages stay in sync."""
     with open(INDEX, encoding="utf-8") as f:
@@ -220,6 +260,7 @@ def render_posts(posts):
         out = POST_TMPL.format(
             title=html.escape(m["title"]),
             summary=html.escape(m["summary"]),
+            social=social_meta(m),
             extra_css=extra_css,
             fonts=FONTS,
             date_display=html.escape(m["date_display"]),
