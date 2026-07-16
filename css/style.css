@@ -717,6 +717,13 @@ a:hover {
   margin-bottom: 0.5rem;
 }
 
+.sharabara-desc .sharabara-epigraph {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-softer, var(--text-soft));
+  margin-top: -0.15rem;
+}
+
 .sharabara-github {
   font-family: var(--sans);
   font-size: 0.875rem;
