@@ -5,7 +5,7 @@ slug: acl2026-hallway-track
 draft: false
 ---
 
-Alongside the formal program of academic conferences runs *the Hallway Track*, an informal venue for scholarly exchange occurring between scheduled talks, usually in the hallways of conference venues. It appears on no schedule and has no chair. Its content is the conversation struck up in the coffee line, the question you were too scared to ask during the session, the introduction made by a mutual friend on the way to lunch. Strand a few thousand scholars in a foreign city, arrange for them to keep bumping into each other, and the hallway track is what you get.
+Alongside the formal program of academic conferences runs *the Hallway Track*, an informal venue for scholarly exchange occurring between the official talks, usually in the hallways of conference venues. It appears on no schedule and has no chair. Its program is the question you were too afraid to ask in session or the introduction made by a mutual friend. Strand a few thousand scholars in a foreign city, arrange for them to keep bumping into each other, and the hallway track is what you get.
 
 The hallway track is often said to be the most productive part of a conference, because it is built from the most essential material of nerds talking to nerds. People working in hyper-specific niches find each other, and better yet, those niche-specialists discover that their problems or methods can be recombined into something neither of them had anticipated.
 
