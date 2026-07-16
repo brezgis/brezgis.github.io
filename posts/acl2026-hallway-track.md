@@ -73,6 +73,10 @@ So we watched the fireworks over San Diego Bay.
       <img src="../assets/img/blog/acl-fireworks-2.jpg" alt="A crowd on the boardwalk silhouetted against fireworks over the bay.">
       <figcaption>A truly cinematic moment.</figcaption>
     </figure>
+    <figure>
+      <img src="../assets/img/blog/acl-fireworks-3.jpg" alt="Edith and Anna in the foreground of a crowd watching fireworks burst over San Diego Bay beside a glowing lamppost.">
+      <figcaption>Edith and I admiring the show.</figcaption>
+    </figure>
   </div>
 </div>
 
@@ -141,10 +145,16 @@ In search of our wild side, we went to the zoo.
 
 I commissioned a poem in Balboa Park.
 
-<figure class="fig-small">
-  <img src="../assets/img/blog/acl-poem-stand.jpg" alt="A street poet at a small table under a stone archway in Balboa Park, composing a poem on a typewriter.">
-  <figcaption>Riffing on the nature of consciousness and creativity.</figcaption>
-</figure>
+<div class="post-figs">
+  <figure>
+    <img src="../assets/img/blog/acl-poem-stand.jpg" alt="A street poet at a small table under a stone archway in Balboa Park, composing a poem on a typewriter.">
+    <figcaption>Riffing on the nature of consciousness and creativity.</figcaption>
+  </figure>
+  <figure>
+    <img src="../assets/img/blog/acl-poem-art.jpg" alt="A pale-blue A-frame chalkboard sign reading 'Poeticize your life — share a topic on your mind, get a poem. Suggested donation $10 to 20, or like a fully funded art grant.'">
+    <figcaption>A small price to pay for original art.</figcaption>
+  </figure>
+</div>
 
 Aspiring to great heights, we climbed a tree.
 
