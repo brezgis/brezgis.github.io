@@ -20,7 +20,7 @@ The hallway track is often said to be the most productive part of a conference, 
   </figure>
 </div>
 
-To participate, one must first master the essential conference lingo: Where are you from? What do you work on? Do you like [conference city]? Have you done [tourist activity everyone is supposed to do]? Interesting weather we have here—how does it differ from your home city? These topics are great to know as they can defuse awkward silences, but their real utility is as a segue into the real subject of your current projects and why they matter. Then, if you are truly lucky, you may also talk your way into a potential solution, a collaboration, or a professional opportunity.
+To participate, one must first master the essential conference lingo: Where are you from? What do you work on? Do you like <span class="placeholder">[conference city]</span>? Have you done <span class="placeholder">[tourist activity everyone is supposed to do]</span>? Interesting <span class="placeholder">[current weather]</span> we have here. Tell me, how does it differ from your home city? These topics are great to know as they can defuse awkward silences, but their real utility is as a segue into the real subject of your current projects and why they matter. Then, if you are truly lucky, you may also talk your way into a potential solution, a collaboration, or a professional opportunity.
 
 The secret is that the hallway actually extends far out into the surrounding conference city, and therefore strange and wonderful places if you let it. The trick is saying *yes* to adventure and *see you later* to your comfort zone as much as possible, like letting yourself be dragged into karaoke bars, going to lunch with strangers, replying to weird affinity groups on the conference app. The best conversations rarely happen where you think they will. What follows is an account of my hallway adventures at ACL 2026 in San Diego, California.
 
@@ -51,42 +51,50 @@ A few I tried were:
 
 But the power of a conference is the long stream of opportunities to try again, to rephrase and refine your answer to "What do you work on?" And before you know it, suddenly you wear the hat of an area specialist, and are being introduced to others as *mech interp person* or *optimization person*. There is nothing quite like the impromptu introduction that makes you step outside yourself a bit and say "Hey, maybe I am!" Watching yourself become *you* in real time is a gift that few experiences give quite as regularly as the hallway track.
 
-It's true that sometimes guest introductions can be incorrect or reductive. Part of the challenge is either becoming very good at correcting others on this or becoming comfortable with a bit of flexibility in your scholarly identity. It's almost as if each new encounter presents an optimization problem. You wish to nerd-snipe your interlocutor to the maximum amount, but your constraints are shared background and patience.
+It's also true that sometimes guest introductions can be incorrect or reductive. Part of the challenge is either becoming very good at correcting others on this or becoming comfortable with a bit of flexibility in your scholarly identity. It's almost as if each new encounter presents an optimization problem. You wish to nerd-snipe your interlocutor to the maximum amount, but your constraints are shared background and patience.
 
 Our hallway truly opened after the reception for the main conference on the 4th of July. Afterwards, fresh off an open bar, we collective-consciousness-ed our way up to the 40th floor to get a good vantage point for the fireworks, growing our party along the way. The rooftop bar was completely full, so we went all the way back down to the boardwalk, half-dreaming, laughing, practicing our conference lingo. It was easy, like kindergarten, to make friends: "Hey! You like NLP too! Want to come with us?"
 
 So we watched the fireworks over San Diego Bay.
 
 <div class="post-grid">
-  <figure>
-    <img src="../assets/img/blog/acl-opener-hyatt.jpg" alt="A rooftop selfie of Anna and four new friends at the top of the Hyatt after the conference reception.">
-    <figcaption>Instant friends at the top of the Hyatt.</figcaption>
-  </figure>
-  <figure>
-    <img src="../assets/img/blog/acl-fireworks-1.jpg" alt="Fireworks bursting over San Diego Bay as someone films on their phone.">
-    <figcaption>Boom!</figcaption>
-  </figure>
-  <figure>
-    <img src="../assets/img/blog/acl-fireworks-2.jpg" alt="A crowd on the boardwalk silhouetted against fireworks over the bay.">
-    <figcaption>A truly cinematic moment.</figcaption>
-  </figure>
+  <div class="pg-col">
+    <figure>
+      <img src="../assets/img/blog/acl-opener-hyatt.jpg" alt="A rooftop selfie of Anna and four new friends at the top of the Hyatt after the conference reception.">
+      <figcaption>Instant friends at the top of the Hyatt.</figcaption>
+    </figure>
+    <figure>
+      <img src="../assets/img/blog/acl-fireworks-1.jpg" alt="Fireworks bursting over San Diego Bay as someone films on their phone.">
+      <figcaption>Boom!</figcaption>
+    </figure>
+  </div>
+  <div class="pg-col">
+    <figure>
+      <img src="../assets/img/blog/acl-fireworks-2.jpg" alt="A crowd on the boardwalk silhouetted against fireworks over the bay.">
+      <figcaption>A truly cinematic moment.</figcaption>
+    </figure>
+  </div>
 </div>
 
 We visited Top Gun sites of importance and met some imposters.
 
 <div class="post-grid">
-  <figure>
-    <img src="../assets/img/blog/acl-topgun.jpg" alt="Four friends in green flight suits striking the Top Gun finger-gun pose in front of a fighter jet numbered 205.">
-    <figcaption>You mean this wasn't <em>actually</em> Tom Cruise?</figcaption>
-  </figure>
-  <figure>
-    <img src="../assets/img/blog/acl-kcbbq-ext.jpg" alt="Anna giving a thumbs up inside Kansas City BBQ, surrounded by neon beer signs and memorabilia.">
-    <figcaption>Kansas City BBQ, where the <a href="https://www.youtube.com/watch?v=2R-5hI93tV0" target="_blank" rel="noopener"><em>Great Balls of Fire</em></a> piano scene was filmed.</figcaption>
-  </figure>
-  <figure>
-    <img src="../assets/img/blog/acl-kcbbq.jpg" alt="Anna at a red-checkered table with Top Gun projected on the wall beneath a sign reading 'up here we're the best of the best.'">
-    <figcaption>I took this one for my mom, who loves Top Gun.</figcaption>
-  </figure>
+  <div class="pg-col">
+    <figure>
+      <img src="../assets/img/blog/acl-topgun.jpg" alt="Four friends in green flight suits striking the Top Gun finger-gun pose in front of a fighter jet numbered 205.">
+      <figcaption>You mean this wasn't <em>actually</em> Tom Cruise?</figcaption>
+    </figure>
+    <figure>
+      <img src="../assets/img/blog/acl-kcbbq-ext.jpg" alt="Anna giving a thumbs up inside Kansas City BBQ, surrounded by neon beer signs and memorabilia.">
+      <figcaption>Kansas City BBQ, where the <a href="https://www.youtube.com/watch?v=2R-5hI93tV0" target="_blank" rel="noopener"><em>Great Balls of Fire</em></a> piano scene was filmed.</figcaption>
+    </figure>
+  </div>
+  <div class="pg-col">
+    <figure>
+      <img src="../assets/img/blog/acl-kcbbq.jpg" alt="Anna at a red-checkered table with Top Gun projected on the wall beneath a sign reading 'up here we're the best of the best.'">
+      <figcaption>I took this one for my mom, who loves Top Gun.</figcaption>
+    </figure>
+  </div>
 </div>
 
 We went on a big ship and sat in some aircraft!
@@ -105,31 +113,35 @@ We went on a big ship and sat in some aircraft!
 In search of our wild side, we went to the zoo.
 
 <div class="post-grid">
-  <figure>
-    <img src="../assets/img/blog/acl-zoo-skyfari.jpg" alt="Four friends squeezed into a Skyfari aerial gondola at the San Diego Zoo, the California Tower in the distance.">
-    <figcaption>The San Diego Zoo, by gondola and on foot.</figcaption>
-  </figure>
-  <figure>
-    <img src="../assets/img/blog/acl-zoo-tram.jpg" alt="A group selfie aboard the zoo's yellow guided-tour tram.">
-    <figcaption>Gondolas, buses, and things that go at the San Diego Zoo.</figcaption>
-  </figure>
-  <figure>
-    <img src="../assets/img/blog/acl-zoo-bird.jpg" alt="A friend with an orange backpack standing among lush green zoo foliage.">
-    <figcaption>Orange backpack + orange bird = instant family?</figcaption>
-  </figure>
-  <figure>
-    <img src="../assets/img/blog/acl-zoo-polarbear.jpg" alt="The group posing beneath a giant polar bear statue at the zoo's Arctic exhibit.">
-    <figcaption>The only polar bear we encountered.</figcaption>
-  </figure>
-  <figure>
-    <img src="../assets/img/blog/acl-zoo-frog.jpg" alt="Two friends perched on a bronze animal statue at the zoo.">
-    <figcaption>Ribbit.</figcaption>
-  </figure>
+  <div class="pg-col">
+    <figure>
+      <img src="../assets/img/blog/acl-zoo-skyfari.jpg" alt="Four friends squeezed into a Skyfari aerial gondola at the San Diego Zoo, the California Tower in the distance.">
+      <figcaption>The San Diego Zoo, by gondola and on foot.</figcaption>
+    </figure>
+    <figure>
+      <img src="../assets/img/blog/acl-zoo-tram.jpg" alt="A group selfie aboard the zoo's yellow guided-tour tram.">
+      <figcaption>Gondolas, buses, and things that go at the San Diego Zoo.</figcaption>
+    </figure>
+    <figure>
+      <img src="../assets/img/blog/acl-zoo-polarbear.jpg" alt="The group posing beneath a giant polar bear statue at the zoo's Arctic exhibit.">
+      <figcaption>The only polar bear we encountered.</figcaption>
+    </figure>
+  </div>
+  <div class="pg-col">
+    <figure>
+      <img src="../assets/img/blog/acl-zoo-bird.jpg" alt="A friend with an orange backpack standing among lush green zoo foliage.">
+      <figcaption>Orange backpack + orange bird = instant family?</figcaption>
+    </figure>
+    <figure>
+      <img src="../assets/img/blog/acl-zoo-frog.jpg" alt="Two friends perched on a bronze animal statue at the zoo.">
+      <figcaption>Ribbit.</figcaption>
+    </figure>
+  </div>
 </div>
 
 I commissioned a poem in Balboa Park.
 
-<figure class="fig-narrow">
+<figure class="fig-small">
   <img src="../assets/img/blog/acl-poem-stand.jpg" alt="A street poet at a small table under a stone archway in Balboa Park, composing a poem on a typewriter.">
   <figcaption>Riffing on the nature of consciousness and creativity.</figcaption>
 </figure>
