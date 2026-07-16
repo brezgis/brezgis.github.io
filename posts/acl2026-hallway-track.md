@@ -16,7 +16,7 @@ The hallway track is often said to be the most productive part of a conference, 
   </figure>
   <figure>
     <img src="../assets/img/blog/acl-bringiton.jpg" alt="Selfie of Anna, Marc, and Edith smiling in front of the ACL 2026 San Diego banner at the venue entrance.">
-    <figcaption>Bring it on!</figcaption>
+    <figcaption>At the time of this picture we were not yet sleep deprived.</figcaption>
   </figure>
 </div>
 
@@ -43,10 +43,10 @@ A few I tried were:
 
 <div class="pitches">
   <span class="pfx greet">&ldquo;Hi, I&rsquo;m Anna.</span><span class="cont">I work on interpretability.&rdquo;</span>
-  <span class="pfx" aria-hidden="true">&hellip;</span><span class="cont">I work on representation analysis.&rdquo;</span>
-  <span class="pfx" aria-hidden="true">&hellip;</span><span class="cont">I work on geometric and topological approaches to LLM interpretability.&rdquo;</span>
+  <span class="pfx" aria-hidden="true">&hellip;</span><span class="cont">and I work on representation analysis.&rdquo;</span>
+  <span class="pfx" aria-hidden="true">&hellip;</span><span class="cont">and I work on geometric and topological approaches to LLM interpretability.&rdquo;</span>
   <span class="pfx" aria-hidden="true">&hellip;</span><span class="cont">Have you ever heard of topological data analysis?&rdquo;</span>
-  <span class="pfx"></span><span class="aside">&mdash; Reader, they have <em>not</em>.</span>
+  <span class="pfx"></span><span class="aside">(Reader, they have <em>not</em>)</span>
 </div>
 
 But the power of a conference is the long stream of opportunities to try again, to rephrase and refine your answer to "What do you work on?" And before you know it, suddenly you wear the hat of an area specialist, and are being introduced to others as *mech interp person* or *optimization person*. There is nothing quite like the impromptu introduction that makes you step outside yourself a bit and say "Hey, maybe I am!" Watching yourself become *you* in real time is a gift that few experiences give quite as regularly as the hallway track.
@@ -64,9 +64,11 @@ So we watched the fireworks over San Diego Bay.
   </figure>
   <figure>
     <img src="../assets/img/blog/acl-fireworks-1.jpg" alt="Fireworks bursting over San Diego Bay as someone films on their phone.">
+    <figcaption>Boom!</figcaption>
   </figure>
   <figure>
     <img src="../assets/img/blog/acl-fireworks-2.jpg" alt="A crowd on the boardwalk silhouetted against fireworks over the bay.">
+    <figcaption>A truly cinematic moment.</figcaption>
   </figure>
 </div>
 
@@ -83,11 +85,11 @@ We visited Top Gun sites of importance and met some imposters.
   </figure>
   <figure>
     <img src="../assets/img/blog/acl-kcbbq.jpg" alt="Anna at a red-checkered table with Top Gun projected on the wall beneath a sign reading 'up here we're the best of the best.'">
-    <figcaption>Goodness Gracious!</figcaption>
+    <figcaption>I took this one for my mom, who loves Top Gun.</figcaption>
   </figure>
 </div>
 
-We went on a big ship!
+We went on a big ship and sat in some aircraft!
 
 <div class="post-figs">
   <figure>
@@ -116,15 +118,16 @@ We went to the zoo.
     <figcaption>Orange backpack + orange bird = instant family?</figcaption>
   </figure>
   <figure>
+    <img src="../assets/img/blog/acl-zoo-polarbear.jpg" alt="The group posing beneath a giant polar bear statue at the zoo's Arctic exhibit.">
+    <figcaption>The only polar bear we encountered.</figcaption>
+  </figure>
+  <figure>
     <img src="../assets/img/blog/acl-zoo-frog.jpg" alt="Two friends perched on a bronze animal statue at the zoo.">
     <figcaption>Ribbit.</figcaption>
   </figure>
-  <figure>
-    <img src="../assets/img/blog/acl-zoo-polarbear.jpg" alt="The group posing beneath a giant polar bear statue at the zoo's Arctic exhibit.">
-  </figure>
 </div>
 
-I had a poem written for me.
+I commissioned a poem in Balboa Park.
 
 <figure class="fig-narrow">
   <img src="../assets/img/blog/acl-poem-stand.jpg" alt="A street poet at a small table under a stone archway in Balboa Park, composing a poem on a typewriter.">
@@ -136,7 +139,7 @@ We climbed a tree.
 <div class="post-figs">
   <figure>
     <img src="../assets/img/blog/acl-tree-gonzalo.jpg" alt="Gonzalo reclining in the sprawling, sun-dappled canopy of an enormous Moreton Bay fig tree.">
-    <figcaption>Gonzalo in the tree.</figcaption>
+    <figcaption>Gonzalo in a tree.</figcaption>
   </figure>
   <figure>
     <img src="../assets/img/blog/acl-tree-me.jpg" alt="Anna standing in the crook of the huge fig tree's trunk, throwing peace signs.">
@@ -166,7 +169,7 @@ The Brandeis folks met up again and again.
   </figure>
   <figure>
     <img src="../assets/img/blog/acl-brandeis-poster.jpg" alt="A group of Brandeis attendees kneeling and standing in front of a poster board at the conference.">
-    <figcaption>A Brandeis poster!</figcaption>
+    <figcaption>A Brandeis SemEval poster!</figcaption>
   </figure>
 </div>
 
@@ -175,7 +178,7 @@ My hallway also included a full day of volunteer shifts. I got very lucky and wa
 <div class="post-figs">
   <figure>
     <img src="../assets/img/blog/acl-slides.jpg" alt="A conference slide titled 'What is the proper unit of interpretability?' projected in the interpretability orals session.">
-    <figcaption>&ldquo;What is the proper unit of interpretability?&rdquo; &mdash; <a href="https://aclanthology.org/2026.acl-long.155/" target="_blank" rel="noopener">the paper</a>.</figcaption>
+    <figcaption><a href="https://aclanthology.org/2026.acl-long.155/" target="_blank" rel="noopener">&ldquo;What is the proper unit of interpretability?&rdquo;</a></figcaption>
   </figure>
   <figure>
     <img src="../assets/img/blog/acl-slides-monitor.jpg" alt="Anna in a red volunteer shirt standing by the entrance to the Harbor orals room.">

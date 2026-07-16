@@ -183,8 +183,9 @@ a.blog-card {
   letter-spacing: 0.06em;
 }
 .post-body .pitches .aside {
-  margin-top: -0.55rem; /* pin tight under the TDA line */
+  margin-top: -0.85rem; /* pin tight under the TDA line */
   font-size: 0.98rem;
+  font-style: normal; /* upright aside; only the emphasized "not" stays slanted */
   color: var(--text-softer);
 }
 
@@ -586,15 +587,16 @@ a.blog-card {
 }
 .lightbox-close:hover { background: rgba(255, 255, 255, 0.28); }
 
-/* --- Photo grid / collage (masonry columns, no cropping) --- */
+/* --- Photo grid / collage (2 columns, no cropping, balanced orphan) --- */
 .post-body .post-grid {
-  column-count: 2;
-  column-gap: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: start;
   margin: 1.75rem 0;
 }
 .post-body .post-grid figure {
-  break-inside: avoid;
-  margin: 0 0 1rem;
+  margin: 0;
 }
 .post-body .post-grid img {
   display: block;
@@ -602,8 +604,15 @@ a.blog-card {
   height: auto;
   border-radius: 8px;
 }
+/* an odd trailing image sits centered across both columns instead of stranded to one side */
+.post-body .post-grid > figure:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+  width: calc(50% - 0.5rem);
+  margin-inline: auto;
+}
 @media (max-width: 560px) {
-  .post-body .post-grid { column-count: 1; }
+  .post-body .post-grid { grid-template-columns: 1fr; }
+  .post-body .post-grid > figure:last-child:nth-child(odd) { width: 100%; }
 }
 
 /* Small single figure — matches the width of the paired/grid photos */
