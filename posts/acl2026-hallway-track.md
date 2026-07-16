@@ -64,18 +64,18 @@ So we watched the fireworks over San Diego Bay.
       <figcaption>Instant friends at the top of the Hyatt.</figcaption>
     </figure>
     <figure>
-      <img src="../assets/img/blog/acl-fireworks-1.jpg" alt="Fireworks bursting over San Diego Bay as someone films on their phone.">
-      <figcaption>Boom!</figcaption>
+      <img src="../assets/img/blog/acl-fireworks-2.jpg" alt="A crowd on the boardwalk silhouetted against fireworks over the bay.">
+      <figcaption>A truly cinematic moment.</figcaption>
     </figure>
   </div>
   <div class="pg-col">
     <figure>
-      <img src="../assets/img/blog/acl-fireworks-2.jpg" alt="A crowd on the boardwalk silhouetted against fireworks over the bay.">
-      <figcaption>A truly cinematic moment.</figcaption>
-    </figure>
-    <figure>
       <img src="../assets/img/blog/acl-fireworks-3.jpg" alt="Edith and Anna in the foreground of a crowd watching fireworks burst over San Diego Bay beside a glowing lamppost.">
       <figcaption>Edith and I admiring the show.</figcaption>
+    </figure>
+    <figure>
+      <img src="../assets/img/blog/acl-fireworks-1.jpg" alt="Fireworks bursting over San Diego Bay as someone films on their phone.">
+      <figcaption>Boom!</figcaption>
     </figure>
   </div>
 </div>
