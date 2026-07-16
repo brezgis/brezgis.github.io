@@ -24,7 +24,7 @@ To participate, one must first master the essential conference lingo: Where are 
 
 The secret is that the hallway actually extends far out into the surrounding conference city, and therefore strange and wonderful places if you let it. What follows is an account of my hallway adventures at ACL 2026 in San Diego, California.
 
-Let's set the scene. I came to ACL with my two best friends and classmates, Marc and Edith. None of us were presenting anything, but we decided to come to get the lay of the land in CL/NLP and do a bit of networking. This is a particularly salient summer for us as we are hunting for opportunities in anticipation of our graduation in the spring. In particular, I was on the hunt for a potential PhD advisor. So much so that I had Claude make me a "people to stalk" sheet in my schedule print-out.
+Let's set the scene. I came to ACL with my two best friends and classmates, Marc and Edith. None of us were presenting anything, but we decided to come to get the lay of the land in CL/NLP and do a bit of networking. This is a particularly salient summer for us as we are hunting for opportunities in anticipation of our graduation in the spring. In particular, I was on the hunt for a potential PhD advisor. So much so that I had Claude make me an advisor scouting sheet for my schedule printout.
 
 <div class="post-figs">
   <figure>
@@ -33,7 +33,7 @@ Let's set the scene. I came to ACL with my two best friends and classmates, Marc
   </figure>
   <figure>
     <img src="../assets/img/blog/acl-people-to-find.jpg" alt="A printed 'PhD advisor lookout — people to find' scouting sheet, with the names and notes below the heading blurred out and a caption reading 'I did not actually get to talk to these people, lol.'">
-    <figcaption>Advisors beware!</figcaption>
+    <figcaption>Ambitious plans were made.</figcaption>
   </figure>
 </div>
 
