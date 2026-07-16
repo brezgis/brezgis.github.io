@@ -5,7 +5,7 @@ slug: acl2026-hallway-track
 draft: false
 ---
 
-Alongside the formal program of academic conferences runs *the Hallway Track*, an informal venue for scholarly exchange occurring between scheduled talks, usually in the hallways of conference venues. It is an institution built on the annual percolation of scholars in a foreign city, made to keep bumping into each other.
+Alongside the formal program of academic conferences runs *the Hallway Track*, an informal venue for scholarly exchange occurring between scheduled talks, usually in the hallways of conference venues. It appears on no schedule and has no chair. Its content is the conversation struck up in the coffee line, the question you were too scared to ask during the session, the introduction made by a mutual friend on the way to lunch. Strand a few thousand scholars in a foreign city, arrange for them to keep bumping into each other, and the hallway track is what you get.
 
 The hallway track is often said to be the most productive part of a conference, because it is built from the most essential material of nerds talking to nerds. People working in hyper-specific niches find each other, and better yet, those niche-specialists discover that their problems or methods can be recombined into something neither of them had anticipated.
 
@@ -102,7 +102,7 @@ We went on a big ship and sat in some aircraft!
   </figure>
 </div>
 
-We went to the zoo.
+In search of our wild side, we went to the zoo.
 
 <div class="post-grid">
   <figure>
@@ -134,7 +134,7 @@ I commissioned a poem in Balboa Park.
   <figcaption>Riffing on the nature of consciousness and creativity.</figcaption>
 </figure>
 
-We climbed a tree.
+Aspiring to great heights, we climbed a tree.
 
 <div class="post-figs">
   <figure>
