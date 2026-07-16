@@ -2,7 +2,6 @@
 title: The Triscuit Taste Test
 date: 2026-03-15
 slug: triscuit
-summary: College shenanigans, a Canadian's love of Triscuits, and a deeply serious ranking of crackers.
 ---
 
 I love college student shenanigans, especially the harmless, absurd kind that makes the rest of the world roll their eyes in fond exasperation. It's the nonsense that emerges when a bunch of young people have total freedom, no money, and the full educational world at their fingertips for the first time in their lives.

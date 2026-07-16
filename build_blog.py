@@ -26,6 +26,7 @@ INDEX = os.path.join(ROOT, "index.html")
 SITE_URL = "https://brezgis.com"  # for canonical + Open Graph absolute URLs
 
 EXCERPT_WORDS = 20  # how many leading words of each post show in the list
+DESC_CHARS = 200    # how many leading characters feed the <meta>/OG description
 
 FONTS = ('<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:'
          'ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;'
@@ -172,6 +173,48 @@ def make_excerpt(body, n=EXCERPT_WORDS):
     return text
 
 
+def make_char_excerpt(body, n=DESC_CHARS):
+    """First ~n characters of the leading prose, cut at a sentence boundary
+    when possible (else a word boundary). Used as the <meta>/Open Graph
+    description when a post carries no hand-written summary."""
+    chunks = []
+    for line in body.splitlines():
+        s = line.strip()
+        if not s:
+            if chunks:
+                break              # stop at the end of the opening paragraph
+            continue
+        if s[0] in "<#|":          # skip HTML blocks, headings, tables
+            if chunks:
+                break
+            continue
+        s = re.sub(r"<[^>]+>", "", s)                     # inline HTML tags
+        s = re.sub(r"!\[[^\]]*\]\([^)]*\)", "", s)        # images
+        s = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", s)    # links -> text
+        s = re.sub(r"[*_`>#]", "", s)                     # inline marks
+        chunks.append(s)
+    text = " ".join(chunks).strip()
+    if len(text) <= n:
+        return text
+    # keep whole sentences up to the n-char mark (always at least the first);
+    # if even the first sentence overshoots, trim to a word boundary + ellipsis
+    ends = [mm.start() + 1 for mm in re.finditer(r"[.!?](?=\s|$)", text)]
+    chosen = 0
+    for e in ends:
+        if e <= n:
+            chosen = e
+        else:
+            break
+    if not chosen and ends and ends[0] <= n + 40:
+        chosen = ends[0]          # first sentence ends just past n — keep it whole
+    if chosen:
+        return text[:chosen].strip()
+    cut = text[:n]
+    if " " in cut:
+        cut = cut[:cut.rfind(" ")]
+    return cut.rstrip(",;:—- ") + "…"
+
+
 def load_posts():
     posts = []
     for fn in os.listdir(POSTS_DIR):
@@ -188,12 +231,12 @@ def load_posts():
         meta["date_display"] = meta.get("display_date") or dt.strftime("%B %Y")
         meta["date_short"] = dt.strftime("%b %Y")
         meta["_body"] = body
-        meta["excerpt"] = make_excerpt(body)
-        # posts don't carry hand-written summaries; the preview everywhere is
-        # the opening words of the text itself (summary: stays as an override
-        # for the <meta name=description> tag only)
+        meta["excerpt"] = make_excerpt(body)          # ~20 words, for the post list
+        meta["excerpt_long"] = make_char_excerpt(body)  # ~200 chars, for descriptions
+        # The <meta>/OG description is the opening of the post itself unless a
+        # post sets an explicit `summary:` override in its frontmatter.
         if not meta["summary"]:
-            meta["summary"] = meta["excerpt"]
+            meta["summary"] = meta["excerpt_long"]
         posts.append(meta)
     posts.sort(key=lambda m: m["_dt"], reverse=True)
     return posts

@@ -2,7 +2,6 @@
 title: Graduating from Georgia State
 date: 2025-05-15
 slug: gsu
-summary: I graduated from Georgia State University with a BA in Applied Linguistics and an EFL certificate.
 ---
 
 I graduated from Georgia State University with a BA in Applied Linguistics and an undergraduate certificate in EFL. Thank you, GSU, and all in the AL Department.

@@ -2,7 +2,6 @@
 title: The Joy of Weird Wildlife Crossing Signs
 date: 2025-12-15
 slug: animal-signs
-summary: A growing collection of the strangest wildlife crossing signs I find when I travel.
 ---
 
 One of the ultimate pleasures of travel is exposure to new *weird critters*. A *weird critter* is an animal that, relative to your location of origin, is *strange* or *unfamiliar*. So, in rural Georgia, even though it's hard to resist shouting "Cows!" or "Horses!" every time you pass by a populated field, they are not weird to the locals. That's why I'm still awestruck by the turkeys of Massachusetts, but the Cambridge natives, unfazed, just shoo them out of their way.
