@@ -174,6 +174,7 @@ a:hover {
 }
 
 .photo-wrapper {
+  position: relative; /* positioning context for .pfp-shades / .pfp-nose */
   width: 220px;
   height: 220px;
   border-radius: 50%;
@@ -187,6 +188,82 @@ a:hover {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* --- Nose easter egg: click the nose, sunglasses drop on ---------------
+   Geometry is measured against the 900x900 crop in assets/img/photo.jpg:
+   the eye line sits at 35.5% down, the temples span 29%-63%, and the nose
+   tip is at (46%, 43.5%). Re-crop the photo and these need re-measuring.
+   The wrapper's overflow:hidden is doing real work — it clips the shades
+   while they're parked above, so they slide in over the top of the circle. */
+.pfp-shades {
+  position: absolute;
+  left: 26.5%;
+  top: 28.25%;
+  width: 40%;
+  height: auto;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-210%) rotate(-12deg);
+  transition: transform 0.5s cubic-bezier(0.34, 1.4, 0.64, 1),
+              opacity 0.22s ease 0.04s;
+}
+
+.photo-wrapper.shaded .pfp-shades {
+  opacity: 1;
+  transform: translateY(0) rotate(0deg);
+}
+
+/* The hit area: a generous circle over the nose (44px at the desktop size,
+   which is the minimum comfortable tap target). Invisible by design — the
+   pointer cursor is the only hint it's there. */
+.pfp-nose {
+  position: absolute;
+  left: 46%;
+  top: 43.5%;
+  width: 20%;
+  height: 20%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pfp-nose:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.pfp-sparkle {
+  position: absolute;
+  width: var(--sz, 9%);
+  aspect-ratio: 1;
+  z-index: 4;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, #fff 0%, #FFE9A8 55%, #F3C96B 100%);
+  clip-path: polygon(50% 0%, 61% 39%, 100% 50%, 61% 61%,
+                     50% 100%, 39% 61%, 0% 50%, 39% 39%);
+  animation: sparklePop 0.7s ease-out both;
+}
+
+@keyframes sparklePop {
+  0%   { opacity: 0; transform: scale(0.2) rotate(0deg); }
+  40%  { opacity: 1; transform: scale(1) rotate(50deg); }
+  100% { opacity: 0; transform: scale(0.4) rotate(115deg); }
+}
+
+/* Reduced motion: the glasses still go on and off, they just don't fly or
+   sparkle. main.js skips the sparkles under the same query. */
+@media (prefers-reduced-motion: reduce) {
+  .pfp-shades {
+    transform: translateY(0) rotate(0deg);
+    transition: opacity 0.15s ease;
+  }
 }
 
 .name-primary {

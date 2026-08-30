@@ -85,6 +85,50 @@
     });
   }
 
+  // --- Nose easter egg: click the nose, sunglasses drop on ---
+  function initNoseEgg() {
+    const wrap = document.getElementById('pfp');
+    const nose = document.getElementById('pfp-nose');
+    if (!wrap || !nose) return;
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    // Positions are percentages within the circle, chosen to ring the glasses
+    // rather than cover the face. The wrapper clips anything past the edge.
+    const POINTS = [
+      [20, 22], [72, 20], [12, 38], [82, 36],
+      [31, 14], [63, 12], [26, 47], [70, 46]
+    ];
+
+    function sparkle() {
+      wrap.querySelectorAll('.pfp-sparkle').forEach((el) => el.remove());
+      POINTS.forEach(([x, y], i) => {
+        const s = document.createElement('span');
+        s.className = 'pfp-sparkle';
+        s.style.left = x + '%';
+        s.style.top = y + '%';
+        s.style.setProperty('--sz', (7 + (i % 3) * 3) + '%');
+        // Land with the glasses (0.5s drop) rather than during the fall.
+        s.style.animationDelay = (300 + i * 45) + 'ms';
+        s.addEventListener('animationend', () => s.remove());
+        wrap.appendChild(s);
+      });
+    }
+
+    nose.addEventListener('click', () => {
+      const on = wrap.classList.toggle('shaded');
+      nose.setAttribute('aria-pressed', on ? 'true' : 'false');
+      nose.setAttribute('aria-label', on
+        ? 'Take the sunglasses off the photo'
+        : 'Put sunglasses on the photo');
+      if (on && !reduce.matches) {
+        sparkle();
+      } else if (!on) {
+        wrap.querySelectorAll('.pfp-sparkle').forEach((el) => el.remove());
+      }
+    });
+  }
+
   // --- Hide scroll hint on scroll ---
   function initScrollHint() {
     const hint = document.querySelector('.scroll-hint');
@@ -185,6 +229,7 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     initScrollHint();
+    initNoseEgg();
     handleNavScroll();
     updateActiveNav();
 
