@@ -93,6 +93,13 @@
 
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+    // Straight on/off toggle, but each time they go back on it's the next pair
+    // round — so you get a different look every time rather than the same one.
+    // data-shades is 0 for bare-faced, 1..3 for the pairs in markup order.
+    const PAIRS = 3;
+    let on = false;
+    let pair = -1;
+
     // Positions are percentages within the circle, chosen to ring the glasses
     // rather than cover the face. The wrapper clips anything past the edge.
     const POINTS = [
@@ -100,8 +107,12 @@
       [31, 14], [63, 12], [26, 47], [70, 46]
     ];
 
-    function sparkle() {
+    function clearSparkles() {
       wrap.querySelectorAll('.pfp-sparkle').forEach((el) => el.remove());
+    }
+
+    function sparkle() {
+      clearSparkles();
       POINTS.forEach(([x, y], i) => {
         const s = document.createElement('span');
         s.className = 'pfp-sparkle';
@@ -116,16 +127,19 @@
     }
 
     nose.addEventListener('click', () => {
-      const on = wrap.classList.toggle('shaded');
+      on = !on;
+      if (on) {
+        pair = (pair + 1) % PAIRS;
+        wrap.setAttribute('data-shades', String(pair + 1));
+        if (!reduce.matches) sparkle();
+      } else {
+        wrap.setAttribute('data-shades', '0');
+        clearSparkles();
+      }
       nose.setAttribute('aria-pressed', on ? 'true' : 'false');
       nose.setAttribute('aria-label', on
         ? 'Take the sunglasses off the photo'
         : 'Put sunglasses on the photo');
-      if (on && !reduce.matches) {
-        sparkle();
-      } else if (!on) {
-        wrap.querySelectorAll('.pfp-sparkle').forEach((el) => el.remove());
-      }
     });
   }
 
