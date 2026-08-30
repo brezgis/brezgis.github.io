@@ -694,7 +694,14 @@ a:hover {
 }
 
 .sharabara-card--brezgi {
-  background: #8A9A76; /* muted olive — lightened & desaturated to sit with the earth-tone neighbors */
+  background: #7F9B86; /* sage — inherited from noosphere when it moved to the recursite */
+}
+
+/* Cyrillic letterforms; a violet, the one hue family the palette didn't have.
+   Sits at the same lightness/saturation register as the other cool accents
+   (shore, brezgi-lv) so it reads as a member rather than an intruder. */
+.sharabara-card--bukvarium {
+  background: #7E6E93;
 }
 
 .sharabara-card-name {
