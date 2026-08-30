@@ -201,4 +201,15 @@
   .section-research.nav-enter .research-block:nth-child(2) { animation-delay: 0.29s; }
   .section-research.nav-enter .research-block:nth-child(3) { animation-delay: 0.35s; }
   .section-research.nav-enter .research-feed { animation-delay: 0.41s; }
+
+  /* The feed contains a .section-intro and .postlist rows, which blog.css
+     animates generically — but the per-item delays for those live only under
+     .section-blog, so inside Research they ran at 0s: their entrance played
+     out invisibly while this parent was still held at opacity 0, and the whole
+     block then appeared fully-formed at 0.41s. The feed is meant to arrive as
+     one unit, so let the children simply ride the parent. */
+  .section-research.nav-enter .research-feed .section-intro,
+  .section-research.nav-enter .research-feed .postlist li {
+    animation: none;
+  }
 }

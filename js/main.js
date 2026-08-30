@@ -154,7 +154,13 @@
       const target = document.getElementById(id);
       if (target) {
         target.style.display = '';
-        window.scrollTo({ top: 0 });
+        // 'instant' is required: html has `scroll-behavior: smooth`, so a bare
+        // scrollTo animates the jump. The entrance cascade starts immediately
+        // either way, so a smooth scroll from further down the page burns most
+        // of the 0.9s sequence before the section is even in view — the reason
+        // Research appeared to "fall in" from the top of the page but snap in
+        // from lower down. The home/blog branch above already passes this.
+        window.scrollTo({ top: 0, behavior: 'instant' });
       }
     }
 
