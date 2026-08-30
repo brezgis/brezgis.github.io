@@ -85,31 +85,6 @@
     });
   }
 
-  // --- Scroll-triggered fade-in ---
-  function initFadeIn() {
-    // Skip the Blog section and the nav-swapped sections — they have their own
-    // nav-only entrance animation instead of the scroll-triggered fade.
-    const elements = Array.from(document.querySelectorAll(
-      '.section-title, .section-intro, .about-content p, .research-card, .blog-card'
-    )).filter((el) => !el.closest('#blog') && !el.closest('.nav-section'));
-
-    elements.forEach((el) => el.classList.add('fade-in'));
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
-    );
-
-    elements.forEach((el) => observer.observe(el));
-  }
-
   // --- Hide scroll hint on scroll ---
   function initScrollHint() {
     const hint = document.querySelector('.scroll-hint');
@@ -209,7 +184,6 @@
   }, { passive: true });
 
   document.addEventListener('DOMContentLoaded', () => {
-    initFadeIn();
     initScrollHint();
     handleNavScroll();
     updateActiveNav();

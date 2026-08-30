@@ -462,21 +462,6 @@ a:hover {
 }
 
 /* --- Animations --- */
-.fade-in {
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.fade-in.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* stagger children */
-.fade-in:nth-child(2) { transition-delay: 0.1s; }
-.fade-in:nth-child(3) { transition-delay: 0.2s; }
-
 /* --- Responsive --- */
 @media (max-width: 640px) {
   .section {

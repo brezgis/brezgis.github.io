@@ -459,7 +459,13 @@ a.blog-card {
 
 /* Gentle staggered entrance — the .nav-enter class is added by main.js ONLY
    when a section is opened from the nav bar, so manual scrolling never triggers
-   it. Skipped entirely when the visitor prefers reduced motion. */
+   it. Skipped entirely when the visitor prefers reduced motion.
+
+   ONE rhythm for the whole site, so every section falls in the same way:
+   0.5s per item, the first at 0.05s, each subsequent item 0.06s behind the
+   last. Research keeps its own delays in research.css because its structure
+   is section-specific, but they run on this same rhythm — if you change the
+   numbers here, change them there too. */
 @media (prefers-reduced-motion: no-preference) {
   @keyframes navEnter {
     from { opacity: 0; transform: translateY(12px); }
@@ -469,9 +475,12 @@ a.blog-card {
   .nav-enter .section-title,
   .nav-enter .section-intro,
   .nav-enter .postlist li,
-  .nav-enter .about-content p,
+  .nav-enter .about-content > *,
   .nav-enter .sharabara-header,
-  .nav-enter .sharabara-row {
+  .nav-enter .sharabara-row,
+  .nav-enter .home-header,
+  .nav-enter .tagline p,
+  .nav-enter .home-links {
     animation: navEnter 0.5s ease both;
   }
 
@@ -487,32 +496,39 @@ a.blog-card {
   .section-blog.nav-enter .postlist li:nth-child(7) { animation-delay: 0.53s; }
   .section-blog.nav-enter .postlist li:nth-child(8) { animation-delay: 0.59s; }
 
-  /* Research: title, then each paragraph */
+  /* Research: the title here, everything below it in research.css */
   .section-research.nav-enter .section-title { animation-delay: 0.05s; }
-  .section-research.nav-enter .about-content p:nth-child(1) { animation-delay: 0.11s; }
-  .section-research.nav-enter .about-content p:nth-child(2) { animation-delay: 0.17s; }
-  .section-research.nav-enter .about-content p:nth-child(3) { animation-delay: 0.23s; }
-  .section-research.nav-enter .about-content p:nth-child(4) { animation-delay: 0.29s; }
-  .section-research.nav-enter .about-content p:nth-child(5) { animation-delay: 0.35s; }
-  .section-research.nav-enter .about-content p:nth-child(6) { animation-delay: 0.41s; }
+
+  /* About: title, then each block of the bio. Uses > * rather than p so the
+     languages and tools blocks cascade with the paragraphs instead of just
+     appearing. */
+  .section-about.nav-enter .section-title { animation-delay: 0.05s; }
+  .section-about.nav-enter .about-content > *:nth-child(1) { animation-delay: 0.11s; }
+  .section-about.nav-enter .about-content > *:nth-child(2) { animation-delay: 0.17s; }
+  .section-about.nav-enter .about-content > *:nth-child(3) { animation-delay: 0.23s; }
+  .section-about.nav-enter .about-content > *:nth-child(4) { animation-delay: 0.29s; }
+  .section-about.nav-enter .about-content > *:nth-child(5) { animation-delay: 0.35s; }
+  .section-about.nav-enter .about-content > *:nth-child(6) { animation-delay: 0.41s; }
+  .section-about.nav-enter .about-content > *:nth-child(7) { animation-delay: 0.47s; }
+  .section-about.nav-enter .about-content > *:nth-child(8) { animation-delay: 0.53s; }
+  .section-about.nav-enter .about-content > *:nth-child(9) { animation-delay: 0.59s; }
 
   /* Шара-бара: dictionary header, then each project row */
   .section-sharabara.nav-enter .sharabara-header { animation-delay: 0.05s; }
-  .section-sharabara.nav-enter .sharabara-row:nth-child(1) { animation-delay: 0.13s; }
-  .section-sharabara.nav-enter .sharabara-row:nth-child(2) { animation-delay: 0.20s; }
-  .section-sharabara.nav-enter .sharabara-row:nth-child(3) { animation-delay: 0.27s; }
-  .section-sharabara.nav-enter .sharabara-row:nth-child(4) { animation-delay: 0.34s; }
-  .section-sharabara.nav-enter .sharabara-row:nth-child(5) { animation-delay: 0.41s; }
-  .section-sharabara.nav-enter .sharabara-row:nth-child(6) { animation-delay: 0.48s; }
-  .section-sharabara.nav-enter .sharabara-row:nth-child(7) { animation-delay: 0.55s; }
+  .section-sharabara.nav-enter .sharabara-row:nth-child(1) { animation-delay: 0.11s; }
+  .section-sharabara.nav-enter .sharabara-row:nth-child(2) { animation-delay: 0.17s; }
+  .section-sharabara.nav-enter .sharabara-row:nth-child(3) { animation-delay: 0.23s; }
+  .section-sharabara.nav-enter .sharabara-row:nth-child(4) { animation-delay: 0.29s; }
+  .section-sharabara.nav-enter .sharabara-row:nth-child(5) { animation-delay: 0.35s; }
+  .section-sharabara.nav-enter .sharabara-row:nth-child(6) { animation-delay: 0.41s; }
+  .section-sharabara.nav-enter .sharabara-row:nth-child(7) { animation-delay: 0.47s; }
 
   /* Home / hero: photo + name, then each tagline line, then the links */
-  .section-home.nav-enter .home-header { animation: navEnter 0.55s ease both 0.05s; }
-  .section-home.nav-enter .tagline p   { animation: navEnter 0.55s ease both; }
-  .section-home.nav-enter .tagline p:nth-child(1) { animation-delay: 0.14s; }
-  .section-home.nav-enter .tagline p:nth-child(2) { animation-delay: 0.21s; }
-  .section-home.nav-enter .tagline p:nth-child(3) { animation-delay: 0.28s; }
-  .section-home.nav-enter .home-links  { animation: navEnter 0.55s ease both 0.36s; }
+  .section-home.nav-enter .home-header { animation-delay: 0.05s; }
+  .section-home.nav-enter .tagline p:nth-child(1) { animation-delay: 0.11s; }
+  .section-home.nav-enter .tagline p:nth-child(2) { animation-delay: 0.17s; }
+  .section-home.nav-enter .tagline p:nth-child(3) { animation-delay: 0.23s; }
+  .section-home.nav-enter .home-links { animation-delay: 0.29s; }
 }
 
 /* See-more chevron: green, and a real button that opens Blog like the nav. */
