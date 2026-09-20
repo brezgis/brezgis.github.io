@@ -832,3 +832,7 @@ a:hover {
     height: 100px;
   }
 }
+
+/* The email pill copies the address on click */
+.link-pill.email-link { cursor: copy; }
+.footer-links .email-link { cursor: copy; }

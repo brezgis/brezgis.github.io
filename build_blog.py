@@ -79,35 +79,42 @@ POST_TMPL = """<!DOCTYPE html>
 </html>
 """
 
-# Inline email handler for post pages — same copy-to-clipboard behavior as the
-# homepage, without pulling in the homepage's section-nav logic (which would
-# hijack the post pages' real nav links).
+# Inline email handler for post pages — same obfuscated-display / copy-on-click
+# behavior as the homepage.
 EMAIL_SCRIPT = """  <script>
     (function () {
-      function copy(text) {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          return navigator.clipboard.writeText(text).then(function () { return true; }).catch(function () { return false; });
-        }
-        try {
-          var ta = document.createElement('textarea');
-          ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-          document.body.appendChild(ta); ta.select();
-          var ok = document.execCommand('copy');
-          document.body.removeChild(ta);
-          return Promise.resolve(ok);
-        } catch (err) { return Promise.resolve(false); }
+    // --- Email: shown obfuscated, assembled only on click and copied to the
+    // clipboard (never written into the HTML source). ---
+    function copyToClipboard(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(text).then(() => true).catch(() => false);
       }
-      window.revealEmail = function (e) {
-        e.preventDefault();
-        var addr = 'anna' + '@' + 'brezgis.com';
-        var clicked = e.currentTarget;
-        var label = clicked.querySelector('#email-text') || clicked;
-        copy(addr).then(function (ok) {
-          clicked.style.cursor = 'text';
-          label.textContent = ok ? 'Copied \\u2713' : addr;
-          if (ok) window.setTimeout(function () { label.textContent = addr; }, 1100);
-        });
-      };
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        const ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        return Promise.resolve(ok);
+      } catch (_) { return Promise.resolve(false); }
+    }
+    function copyEmail(e) {
+      e.preventDefault();
+      const addr = ['anna', 'brezgis.com'].join('@');
+      const clicked = e.currentTarget;
+      const label = clicked.querySelector('#email-text');
+      copyToClipboard(addr).then((ok) => {
+        if (label) {
+          const shown = label.textContent;
+          label.textContent = ok ? 'Copied \u2713' : addr;
+          window.setTimeout(() => { label.textContent = shown; }, 1200);
+        } else {
+          clicked.title = ok ? 'Copied!' : addr;
+          window.setTimeout(() => { clicked.title = 'Click to copy email'; }, 1200);
+        }
+      });
+    }
+    window.copyEmail = copyEmail;
     })();
   </script>"""
 

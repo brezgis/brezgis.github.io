@@ -5,48 +5,38 @@
 (function () {
   'use strict';
 
-  // --- Email: assembled on click (never in the HTML source), copied to the
-  // clipboard, and revealed as selectable text. Same behavior in the hero
-  // button and the footer link. ---
+  // --- Email: shown obfuscated, assembled only on click and copied to the
+  // clipboard (never written into the HTML source). ---
   function copyToClipboard(text) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       return navigator.clipboard.writeText(text).then(() => true).catch(() => false);
     }
-    // Fallback for insecure origins / older browsers
     try {
       const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
       const ok = document.execCommand('copy');
       document.body.removeChild(ta);
       return Promise.resolve(ok);
-    } catch (_) {
-      return Promise.resolve(false);
-    }
+    } catch (_) { return Promise.resolve(false); }
   }
-
-  function revealEmail(e) {
+  function copyEmail(e) {
     e.preventDefault();
-    const addr = 'anna' + '@' + 'brezgis.com';
+    const addr = ['anna', 'brezgis.com'].join('@');
     const clicked = e.currentTarget;
-    // Hero button keeps its icon and writes into the inner span; the footer
-    // link has no inner text node, so we write into the link itself.
-    const label = clicked.querySelector('#email-text') || clicked;
-
+    const label = clicked.querySelector('#email-text');
     copyToClipboard(addr).then((ok) => {
-      clicked.style.cursor = 'text';
-      label.textContent = ok ? 'Copied ✓' : addr;
-      if (ok) {
-        window.setTimeout(() => { label.textContent = addr; }, 1100);
+      if (label) {
+        const shown = label.textContent;
+        label.textContent = ok ? 'Copied \u2713' : addr;
+        window.setTimeout(() => { label.textContent = shown; }, 1200);
+      } else {
+        clicked.title = ok ? 'Copied!' : addr;
+        window.setTimeout(() => { clicked.title = 'Click to copy email'; }, 1200);
       }
     });
   }
-
-  // Expose to onclick handlers
-  window.revealEmail = revealEmail;
+  window.copyEmail = copyEmail;
 
   // --- Navbar scroll effect ---
   const navbar = document.getElementById('navbar');

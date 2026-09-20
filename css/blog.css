@@ -123,6 +123,20 @@ a.blog-card {
   margin: 1.75rem 0;
 }
 
+/* Inside a figure the image has no margin of its own, so the caption sits right under it.
+   Photos are height-capped so a portrait phone shot doesn't tower over the text and a
+   landscape one sits a little inside the column; they stay proportional to each other.
+   Click-to-zoom (lightbox) still shows the full-size image. */
+.post-body figure img {
+  display: block;
+  margin: 0 auto;
+  width: auto;
+  max-width: 100%;
+  max-height: 440px;
+}
+.post-body .post-figs figure img { max-height: 360px; }
+.post-body .sign-collage img { max-height: none; width: 100%; }
+
 .post-body figcaption {
   font-family: var(--sans);
   font-size: 0.85rem;
@@ -632,4 +646,57 @@ a.blog-card {
   max-width: 330px;
   margin-left: auto;
   margin-right: auto;
+}
+
+/* Sign-pictogram collage — grid of cut-outs sharing one caption */
+.post-body .sign-collage {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.25rem 1.25rem;
+  margin: 0 0 0.6rem;
+  align-items: end;
+}
+.post-body .sign-collage img {
+  display: block;
+  width: 100%;
+  border-radius: 8px;
+}
+@media (max-width: 520px) {
+  .post-body .sign-collage { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* --- Pilgrimage post: the four Shikoku Henro stages, as a boxed aside --- */
+.post-body .henro {
+  margin: 2.25rem 0;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+}
+.post-body .henro h3 {
+  margin-top: 0;
+  margin-bottom: 0.9rem;
+  font-size: 1.3rem;
+}
+.post-body .henro dl { margin: 0; }
+.post-body .henro dt {
+  font-weight: 600;
+  margin-top: 0.75rem;
+}
+.post-body .henro dd {
+  margin: 0.2rem 0 0 0;
+  color: var(--text-soft);
+}
+.post-body .henro .henro-cite {
+  margin: 1rem 0 0 0;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--text-softer);
+}
+
+/* --- Pilgrimage post: one-line stage description under each section heading --- */
+.post-body .stage-blurb {
+  margin: -0.5rem 0 1.5rem;
+  font-style: italic;
+  color: var(--text-soft);
 }
