@@ -115,7 +115,7 @@ Just when they think they have reached the top of the hill where the temple is, 
   <figcaption>An example of a pilgrim’s stamp book (<a href="https://i.natgeofe.com/n/9abe5542-18f7-474d-ba74-ef7d24e96045/STOCK_MF4105_2405_GettyImages-1300063209.jpg" target="_blank" rel="noopener">National Geographic</a>)</figcaption>
 </figure>
 
-They bike down to the tiny town of Maruto in search of a place to stay for the night. Because they didn't originally plan to go this far, they didn't book anything, and there's few vacancies. The nicest hotel, then the second-nicest hotel is full. By then it's about 6 PM, and it's getting dark, and they're starting to think that they will have to bike to the next town. But the clerk at the second hotel tells them that there is one other place that they can stay. Marek asks, "Is it nice?" and the clerk just looks at them.
+They bike down to the tiny town of Muroto in search of a place to stay for the night. Because they didn't originally plan to go this far, they didn't book anything, and there's few vacancies. The nicest hotel, then the second-nicest hotel is full. By then it's about 6 PM, and it's getting dark, and they're starting to think that they will have to bike to the next town. But the clerk at the second hotel tells them that there is one other place that they can stay. Marek asks, "Is it nice?" and the clerk just looks at them.
 
 So they arrive at the terrible hotel, and as they're given the tour by the owner, they start to realize how awful it is. There's black mold, everything smells like cigarettes, holes in the walls, and "generally looks like it hasn't been cleaned in years". There is also a spider problem, which proves to be the most disturbing part.
 
