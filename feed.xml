@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Anna Brežģis</title>
+  <subtitle>Blog: updates, essays, and stray thoughts.</subtitle>
+  <link href="https://brezgis.com/"/>
+  <link href="https://brezgis.com/feed.xml" rel="self"/>
+  <id>https://brezgis.com/</id>
+  <updated>2026-09-20T00:00:00Z</updated>
+  <author><name>Anna Brežģis</name></author>
+  <entry>
+    <title>Pilgrimage and Precipitation</title>
+    <link href="https://brezgis.com/blog/pilgrimage.html"/>
+    <id>https://brezgis.com/blog/pilgrimage.html</id>
+    <published>2026-09-20T00:00:00Z</published>
+    <updated>2026-09-20T00:00:00Z</updated>
+    <summary>At the time I am writing this blogpost, I have entered the second year of my master&#x27;s degree.</summary>
+  </entry>
+  <entry>
+    <title>The Hallway Track: an ACL 2026 Retrospective</title>
+    <link href="https://brezgis.com/blog/acl2026-hallway-track.html"/>
+    <id>https://brezgis.com/blog/acl2026-hallway-track.html</id>
+    <published>2026-07-10T00:00:00Z</published>
+    <updated>2026-07-10T00:00:00Z</updated>
+    <summary>Alongside the formal program of academic conferences runs the Hallway Track, an informal venue for scholarly exchange occurring between the official talks, usually in the hallways of conference venues.</summary>
+  </entry>
+  <entry>
+    <title>A Summer at MIT Lincoln Laboratory</title>
+    <link href="https://brezgis.com/blog/lincoln-lab.html"/>
+    <id>https://brezgis.com/blog/lincoln-lab.html</id>
+    <published>2026-05-15T00:00:00Z</published>
+    <updated>2026-05-15T00:00:00Z</updated>
+    <summary>This summer, I will be interning in the AI Technology and Systems group at MIT Lincoln Laboratory.</summary>
+  </entry>
+  <entry>
+    <title>The Triscuit Taste Test</title>
+    <link href="https://brezgis.com/blog/triscuit.html"/>
+    <id>https://brezgis.com/blog/triscuit.html</id>
+    <published>2026-03-15T00:00:00Z</published>
+    <updated>2026-03-15T00:00:00Z</updated>
+    <summary>I love college student shenanigans, especially the harmless, absurd kind that makes the rest of the world roll their eyes in fond exasperation.</summary>
+  </entry>
+  <entry>
+    <title>The Joy of Weird Wildlife Crossing Signs</title>
+    <link href="https://brezgis.com/blog/animal-signs.html"/>
+    <id>https://brezgis.com/blog/animal-signs.html</id>
+    <published>2025-12-15T00:00:00Z</published>
+    <updated>2025-12-15T00:00:00Z</updated>
+    <summary>One of the ultimate pleasures of travel is exposure to new weird critters. A weird critter is an animal that, relative to your location of origin, is strange or unfamiliar.</summary>
+  </entry>
+  <entry>
+    <title>Joining Brandeis</title>
+    <link href="https://brezgis.com/blog/brandeis.html"/>
+    <id>https://brezgis.com/blog/brandeis.html</id>
+    <published>2025-06-15T00:00:00Z</published>
+    <updated>2025-06-15T00:00:00Z</updated>
+    <summary>I am thrilled to announce that I am joining the Computational Linguistics MS program at Brandeis University this fall!</summary>
+  </entry>
+  <entry>
+    <title>Graduating from Georgia State</title>
+    <link href="https://brezgis.com/blog/gsu.html"/>
+    <id>https://brezgis.com/blog/gsu.html</id>
+    <published>2025-05-15T00:00:00Z</published>
+    <updated>2025-05-15T00:00:00Z</updated>
+    <summary>I graduated from Georgia State University with a BA in Applied Linguistics and an undergraduate certificate in EFL. Thank you, GSU, and all in the AL Department.</summary>
+  </entry>
+</feed>

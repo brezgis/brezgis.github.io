@@ -282,6 +282,7 @@ def social_meta(m):
     d = html.escape(m["summary"])
     return (
         '  <link rel="canonical" href="{canon}">\n'
+        '  <link rel="alternate" type="application/atom+xml" title="Anna Brežģis" href="../feed.xml">\n'
         '  <meta property="og:type" content="article">\n'
         '  <meta property="og:site_name" content="Anna Brežġis">\n'
         '  <meta property="og:title" content="{t}">\n'
@@ -405,11 +406,47 @@ def write_sitemap(posts):
     return len(urls)
 
 
+FEED = os.path.join(ROOT, "feed.xml")
+
+
+def write_feed(posts):
+    """feed.xml: an Atom feed of every published (non-draft) post, newest first,
+    with the post summary as content and the canonical URL as the entry id."""
+    published = [m for m in posts if not m["draft"]]
+    updated = max((m["_dt"] for m in published), default=datetime.now())
+    iso = lambda dt: dt.strftime("%Y-%m-%dT00:00:00Z")
+    out = ['<?xml version="1.0" encoding="utf-8"?>',
+           '<feed xmlns="http://www.w3.org/2005/Atom">',
+           '  <title>Anna Brežģis</title>',
+           '  <subtitle>Blog: updates, essays, and stray thoughts.</subtitle>',
+           '  <link href="{}/"/>'.format(SITE_URL),
+           '  <link href="{}/feed.xml" rel="self"/>'.format(SITE_URL),
+           '  <id>{}/</id>'.format(SITE_URL),
+           '  <updated>{}</updated>'.format(iso(updated)),
+           '  <author><name>Anna Brežģis</name></author>']
+    for m in published:
+        url = "{}/blog/{}.html".format(SITE_URL, m["slug"])
+        out += ['  <entry>',
+                '    <title>{}</title>'.format(html.escape(m["title"])),
+                '    <link href="{}"/>'.format(url),
+                '    <id>{}</id>'.format(url),
+                '    <published>{}</published>'.format(iso(m["_dt"])),
+                '    <updated>{}</updated>'.format(iso(m["_dt"])),
+                '    <summary>{}</summary>'.format(html.escape(m["summary"])),
+                '  </entry>']
+    out.append('</feed>')
+    with open(FEED, "w", encoding="utf-8") as f:
+        f.write("\n".join(out) + "\n")
+    return len(published)
+
+
 def main():
     posts = load_posts()
     render_posts(posts)
     update_index(posts)
     n_urls = write_sitemap(posts)
+    n_feed = write_feed(posts)
+    print("Wrote feed.xml ({} entries)".format(n_feed))
     print("Wrote sitemap.xml ({} URLs)".format(n_urls))
     print("Built {} post(s) + in-page blog section:".format(len(posts)))
     for m in posts:
