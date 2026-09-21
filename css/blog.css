@@ -136,6 +136,10 @@ a.blog-card {
 }
 .post-body .post-figs figure img { max-height: 360px; }
 .post-body .sign-collage img { max-height: none; width: 100%; }
+/* Multi-image layouts size their own images; the cap must not clamp their height. */
+.post-body .post-grid img,
+.post-body .fig-pair-imgs img,
+.post-body .wildlife-grid img { max-height: none; width: 100%; margin: 0; }
 
 .post-body figcaption {
   font-family: var(--sans);
