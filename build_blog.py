@@ -371,10 +371,37 @@ def update_index(posts):
         f.write(s)
 
 
+SITEMAP = os.path.join(ROOT, "sitemap.xml")
+
+
+def write_sitemap(posts):
+    """sitemap.xml: the homepage plus every published (non-draft) post.
+    Post lastmod is the post date; the homepage takes the newest post's date."""
+    published = [m for m in posts if not m["draft"]]
+    newest = max((m["_dt"] for m in published), default=datetime.now())
+    urls = [(SITE_URL + "/", newest, "weekly", "1.0")]
+    urls += [("{}/blog/{}.html".format(SITE_URL, m["slug"]), m["_dt"], "yearly", "0.7") for m in published]
+    lines = ['<?xml version="1.0" encoding="UTF-8"?>',
+             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for loc, dt, freq, pri in urls:
+        lines += ["  <url>",
+                  "    <loc>{}</loc>".format(html.escape(loc)),
+                  "    <lastmod>{}</lastmod>".format(dt.strftime("%Y-%m-%d")),
+                  "    <changefreq>{}</changefreq>".format(freq),
+                  "    <priority>{}</priority>".format(pri),
+                  "  </url>"]
+    lines.append("</urlset>")
+    with open(SITEMAP, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
+    return len(urls)
+
+
 def main():
     posts = load_posts()
     render_posts(posts)
     update_index(posts)
+    n_urls = write_sitemap(posts)
+    print("Wrote sitemap.xml ({} URLs)".format(n_urls))
     print("Built {} post(s) + in-page blog section:".format(len(posts)))
     for m in posts:
         flag = " [draft]" if m["draft"] else ""
