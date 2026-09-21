@@ -282,7 +282,7 @@ def social_meta(m):
     d = html.escape(m["summary"])
     return (
         '  <link rel="canonical" href="{canon}">\n'
-        '  <link rel="alternate" type="application/atom+xml" title="Anna Brežģis" href="../feed.xml">\n'
+        '  <link rel="alternate" type="application/atom+xml" title="Anna Brežġis" href="../feed.xml">\n'
         '  <meta property="og:type" content="article">\n'
         '  <meta property="og:site_name" content="Anna Brežġis">\n'
         '  <meta property="og:title" content="{t}">\n'
@@ -417,13 +417,13 @@ def write_feed(posts):
     iso = lambda dt: dt.strftime("%Y-%m-%dT00:00:00Z")
     out = ['<?xml version="1.0" encoding="utf-8"?>',
            '<feed xmlns="http://www.w3.org/2005/Atom">',
-           '  <title>Anna Brežģis</title>',
+           '  <title>Anna Brežġis</title>',
            '  <subtitle>Blog: updates, essays, and stray thoughts.</subtitle>',
            '  <link href="{}/"/>'.format(SITE_URL),
            '  <link href="{}/feed.xml" rel="self"/>'.format(SITE_URL),
            '  <id>{}/</id>'.format(SITE_URL),
            '  <updated>{}</updated>'.format(iso(updated)),
-           '  <author><name>Anna Brežģis</name></author>']
+           '  <author><name>Anna Brežġis</name></author>']
     for m in published:
         url = "{}/blog/{}.html".format(SITE_URL, m["slug"])
         out += ['  <entry>',

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Anna Brežģis</title>
+  <title>Anna Brežġis</title>
   <subtitle>Blog: updates, essays, and stray thoughts.</subtitle>
   <link href="https://brezgis.com/"/>
   <link href="https://brezgis.com/feed.xml" rel="self"/>
   <id>https://brezgis.com/</id>
   <updated>2026-09-20T00:00:00Z</updated>
-  <author><name>Anna Brežģis</name></author>
+  <author><name>Anna Brežġis</name></author>
   <entry>
     <title>Pilgrimage and Precipitation</title>
     <link href="https://brezgis.com/blog/pilgrimage.html"/>
