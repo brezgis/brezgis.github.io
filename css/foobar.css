@@ -1,0 +1,259 @@
+@import url('https://fonts.googleapis.com/css2?family=Commissioner:ital,wght@0,400;0,500;0,600;0,800;1,800&family=Piazzolla:ital,wght@0,400;0,500;0,600;1,400&family=Young+Serif&family=Source+Sans+3:wght@200;400;500;800&display=swap');
+@font-face{font-family:Compagnon;src:url('../assets/fonts/foobar/Compagnon-Roman.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:JuliaMono;src:url('../assets/fonts/foobar/JuliaMono-Medium.woff2') format('woff2');font-weight:500;font-display:swap}
+
+/* ===== Foobar collage: the ACL-post pattern ================================
+   Several .post-grid blocks (two .pg-col columns, vertically centred against
+   each other so they fall out of step), one per neighbourhood. Each tile is a
+   stacked figure: picture on top, its words underneath, all in the tile's own
+   face and tone. Text-only tiles are outlined boxes. Everything else is the
+   blog template (680px column, Source Serif prose). */
+.foo-collage{--sage:#637556;--terracotta:#A65E4A;--ochre:#8B6B32;--slate:#586C83;--plum:#805C70;--umber:#80684D}
+.foo-collage .font-book{--face:'Piazzolla',Georgia,serif;--k:1.02;font-weight:500}
+.foo-collage .font-display{--face:'Young Serif',Georgia,serif;--k:.94}
+.foo-collage .font-type{--face:'Compagnon',ui-monospace,monospace;--k:.95}
+.foo-collage .font-mono{--face:'JuliaMono',ui-monospace,monospace;--k:.86}
+.foo-collage .font-sans{--face:'Commissioner',sans-serif;--k:.98;font-weight:500}
+.foo-collage .tone-sage{--tone:var(--sage)} .foo-collage .tone-terracotta{--tone:var(--terracotta)} .foo-collage .tone-ochre{--tone:var(--ochre)}
+.foo-collage .tone-slate{--tone:var(--slate)} .foo-collage .tone-plum{--tone:var(--plum)} .foo-collage .tone-umber{--tone:var(--umber)}
+
+.foo-collage{margin:2rem 0}
+.post-body .foo-grid{margin:0 0 2.5rem;gap:1.25rem}
+.post-body .foo-grid .pg-col{gap:1.75rem}
+.foo-piece{min-width:0;font-family:var(--face);color:var(--tone)}
+.foo-collage .foo-name{display:none}
+
+/* every word in the tile's voice */
+.post-body .foo-piece p,.post-body .foo-piece figcaption,.foo-piece .foo-source{font-family:inherit;color:inherit}
+.post-body .foo-piece p{margin:0 0 .4rem}
+.foo-composition{display:flex;flex-direction:column;gap:.7rem}
+.foo-visuals{display:grid;gap:.75rem}
+.foo-visuals:has(> figure + figure){grid-template-columns:1fr 1fr;align-items:start}
+.foo-stack .foo-visuals{grid-template-columns:1fr}
+.post-body .foo-piece figure{margin:0}
+.post-body .foo-grid img{display:block;width:100%;height:auto;border-radius:8px;cursor:zoom-in;max-height:none}
+.post-body .foo-sprite .foo-visuals img,.post-body .foo-logo .foo-visuals img{width:auto;max-height:120px;margin:0}
+.post-body .foo-sprite .foo-visuals img{image-rendering:pixelated;width:96px;height:96px}
+.post-body .foo-piece figcaption{font-size:calc(.82rem*var(--k));line-height:1.35;text-align:left;margin-top:.35rem;opacity:.65}
+.post-body .foo-piece figcaption .foo-source{margin-top:0}
+.foo-source{display:block;font-size:calc(.84rem*var(--k));line-height:1.4;margin-top:.4rem;opacity:.65}
+.foo-quote{font-size:calc(1.12rem*var(--k));line-height:1.42;white-space:pre-wrap;overflow-wrap:anywhere;text-wrap:pretty}
+.font-mono .foo-quote,.font-type .foo-quote{font-size:calc(.98rem*var(--k))}
+.foo-word{font-size:calc(2.2rem*var(--k));line-height:1.06;letter-spacing:-.02em;margin-bottom:.3rem;overflow-wrap:anywhere;text-wrap:balance}
+.foo-piece .foo-pronunciation,.foo-piece .foo-language{font-size:calc(.9rem*var(--k));line-height:1.4;opacity:.8;margin-bottom:.15rem}
+.foo-definition{font-size:calc(1.1rem*var(--k));line-height:1.42;margin-top:.4rem}
+.foo-example{font-size:calc(.98rem*var(--k));line-height:1.45;margin-top:.6rem!important;border-left:2px solid currentColor;padding-left:.6rem;opacity:.9}
+.foo-example span{display:block;font-style:italic;margin-top:.2rem;opacity:.8}
+.foo-etymology{font-size:calc(.9rem*var(--k));line-height:1.45;opacity:.85}
+.foo-caption{margin-top:.4rem}
+.foo-caption-title{display:block;font-size:calc(1.5rem*var(--k));line-height:1.12;letter-spacing:-.01em;text-wrap:balance;overflow-wrap:anywhere}
+.foo-caption-sub{display:block;font-size:calc(1rem*var(--k));line-height:1.45;margin-top:.2rem;opacity:.9}
+
+/* text-only tiles: outlined in their tone */
+.kind-text{border:1.5px solid color-mix(in srgb,var(--tone) 50%,transparent);border-radius:8px;padding:1.1rem 1.2rem}
+.kind-text .foo-visuals{display:none}
+
+/* intro pair of dogs (outside the grids) */
+.foo-intro-pair{margin:1.5rem 0 2rem}
+.foo-intro-pair .foo-name{display:block;font-size:1rem;text-align:center;margin-bottom:.6rem;opacity:.8}
+.foo-dogs .foo-visuals{grid-template-columns:1fr 1fr}
+.post-body .foo-dogs .foo-visuals img{width:100%;height:250px;object-fit:cover;object-position:50% 38%}
+
+@media(max-width:560px){
+  .post-body .foo-grid{flex-direction:column;align-items:stretch}
+  .post-body .foo-dogs .foo-visuals img{height:200px}
+}
+
+/* prose interludes between the grids; .is-placeholder marks an empty slot */
+.foo-interlude{margin:0 0 2.5rem}
+.post-body .foo-interlude.is-placeholder p{border:1.5px dashed #b9b2a6;border-radius:8px;padding:.9rem 1.1rem;color:#8a8378;font-style:italic;font-size:.95rem}
+.post-body .foo-piece a.foo-source{color:inherit;text-decoration:underline;text-decoration-color:color-mix(in srgb,currentColor 35%,transparent);text-underline-offset:2px}
+.post-body .foo-piece a.foo-source:hover{text-decoration-color:currentColor;opacity:.9}
+/* a tile's title leading its text (tiles whose picture carries no caption) */
+.foo-caption-lead{margin:0 0 .45rem}
+/* the foo/bar code example in the intro */
+.post-body > pre{font-family:'JuliaMono',ui-monospace,monospace;font-size:.88rem;line-height:1.55;background:color-mix(in srgb,var(--slate,#586C83) 8%,transparent);border-radius:8px;padding:.85rem 1.1rem;margin:0 0 1.5rem;overflow-x:auto}
+.post-body > pre code{font:inherit;background:none;padding:0}
+/* cursor trail (js/foo-trail.js) */
+.foo-trail{position:fixed;z-index:9999;pointer-events:none;user-select:none;font:500 11px/1 'JuliaMono',ui-monospace,monospace;letter-spacing:.02em;white-space:nowrap;opacity:0;will-change:transform,opacity}
+
+/* the little yard sign stuck crooked in a patch of grass at the very end of the post */
+.foo-lawn{width:min(520px,100%);margin:11rem auto 1rem;display:flex;flex-direction:column}
+.foo-sign-post{width:min(300px,62%);margin-left:9%;margin-right:auto;transform:rotate(-3.5deg);transform-origin:50% 100%}
+.foo-sign{container-type:inline-size;width:100%;box-sizing:border-box;background:#1b1b1b;padding:3.2% 2.6% 3.4%;border-radius:2px;box-shadow:0 12px 18px -10px rgba(40,60,20,.45);font-family:'Source Sans 3','Myriad Pro','Segoe UI',sans-serif;text-transform:uppercase;text-align:center}
+.foo-sign span{display:block;white-space:nowrap;line-height:1.08}
+.foo-sign-stakes{display:flex;justify-content:center;gap:40%;width:100%;height:58px}
+.foo-sign-stakes i{width:2px;height:100%;background:linear-gradient(to right,#9ea3a8,#dfe2e5 55%,#9ea3a8)}
+.foo-sign-grass{position:relative;z-index:1;height:64px;margin-top:-40px;background:url(../assets/img/blog/foobar/foo-lawn-grass.svg) center bottom/100% 100% no-repeat}
+
+/* the "Foo Bar" tile: four places named Foo Bar, two by two */
+.foo-venues{display:grid;grid-template-columns:1fr 1fr;gap:1rem .75rem;margin-top:.6rem}
+.post-body .foo-venue{margin:0;display:flex;flex-direction:column}
+.post-body .foo-venue img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:4px;margin:0 0 .45rem}
+.post-body .foo-venue img[src$=".png"]{object-fit:contain;background:#fff}
+.post-body .foo-piece .foo-venue figcaption{display:flex;flex-direction:column;gap:.1rem;text-align:left;opacity:1}
+.foo-venue-name{font-size:calc(.98rem*var(--k));line-height:1.2}
+.foo-venue-place{font-size:calc(.82rem*var(--k));opacity:.75;margin-bottom:.25rem}
+.foo-venue-quote{font-size:calc(.82rem*var(--k));line-height:1.36}
+
+
+/* the Foo Fighters vs. the Foo meme in the intro */
+.post-body .foo-meme{max-width:340px;margin:1.5rem auto 1.75rem}
+.post-body .foo-meme img{width:100%;height:auto;border-radius:4px}
+.post-body .foo-meme figcaption{margin-top:.5rem;font-size:.8rem;text-align:left}
+.post-body .foo-meme .foo-meme-caption{display:block;font-size:.92rem;line-height:1.5;margin-bottom:.35rem;color:var(--text,#2f2b25)}
+.post-body .foo-meme .foo-source{color:inherit;opacity:.6;text-decoration:underline;text-decoration-color:color-mix(in srgb,currentColor 35%,transparent);text-underline-offset:2px}
+
+/* a big number on the companies tile */
+.post-body .foo-piece .foo-stat{display:flex;align-items:baseline;gap:.6rem;margin:.2rem 0 .1rem}
+.foo-stat-num{font-size:calc(3.2rem*var(--k));line-height:1;font-weight:600;font-variant-numeric:tabular-nums}
+.foo-stat-label{font-size:calc(.95rem*var(--k));line-height:1.35}
+.post-body .foo-piece .foo-stat-more{font-size:calc(.95rem*var(--k));margin-top:.8rem}
+
+/* the Foobar, Foobar song, right before the tiles: a little record player (js/foo-record.js);
+   without JS the plain audio player shows instead */
+.post-body .foo-song{margin:2rem auto 2.5rem;max-width:420px}
+.post-body .foo-song audio{width:100%}
+.foo-song.is-ready audio{display:none}
+.foo-record-card{display:flex;align-items:center;gap:1rem;padding:.9rem 1.1rem .9rem .9rem;border:1px solid #e3ddd2;border-radius:14px;background:#f6f3ec;box-shadow:0 6px 16px -10px rgba(60,40,20,.35)}
+.foo-record-card[hidden]{display:none}
+/* a 7-inch single half out of its red die-cut paper sleeve */
+.foo-record{flex:none;position:relative;width:132px;height:88px}
+.foo-sleeve{position:absolute;left:0;top:0;width:88px;height:88px;background:#c9302c;border-radius:2px;overflow:hidden;
+  box-shadow:0 3px 8px -2px rgba(60,20,10,.35);
+  background-image:radial-gradient(circle at 50% 50%,#f6f3ec 0 17px,#0000 17.5px),linear-gradient(135deg,#d63a35,#b8282a)}
+.foo-sleeve-mark{position:absolute;left:8px;top:3px;font:italic 800 30px/1 'Commissioner',sans-serif;color:#fff;letter-spacing:-.02em;transform:skewX(-12deg)}
+.foo-sleeve-name{position:absolute;left:7px;bottom:5px;font:800 10px/1 'Commissioner',sans-serif;color:#fff;letter-spacing:.06em}
+.foo-single{position:absolute;left:46px;top:3px;width:82px;height:82px;border-radius:50%;box-shadow:-3px 3px 8px rgba(0,0,0,.35)}
+.foo-record-disc{position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle,#0000 0 44%,#0e0e0e 44% 47%,#0000 47%),repeating-radial-gradient(circle,#0d0d0d 0 1px,#1b1b1b 1px 2.2px);
+  animation:foo-spin 1.33s linear infinite;animation-play-state:paused}
+/* the light's reflection stays put while the disc turns underneath it */
+.foo-single::after{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;
+  background:conic-gradient(from 20deg,#fff0 0 14%,#ffffff30 20%,#fff0 27% 64%,#ffffff24 70%,#fff0 77%)}
+.foo-record-label{position:absolute;inset:28%;border-radius:50%;background:#c9302c;box-shadow:inset 0 0 0 1px #9e2320;
+  background-image:radial-gradient(circle,#f6f3ec 0 21%,#0000 21.5%)}
+.foo-record-label span{position:absolute;left:0;right:0;text-align:center;color:#111;font-family:'Piazzolla',Georgia,serif;line-height:1;white-space:nowrap}
+.foo-record-label .l-top{top:17%;font-size:5px;font-weight:600;letter-spacing:.06em}
+.foo-record-label .l-bot{bottom:16%;font-size:3.6px;font-style:italic}
+.foo-record-label .l-side{top:43%;left:5%;right:auto;text-align:left;font-size:2.6px;font-family:'Commissioner',sans-serif}
+.foo-record-label .l-cat{top:46%;right:5%;left:auto;font-size:2.8px;font-family:'Commissioner',sans-serif;background:#111;color:#c9302c;padding:.6px 1px}
+.foo-song.is-playing .foo-record-disc{animation-play-state:running}
+@keyframes foo-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.foo-record-disc{animation:none}}
+.foo-record-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:.45rem}
+.foo-song-title{font-family:'Piazzolla',Georgia,serif;font-style:italic;font-size:1.05rem;color:#3a342c}
+.foo-record-controls{display:flex;align-items:center;gap:.6rem}
+.foo-record-play{flex:none;width:34px;height:34px;border-radius:50%;border:0;background:#3a342c;color:#f6f3ec;display:grid;place-items:center;cursor:pointer;padding:0}
+.foo-record-play:hover{background:#c9302c}
+.foo-record-play:focus-visible{outline:2px solid #c9302c;outline-offset:2px}
+.foo-record-play svg{width:14px;height:14px;fill:currentColor}
+.foo-record-play .i-pause,.foo-song.is-playing .foo-record-play .i-play{display:none}
+.foo-song.is-playing .foo-record-play .i-pause{display:block}
+.foo-record-seek{flex:1;min-width:0;accent-color:#c9302c;margin:0}
+.foo-record-time{flex:none;font:500 11px/1 'JuliaMono',ui-monospace,monospace;color:#7a7266;font-variant-numeric:tabular-nums;min-width:2.6em;text-align:right}
+
+/* the foobar / FUBAR Ngram chart (js/foo-ngram.js adds the hover readout) */
+.post-body .foo-ngram{position:relative;margin:0;padding:.6rem .5rem .4rem;border:1px solid #e6e2d8;border-radius:6px;background:#fcfcf9}
+.foo-ngram .k{display:inline-block;width:14px;height:2px;border-radius:2px;margin-left:.5rem;vertical-align:middle}
+.foo-ngram .k-foobar{background:#2F6A9E}.foo-ngram .k-FUBAR{background:#B8612F}
+.foo-ngram-svg{display:block;width:100%;height:auto;overflow:visible}
+.foo-ngram-svg .g{stroke:#e8e4da;stroke-width:1}
+.foo-ngram-svg .base{stroke:#bdb6a8;stroke-width:1}
+.foo-ngram-svg .ax{font:10px 'Commissioner',sans-serif;fill:#7b7468;font-variant-numeric:tabular-nums}
+.foo-ngram-svg .ln{fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.foo-ngram-svg .dl{font:600 11px 'Commissioner',sans-serif;fill:#3a352d}
+.foo-ngram-svg .ann{stroke:#a39c8e;stroke-width:1;stroke-dasharray:3 3}
+.foo-ngram-svg .ann-t{font:10px 'Commissioner',sans-serif;fill:#6f685d}
+.foo-ngram-svg .xh{stroke:#8d8678;stroke-width:1}
+.foo-ngram-svg .hit{cursor:crosshair}
+.foo-ngram-tip{position:absolute;transform:translateX(-50%);display:flex;gap:.5rem;align-items:center;padding:.35rem .6rem;background:#fff;border:1px solid #e0dbd0;border-radius:6px;box-shadow:0 4px 12px -6px rgba(0,0,0,.25);font:500 .72rem 'Commissioner',sans-serif;color:#2f2b25;pointer-events:none;white-space:nowrap;font-variant-numeric:tabular-nums;z-index:2}
+.foo-ngram-tip[hidden]{display:none}
+.foo-ngram-tip .k{margin:0 .3rem 0 0}
+.post-body .foo-ngram figcaption{margin-top:.4rem;font-size:.78rem;text-align:left}
+.post-body .foo-ngram .foo-source{color:#6f685d;text-decoration:underline;text-decoration-color:#c9c2b4;text-underline-offset:2px}
+
+/* a second quote in the same tile gets breathing room after the first one's source */
+.post-body .foo-piece .foo-source + .foo-quote{margin-top:.9rem}
+
+/* the by-the-numbers tile */
+.foo-stats{display:flex;flex-direction:column;gap:.95rem;margin-top:.35rem}
+.foo-stat-row .foo-source{margin-top:.1rem}
+.foo-stats .foo-stat-num{font-size:calc(2.2rem*var(--k))}
+.foo-stats .foo-stat{flex-direction:column;align-items:flex-start;gap:.1rem}
+
+/* @foobar, then @foo and @bar, who joined GitHub after it */
+.foo-gh{display:flex;flex-direction:column;gap:.9rem;margin:.2rem 0 .5rem}
+.foo-gh-main{display:flex;flex-direction:column;gap:.15rem}
+.foo-gh-main .foo-gh-handle{font-size:calc(1.9rem*var(--k));line-height:1.05;font-weight:600}
+.foo-gh-meta{font-size:calc(.78rem*var(--k));line-height:1.35;opacity:.8}
+.post-body .foo-piece a.foo-gh-link{color:inherit;text-decoration:none}
+.post-body .foo-piece a.foo-gh-link:hover{text-decoration:underline}
+.foo-gh-head{display:flex;align-items:center;gap:.5rem;font-size:calc(.95rem*var(--k));margin-bottom:.7rem}
+.post-body .foo-piece img.foo-gh-mark{width:1.5em;height:1.5em;flex:none;margin:0;border-radius:0}
+
+
+/* stagger the two columns so their tops (and tile edges) never line up like a table */
+@media(min-width:561px){
+  .post-body .foo-grid{align-items:flex-start}
+  .post-body .foo-grid .pg-col:last-child{padding-top:4.5rem}
+}
+
+/* the song as a tile: a classical LP, yellow cartouche on a dark sleeve, record sliding out */
+.post-body .foo-piece .foo-song{margin:0;max-width:none}
+.foo-piece .foo-record-card{display:flex;flex-direction:column;align-items:stretch;gap:.7rem;padding:0;border:0;background:none;box-shadow:none;border-radius:0}
+.foo-piece .foo-record-card[hidden]{display:none}
+.foo-lp{position:relative;width:100%;aspect-ratio:1.32/1;container-type:inline-size}
+.foo-lp-sleeve{position:absolute;left:0;top:0;width:75.6cqw;aspect-ratio:1;z-index:1;border-radius:1px;
+  background:radial-gradient(ellipse 60% 55% at 42% 62%,#4a3b2c 0,#231b14 45%,#0f0c09 100%);
+  box-shadow:0 10px 18px -8px rgba(20,12,4,.55),inset 0 0 0 1px rgba(255,255,255,.04)}
+.foo-lp-cart{position:absolute;left:6%;right:6%;top:6%;height:31%;background:#f4d21a;
+  box-shadow:inset 0 0 0 .55cqw #f4d21a,inset 0 0 0 .8cqw #1a1a1a;color:#161616;font-family:'Commissioner',sans-serif;text-transform:uppercase}
+.foo-lp-cart span{position:absolute;left:0;right:0;text-align:center;line-height:1;white-space:nowrap}
+.foo-lp-cart .c-crest{top:7%;font:600 2.1cqw/1 'Piazzolla',Georgia,serif;letter-spacing:.12em;font-style:italic;text-transform:none}
+.foo-lp-cart .c-cat{top:9%;left:auto;right:5%;width:auto;font-size:1.7cqw;letter-spacing:.04em}
+.foo-lp-cart .c-title{top:33%;font-size:3.7cqw;font-weight:400;letter-spacing:.02em}
+.foo-lp-cart .c-artist{top:54%;font-size:7cqw;font-weight:400;letter-spacing:.01em}
+.foo-lp-cart .c-stereo{bottom:6%;left:50%;right:auto;transform:translateX(-50%);font-size:1.6cqw;letter-spacing:.2em;padding:.3cqw 1.4cqw;box-shadow:inset 0 0 0 .25cqw #1a1a1a}
+.foo-lp-disc{position:absolute;right:0;top:50%;width:66cqw;aspect-ratio:1;transform:translateY(-50%);border-radius:50%;box-shadow:-2px 3px 10px rgba(0,0,0,.35)}
+.foo-lp-disc .foo-record-disc{position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle,#0000 0 32%,#101010 32% 34%,#0000 34%),repeating-radial-gradient(circle,#0c0c0c 0 1px,#191919 1px 2.4px);
+  animation:foo-spin 1.8s linear infinite;animation-play-state:paused}
+.foo-lp-disc::after{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;background:conic-gradient(from 20deg,#fff0 0 14%,#ffffff2a 20%,#fff0 27% 64%,#ffffff20 70%,#fff0 77%)}
+.foo-lp-label{position:absolute;inset:33%;border-radius:50%;background:#f4d21a;box-shadow:inset 0 0 0 1px #c9aa0e;
+  background-image:radial-gradient(circle,#f6f3ec 0 5%,#0000 5.5%)}
+.foo-lp-label span{position:absolute;left:0;right:0;text-align:center;color:#161616;line-height:1;white-space:nowrap}
+.foo-lp-label .lp-logo{top:18%;font:italic 600 1.6cqw 'Piazzolla',Georgia,serif}
+.foo-lp-label .lp-title{bottom:22%;font:500 1.5cqw 'Commissioner',sans-serif;text-transform:uppercase;letter-spacing:.06em}
+.foo-lp-label .lp-side{top:45%;right:10%;left:auto;font:500 1.6cqw 'Commissioner',sans-serif}
+.foo-song.is-playing .foo-lp-disc .foo-record-disc{animation-play-state:running}
+@media (prefers-reduced-motion:reduce){.foo-lp-disc .foo-record-disc{animation:none}}
+.foo-piece .foo-record-controls{display:flex;align-items:center;gap:.6rem}
+.foo-piece .foo-record-play{background:#1a1a1a}
+.foo-piece .foo-record-play:hover{background:#b8961a}
+.foo-piece .foo-record-seek{accent-color:#c9a40e}
+
+/* famous Fus and Foos: portraits, not scenes, so crop toward faces */
+.post-body .foo-people .foo-venue img{aspect-ratio:1/1;object-position:50% 18%}
+.post-body .foo-people .foo-venue img[src*="-book"]{object-fit:contain;background:#1b2240}
+.foo-people .foo-people-links{font-size:calc(.78rem*var(--k));opacity:.75;margin-top:.25rem}
+.post-body .foo-piece .foo-people-links a.foo-source{display:inline;margin:0;opacity:1}
+.post-body .foo-piece .foo-photo-note{display:block;font-size:calc(.84rem*var(--k));line-height:1.4;margin-top:.4rem;opacity:.75}
+
+/* your paragraphs between the grids and at the end */
+.post-body .foo-interlude{margin:.5rem 0 3rem}
+.post-body .foo-interlude p{margin:0}
+.post-body .foo-closing{margin-top:1rem}
+
+/* the intro's code example, colored like VS Code's default light theme (Light+) on a soft paper background */
+.post-body pre.foo-vscode{background:#f3f0e8;color:#1f1f1f;border:1px solid #e4dfd3;font-family:'JuliaMono',Menlo,Consolas,ui-monospace,monospace;font-size:.86rem;line-height:1.6;border-radius:8px;padding:.9rem 1.1rem .9rem .6rem;overflow-x:auto;margin:0 0 1.5rem;white-space:pre}
+.post-body pre.foo-vscode code{font:inherit;color:inherit;background:none;padding:0}
+.foo-vscode .ln{display:inline-block;width:2.2em;margin-right:1em;text-align:right;color:#8a9aa6;user-select:none}
+.foo-vscode .tk-k{color:#0000ff}
+.foo-vscode .tk-f{color:#795e26}
+.foo-vscode .tk-s{color:#a31515}
+.foo-vscode .tk-p{color:#0431fa}
+
+/* the line under the last paragraph: text ends here, only foos below */
+.post-body hr.foo-rule{border:0;height:1px;background:#d9d3c7;margin:2.5rem auto 2.5rem;width:40%}
+.post-body p.foo-endnote{text-align:center;font-size:.9rem;color:#8a8378;margin:-1.5rem 0 2.5rem}

@@ -1,0 +1,19 @@
+Typography for the I Love Foobar collage
+
+Compagnon by Juliette Duhé, Léa Pradine, Valentin Papon, Chloé Lozano,
+and Sébastien Riollier. Distributed by Velvetyne.
+https://velvetyne.fr/fonts/compagnon/
+See Compagnon-LICENSE.txt.
+
+JuliaMono by cormullion.
+https://juliamono.netlify.app/
+See JuliaMono-LICENSE.txt.
+
+Piazzolla, Young Serif, and Commissioner are served by Google Fonts.
+https://fonts.google.com/specimen/Piazzolla
+https://fonts.google.com/specimen/Young+Serif
+https://fonts.google.com/specimen/Commissioner
+
+Image and text provenance, full source URLs, and supplied image credits are
+preserved in docs/foobar-picks.json. Visible source labels are abbreviated
+in the collage; images remain available at their original resolution.
