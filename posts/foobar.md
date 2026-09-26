@@ -1,5 +1,5 @@
 ---
-title: "We Need to Talk About Foobar"
+title: "Ode to Foobar"
 date: 2026-09-25
 slug: foobar
 draft: false
