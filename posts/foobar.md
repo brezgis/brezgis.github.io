@@ -4,7 +4,6 @@ date: 2026-09-25
 slug: foobar
 draft: false
 css: ../css/foobar.css
-summary: "A little collection of foos: in language, in machines, on maps, and out in the world."
 ---
 
 Every computer science student encounters *foobar* sooner or later in their education. Usually without any preamble or explanation of convention, *foobar* or *foo* is written on blackboards, used in examples, and appears in textbooks. Probably as something like this, from K-State's [*Introduction to Python*](https://textbooks.cs.ksu.edu/intro-python/06-functions/index.print.html):
