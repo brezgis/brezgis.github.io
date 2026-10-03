@@ -663,19 +663,20 @@ a:hover {
 
 .sharabara-phonetic {
   font-family: var(--sans);
-  font-size: 0.8rem;
+  font-size: 1.05rem;
   color: var(--text-softer);
   margin-bottom: 1.25rem;
 }
 
+/* Definition lines match the other sections' intro text (.section-intro: 1.05rem). */
 .sharabara-def {
-  max-width: 520px;
+  max-width: 600px;
   margin: 0 auto;
 }
 
 .sharabara-def-ru {
   font-family: var(--serif);
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   font-style: italic;
   color: var(--text-soft);
   line-height: 1.7;
@@ -684,15 +685,15 @@ a:hover {
 
 .sharabara-def-en {
   font-family: var(--sans);
-  font-size: 0.925rem;
+  font-size: 1.05rem;
   color: var(--text-soft);
-  line-height: 1.7;
+  line-height: 1.75;
   margin-bottom: 0.5rem;
 }
 
 .sharabara-def-source {
   font-family: var(--sans);
-  font-size: 0.8rem;
+  font-size: 1.05rem;
   color: var(--text-softer);
   letter-spacing: 0.02em;
 }
