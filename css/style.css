@@ -518,21 +518,10 @@ a:hover {
 }
 
 .footer-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.35rem;
   text-align: center;
 }
 
 .footer-note {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 0.95rem;
-  color: var(--text-soft);
-}
-
-.footer-copy {
   font-size: 0.8rem;
   color: var(--text-softer);
 }
