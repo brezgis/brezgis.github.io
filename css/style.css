@@ -780,10 +780,10 @@ a:hover {
   background: #7E6E93;
 }
 
-/* Dusty rose: annagram's pink, pulled down to the palette's muted register
-   (same lightness as honeypot and notbell, which it sits beside). */
+/* Rose clay: annagram's pink, warmed toward brown and desaturated so it sits
+   with the earthy cards (notbell, recursite) instead of popping out. */
 .sharabara-card--annagram {
-  background: #C27A92;
+  background: #AF797E;
 }
 
 .sharabara-card-name {
