@@ -521,35 +521,20 @@ a:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 0.35rem;
   text-align: center;
 }
 
-.footer-name {
-  font-family: var(--serif);
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text);
-}
-
-.footer-links {
-  display: flex;
-  gap: 1rem;
-}
-
-.footer-links a {
-  color: var(--text-softer);
-  transition: color 0.2s ease;
-}
-
-.footer-links a:hover {
-  color: var(--accent);
-}
-
 .footer-note {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--text-soft);
+}
+
+.footer-copy {
   font-size: 0.8rem;
   color: var(--text-softer);
-  margin-top: 0.5rem;
 }
 
 /* --- Animations --- */
@@ -841,4 +826,3 @@ a:hover {
 
 /* The email pill copies the address on click */
 .link-pill.email-link { cursor: copy; }
-.footer-links .email-link { cursor: copy; }
