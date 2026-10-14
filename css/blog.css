@@ -415,6 +415,13 @@ a.blog-card {
   line-height: 1.65;
 }
 
+.postlist-ext {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 0.85em;
+  color: var(--accent-hover);
+}
+
 .postlist-row:hover .postlist-title { color: var(--accent-hover); }
 
 .blog-all-link {

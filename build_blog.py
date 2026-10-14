@@ -146,7 +146,7 @@ LIGHTBOX_SCRIPT = """  <script>
     })();
   </script>"""
 
-ROW_TMPL = """        <li><a class="postlist-row" href="{href}">
+ROW_TMPL = """        <li><a class="postlist-row" href="{href}"{target}>
           <span class="postlist-date">{date_short}</span>
           <span class="postlist-main"><span class="postlist-title">{title}{draft_tag}</span><span class="postlist-sum">{summary}</span></span>
         </a></li>"""
@@ -242,6 +242,11 @@ def load_posts():
         meta["title"] = meta.get("title", meta["slug"])
         meta["summary"] = meta.get("summary", "")
         meta["draft"] = str(meta.get("draft", "")).lower() in ("1", "true", "yes")
+        # Press items (`press: <outlet>` + `link: <url>`) are list rows that
+        # point at someone else's article: no page of their own, no sitemap URL.
+        meta["press"] = meta.get("press", "")
+        if meta["press"] and not meta.get("link"):
+            raise SystemExit("{}: press items need a `link:` to the article".format(fn))
         dt = datetime.strptime(meta["date"], "%Y-%m-%d")
         meta["_dt"] = dt
         meta["date_display"] = meta.get("display_date") or dt.strftime("%B %Y")
@@ -310,6 +315,8 @@ def render_posts(posts):
     footer = get_footer()
     md = markdown.Markdown(extensions=["extra", "smarty", "sane_lists"])
     for m in posts:
+        if m["press"]:
+            continue
         md.reset()
         body_html = md.convert(m["_body"])
         # optional frontmatter `css: path.css, other.css` -> extra head links
@@ -334,12 +341,20 @@ def render_posts(posts):
 
 
 def row(m):
+    # Press items show a ↗ after the title and open the article in a new tab;
+    # their list text is a quoted opening of the article (the post body).
+    press = bool(m.get("press"))
+    summary = m["excerpt"]
+    if press:
+        summary = "\u201c{}\u201d".format(m["excerpt"]) if m["excerpt"] else m["summary"]
     return ROW_TMPL.format(
-        href="blog/" + m["slug"] + ".html",
+        href=html.escape(m["link"]) if press else "blog/" + m["slug"] + ".html",
+        target=' target="_blank" rel="noopener"' if press else "",
         date_short=html.escape(m["date_short"]),
         title=html.escape(m["title"]),
-        draft_tag=' <span class="draft-tag">draft</span>' if m["draft"] else "",
-        summary=html.escape(m["excerpt"]),
+        draft_tag=(' <span class="draft-tag">draft</span>' if m["draft"] else "")
+                  + (' <span class="postlist-ext" aria-label="external link">&#8599;</span>' if press else ""),
+        summary=html.escape(summary),
     )
 
 
@@ -390,7 +405,8 @@ def write_sitemap(posts):
     published = [m for m in posts if not m["draft"]]
     newest = max((m["_dt"] for m in published), default=datetime.now())
     urls = [(SITE_URL + "/", newest, "weekly", "1.0")]
-    urls += [("{}/blog/{}.html".format(SITE_URL, m["slug"]), m["_dt"], "yearly", "0.7") for m in published]
+    urls += [("{}/blog/{}.html".format(SITE_URL, m["slug"]), m["_dt"], "yearly", "0.7")
+             for m in published if not m["press"]]
     lines = ['<?xml version="1.0" encoding="UTF-8"?>',
              '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for loc, dt, freq, pri in urls:
@@ -425,7 +441,7 @@ def write_feed(posts):
            '  <updated>{}</updated>'.format(iso(updated)),
            '  <author><name>Anna Brežģis</name></author>']
     for m in published:
-        url = "{}/blog/{}.html".format(SITE_URL, m["slug"])
+        url = m["link"] if m["press"] else "{}/blog/{}.html".format(SITE_URL, m["slug"])
         out += ['  <entry>',
                 '    <title>{}</title>'.format(html.escape(m["title"])),
                 '    <link href="{}"/>'.format(url),
@@ -450,7 +466,7 @@ def main():
     print("Wrote sitemap.xml ({} URLs)".format(n_urls))
     print("Built {} post(s) + in-page blog section:".format(len(posts)))
     for m in posts:
-        flag = " [draft]" if m["draft"] else ""
+        flag = " [draft]" if m["draft"] else " [press]" if m["press"] else ""
         print("  - {:<20} {}{}".format(m["slug"], m["date_short"], flag))
 
 
