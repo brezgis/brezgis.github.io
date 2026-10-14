@@ -5,8 +5,16 @@
   <link href="https://brezgis.com/"/>
   <link href="https://brezgis.com/feed.xml" rel="self"/>
   <id>https://brezgis.com/</id>
-  <updated>2026-09-25T00:00:00Z</updated>
+  <updated>2026-10-13T00:00:00Z</updated>
   <author><name>Anna Brežģis</name></author>
+  <entry>
+    <title>Across Four Schools, Brandeis Grad Students Develop Through Internships</title>
+    <link href="https://www.brandeis.edu/graduate-affairs/news-events/stories/2026/internships-2026.html"/>
+    <id>https://www.brandeis.edu/graduate-affairs/news-events/stories/2026/internships-2026.html</id>
+    <published>2026-10-13T00:00:00Z</published>
+    <updated>2026-10-13T00:00:00Z</updated>
+    <summary>Anna Brezgis, a second-year master’s student, spent the summer as a research assistant in the AI technology and systems group at MIT Lincoln Laboratory.</summary>
+  </entry>
   <entry>
     <title>Ode to Foobar</title>
     <link href="https://brezgis.com/blog/foobar.html"/>
