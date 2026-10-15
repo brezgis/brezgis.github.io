@@ -1,0 +1,138 @@
+/* NeurReps second-order similarity heatmap */
+.rsa { margin: 2rem 0; }
+.rsa-plot { position: relative; }
+.rsa-plot svg { display: block; width: 100%; height: auto; overflow: visible; }
+.rsa-cell { opacity: 0; fill: #f7f7f7; }
+.rsa-ghost { fill: #EFEDE8; }
+.rsa-lang { font-family: var(--sans); fill: var(--text); font-weight: 500; }
+.rsa-model { font-family: var(--sans); fill: var(--text-softer); }
+.rsa-scale { display: flex; align-items: center; gap: 0.6rem; margin-top: 0.9rem; font-family: var(--sans); font-size: 0.78rem; color: var(--text-soft); flex-wrap: wrap; }
+.rsa-bar {
+  flex: 0 1 14rem; height: 8px; border-radius: 4px;
+  /* RdBu, -0.25 .. 0 .. 0.85 (zero sits at 23% of the bar) */
+  background: linear-gradient(90deg, #053061 0%, #2166ac 4.5%, #4393c3 9.1%, #92c5de 13.6%, #d1e5f0 18.2%, #f7f7f7 22.7%, #fddbc7 38.2%, #f4a582 53.6%, #d6604d 69.1%, #b2182b 84.5%, #67001f 100%);
+}
+.rsa-tip {
+  position: absolute; pointer-events: none; z-index: 5;
+  background: var(--text); color: #fff; font-family: var(--sans); font-size: 0.8rem; line-height: 1.4;
+  padding: 0.45rem 0.6rem; border-radius: 6px; opacity: 0; transition: opacity 0.12s ease; white-space: nowrap;
+}
+.rsa-tip span { color: #bbb; }
+.rsa-tip.show { opacity: 1; }
+.rsa figcaption { font-family: var(--sans); font-size: 0.85rem; color: var(--text-soft); margin-top: 0.6rem; line-height: 1.5; }
+.rsa-replay {
+  margin-left: auto;
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  font: inherit; font-size: 0.78rem; color: var(--text-softer);
+  background: none; border: 0; cursor: pointer; padding: 0.3rem 0.5rem; border-radius: 999px;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+.rsa-replay:hover { color: var(--text); background: var(--bg-alt); }
+.rsa-replay:focus-visible { outline: 2px solid var(--accent); }
+.rsa-replay svg { width: 0.9rem; height: 0.9rem; }
+
+/* --- Pipeline: word list -> KWIC -> encoder -> term vector -> RDM -> compare.
+   A row of stations joined by arrows; a pulse runs along each arrow and the
+   next station lights up. One 12s loop, 2s per station (--d = its start). --- */
+.rp, .post-body figure.rp { margin: 2.2rem 0 2.6rem; --cyc: 12s; }
+.rp-title { font-family: var(--sans); font-size: 0.95rem; font-weight: 600; color: var(--text); margin: 0 0 1rem; }
+.rp-flow { display: flex; flex-direction: column; }
+.rp-row { display: flex; align-items: stretch; }
+.rp-st {
+  flex: 1 1 0; min-width: 0;
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.35rem;
+  padding: 0.75rem 0.5rem 0.7rem;
+  background: var(--card-bg); border: 1px solid #ECEAE4; border-radius: 12px;
+  animation: rp-active var(--cyc) ease-in-out infinite both; animation-delay: var(--d);
+}
+@keyframes rp-active {
+  0%, 100% { border-color: #ECEAE4; box-shadow: none; }
+  3%, 14%  { border-color: var(--accent); box-shadow: 0 6px 18px rgba(45, 45, 45, 0.07); }
+  18%      { border-color: #ECEAE4; box-shadow: none; }
+}
+.rp-vis { height: 5.6rem; display: flex; align-items: center; justify-content: center; width: 100%; }
+.rp-name { margin: 0; font-family: var(--sans); font-size: 0.85rem; font-weight: 600; color: var(--text); }
+.rp-num {
+  display: inline-grid; place-items: center; width: 1.15rem; height: 1.15rem; margin-right: 0.35rem;
+  border-radius: 50%; background: var(--bg-alt); font-size: 0.68rem; color: var(--text-soft); vertical-align: 1px;
+}
+.rp-note { margin: 0; font-family: var(--sans); font-size: 0.72rem; line-height: 1.4; color: var(--text-soft); }
+.rp-cap { font-family: var(--sans); font-size: 0.78rem; line-height: 1.5; color: var(--text-soft); margin-top: 0.8rem; }
+
+/* arrows between stations, with a travelling pulse */
+.rp-link { flex: 0 0 1.7rem; position: relative; align-self: center; height: 2px; background: var(--border); margin-top: -1.2rem; }
+.rp-link::after {   /* arrowhead */
+  content: ""; position: absolute; right: -1px; top: 50%; width: 7px; height: 7px;
+  border-top: 2px solid var(--text-softer); border-right: 2px solid var(--text-softer);
+  transform: translateY(-50%) rotate(45deg);
+}
+.rp-link i {
+  position: absolute; top: 50%; left: 0; width: 8px; height: 8px; margin-top: -4px; border-radius: 50%;
+  background: var(--accent); opacity: 0;
+  animation: rp-pulse var(--cyc) ease-in-out infinite both;
+}
+.rp-link i { animation-delay: var(--pd); }
+
+/* the turn from the end of row 1 back to the start of row 2 */
+.rp-return { position: relative; height: 2rem; margin: 0.15rem 0; }
+.rp-return svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.rp-ret-base, .rp-ret-run { fill: none; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.rp-ret-base { stroke: var(--border); stroke-width: 2; }
+.rp-ret-run { stroke: var(--accent); stroke-width: 2.5; stroke-dasharray: 8 100; stroke-dashoffset: 8; opacity: 0;
+  animation: rp-run var(--cyc) linear infinite both; animation-delay: 5.3s; }
+@keyframes rp-run { 0% { stroke-dashoffset: 8; opacity: 1; } 6% { stroke-dashoffset: -92; opacity: 1; } 6.5%, 100% { stroke-dashoffset: -92; opacity: 0; } }
+.rp-ret-head { position: absolute; left: calc(100% / 6); bottom: -1px; width: 7px; height: 7px;
+  border-right: 2px solid var(--text-softer); border-bottom: 2px solid var(--text-softer);
+  transform: translateX(-50%) rotate(45deg); }
+@keyframes rp-pulse { 0% { left: 0; opacity: 0; } 1% { opacity: 1; } 5% { left: calc(100% - 8px); opacity: 1; } 6%, 100% { left: calc(100% - 8px); opacity: 0; } }
+
+/* 1. word chips */
+.rp-words { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.25rem; }
+.rp-words b { font: 500 0.74rem var(--serif); color: var(--text); background: var(--bg-alt); border-radius: 999px; padding: 0.08rem 0.45rem; }
+/* 2. KWIC */
+.rp-kwic { display: flex; flex-direction: column; gap: 0.3rem; }
+.rp-kwic p { margin: 0; font: 0.74rem/1.35 var(--serif); color: var(--text-soft); }
+.rp-kwic mark { color: var(--text); background: transparent; border-radius: 3px; padding: 0 0.1em;
+  animation: rp-mark var(--cyc) ease infinite both; animation-delay: var(--d); }
+@keyframes rp-mark { 0%, 100% { background: transparent; } 4%, 16% { background: var(--accent-light); } 22% { background: transparent; } }
+/* 3. encoder layers, the read-out layer lit */
+.rp-layers { display: flex; flex-direction: column-reverse; gap: 2px; }
+.rp-layers i { display: block; width: 2.8rem; height: 4px; border-radius: 2px; background: #E7E5E0; }
+.rp-layers i.hit { background: var(--accent); animation: rp-hit var(--cyc) ease infinite both; animation-delay: var(--d); }
+@keyframes rp-hit { 0%, 100% { transform: none; } 5% { transform: scaleX(1.25); } 12% { transform: none; } }
+/* 4. wordpieces pooled into one vector */
+.rp-span { display: flex; flex-direction: column; align-items: center; gap: 0.45rem; }
+.rp-pieces { display: flex; gap: 2px; animation: rp-squeeze var(--cyc) ease-in-out infinite both; animation-delay: var(--d); }
+.rp-pieces b { font: 500 0.74rem var(--serif); color: var(--text); background: var(--accent-light); border-radius: 4px; padding: 0.1rem 0.22rem; }
+@keyframes rp-squeeze { 0%, 100% { gap: 2px; opacity: 1; } 6% { gap: 2px; } 11% { gap: 0; opacity: 0.55; } 15% { opacity: 1; } }
+.rp-dot { width: 0.8rem; height: 0.8rem; border-radius: 50%; background: var(--accent);
+  animation: rp-dot var(--cyc) ease infinite both; animation-delay: var(--d); }
+@keyframes rp-dot { 0%, 100% { transform: scale(1); } 11% { transform: scale(0.4); } 15% { transform: scale(1.3); } 18% { transform: scale(1); } }
+/* 5 + 6. RDMs */
+.rp-rdm { display: block; width: 5.2rem; height: auto; }
+.rp-rdm rect { animation: rp-cell var(--cyc) ease infinite both; animation-delay: calc(var(--d) + var(--k) * 30ms); }
+@keyframes rp-cell { 0%, 100% { opacity: 1; } 1% { opacity: 0.15; } 9% { opacity: 1; } }
+.rp-compare { display: flex; align-items: center; gap: 0.25rem; }
+.rp-compare .rp-rdm { width: 3rem; }
+.rp-rho { font: 600 0.72rem var(--sans); color: var(--text); white-space: nowrap; }
+
+/* narrow screens: the pipeline runs top to bottom */
+@media (max-width: 600px) {
+  .rp-flow { max-width: 26rem; margin: 0 auto; }
+  .rp-row { flex-direction: column; }
+  .rp-return { height: 1.5rem; margin: 0; }
+  .rp-return svg { display: none; }
+  .rp-return::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: var(--border); }
+  .rp-ret-head { left: 50%; }
+  .rp-st { flex-direction: row; flex-wrap: wrap; text-align: left; align-items: center; column-gap: 0.9rem; padding: 0.7rem 0.9rem; }
+  .rp-vis { flex: 0 0 7.5rem; width: 7.5rem; height: 4.6rem; }
+  .rp-name, .rp-note { flex: 1 1 10rem; }
+  .rp-name { order: -1; flex-basis: 100%; }
+  .rp-link { flex: 0 0 1.5rem; width: 2px; height: 1.5rem; align-self: center; margin: 0; }
+  .rp-link::after { right: auto; left: 50%; top: auto; bottom: -1px; transform: translateX(-50%) rotate(135deg); }
+  .rp-link i { left: 50%; top: 0; margin: 0 0 0 -4px; animation-name: rp-pulse-v; }
+  @keyframes rp-pulse-v { 0% { top: 0; opacity: 0; } 1% { opacity: 1; } 5% { top: calc(100% - 8px); opacity: 1; } 6%, 100% { top: calc(100% - 8px); opacity: 0; } }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rp-st, .rp *, .rp-rdm rect { animation: none !important; }
+}

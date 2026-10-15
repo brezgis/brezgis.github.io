@@ -22,6 +22,8 @@ import markdown
 ROOT = os.path.dirname(os.path.abspath(__file__))
 POSTS_DIR = os.path.join(ROOT, "posts")
 BLOG_DIR = os.path.join(ROOT, "blog")
+RESEARCH_SRC = os.path.join(ROOT, "research-posts")  # research entries (Markdown)
+RESEARCH_DIR = os.path.join(ROOT, "research")        # rendered research pages
 INDEX = os.path.join(ROOT, "index.html")
 SITE_URL = "https://brezgis.com"  # for canonical + Open Graph absolute URLs
 
@@ -61,18 +63,18 @@ POST_TMPL = """<!DOCTYPE html>
   <nav class="navbar" id="navbar">
     <ul>
       <li><a href="../index.html#home" class="nav-link">Home</a></li>
-      <li><a href="../index.html#research" class="nav-link">Research</a></li>
-      <li><a href="../index.html#blog" class="nav-link active">Blog</a></li>
+      <li><a href="../index.html#research" class="nav-link{act_research}">Research</a></li>
+      <li><a href="../index.html#blog" class="nav-link{act_blog}">Blog</a></li>
       <li><a href="../index.html#sharabara" class="nav-link">Шара-бара</a></li>
     </ul>
   </nav>
 
   <article class="post">
     <div class="container post-container">
-      <a class="post-back" href="../index.html#blog">← All posts</a>
+      <a class="post-back" href="{back_href}">← {back_label}</a>
       <header class="post-header">
         <p class="post-date">{date_display}{draft_badge}</p>
-        <h1 class="post-title">{title}</h1>
+        <h1 class="post-title">{title}</h1>{header_extra}
       </header>
       <div class="post-body">
 {body}
@@ -231,12 +233,12 @@ def make_char_excerpt(body, n=DESC_CHARS):
     return cut.rstrip(",;:—- ") + "…"
 
 
-def load_posts():
+def load_posts(src=POSTS_DIR):
     posts = []
-    for fn in os.listdir(POSTS_DIR):
+    for fn in os.listdir(src):
         if not fn.endswith(".md"):
             continue
-        with open(os.path.join(POSTS_DIR, fn), encoding="utf-8") as f:
+        with open(os.path.join(src, fn), encoding="utf-8") as f:
             meta, body = parse_frontmatter(f.read())
         meta["slug"] = meta.get("slug") or os.path.splitext(fn)[0]
         meta["title"] = meta.get("title", meta["slug"])
@@ -247,10 +249,20 @@ def load_posts():
         meta["press"] = meta.get("press", "")
         if meta["press"] and not meta.get("link"):
             raise SystemExit("{}: press items need a `link:` to the article".format(fn))
-        dt = datetime.strptime(meta["date"], "%Y-%m-%d")
-        meta["_dt"] = dt
-        meta["date_display"] = meta.get("display_date") or dt.strftime("%B %Y")
-        meta["date_short"] = dt.strftime("%b %Y")
+        # Drafts are undated: they show no date and float to the top of the
+        # list (most recently edited first). A post gets its date when it's
+        # published.
+        if meta["draft"]:
+            meta["_dt"] = datetime.strptime(meta["date"], "%Y-%m-%d") if "date" in meta else None
+            meta["_mtime"] = os.path.getmtime(os.path.join(src, fn))
+            meta["date_display"] = meta["date_short"] = ""
+        else:
+            if "date" not in meta:
+                raise SystemExit("{}: published posts need a `date:` (YYYY-MM-DD)".format(fn))
+            dt = datetime.strptime(meta["date"], "%Y-%m-%d")
+            meta["_dt"] = dt
+            meta["date_display"] = meta.get("display_date") or dt.strftime("%B %Y")
+            meta["date_short"] = dt.strftime("%b %Y")
         meta["_body"] = body
         meta["excerpt"] = make_excerpt(body)          # ~20 words, for the post list
         meta["excerpt_long"] = make_char_excerpt(body)  # ~200 chars, for descriptions
@@ -259,11 +271,15 @@ def load_posts():
         if not meta["summary"]:
             meta["summary"] = meta["excerpt_long"]
         posts.append(meta)
-    posts.sort(key=lambda m: m["_dt"], reverse=True)
-    return posts
+    # A draft's optional `date:` is only a sort key (not shown); undated drafts
+    # go first, most recently edited first.
+    drafts = sorted((m for m in posts if m["draft"]),
+                    key=lambda m: (m["_dt"] is None, m["_dt"] or datetime.min, m["_mtime"]), reverse=True)
+    published = sorted((m for m in posts if not m["draft"]), key=lambda m: m["_dt"], reverse=True)
+    return drafts + published
 
 
-def social_meta(m):
+def social_meta(m, section="blog"):
     """Open Graph + Twitter-card tags so posts preview nicely when shared.
 
     Uses a dedicated 1200x630 card at assets/img/blog/og-<slug>.jpg when one
@@ -272,7 +288,7 @@ def social_meta(m):
     dedicated card.
     """
     slug = m["slug"]
-    canonical = "{}/blog/{}.html".format(SITE_URL, slug)
+    canonical = "{}/{}/{}.html".format(SITE_URL, section, slug)
     card_rel = "assets/img/blog/og-{}.jpg".format(slug)
     if os.path.exists(os.path.join(ROOT, card_rel)):
         img = "{}/{}".format(SITE_URL, card_rel)
@@ -280,7 +296,7 @@ def social_meta(m):
                 '\n  <meta property="og:image:height" content="630">')
     else:
         mm = re.search(r'src="\.\./(assets/[^"]+\.(?:jpg|jpeg|png|webp))"', m["_body"])
-        rel = mm.group(1) if mm else "assets/img/photo.png"
+        rel = m.get("image") or (mm.group(1) if mm else "assets/img/photo.jpg")
         img = "{}/{}".format(SITE_URL, rel)
         dims = ""
     t = html.escape(m["title"])
@@ -310,6 +326,26 @@ def get_footer():
     return m.group(0) if m else ""
 
 
+
+def asset_url(u):
+    """Append ?v=<mtime> to a local stylesheet/script path so browsers refetch it
+    after it changes (a stale cached CSS file broke the metaphor tables once)."""
+    u = u.strip()
+    if u.startswith(("http://", "https://")) or "?" in u:
+        return u
+    path = os.path.normpath(os.path.join(BLOG_DIR, u))   # pages live one level down
+    try:
+        return "{}?v={}".format(u, int(os.path.getmtime(path)))
+    except OSError:
+        return u
+
+
+def version_scripts(body_html):
+    """Version local <script src="../js/..."> tags inside page bodies the same way."""
+    return re.sub(r'(<script src=")(\.\./js/[^"?]+)(")',
+                  lambda mm: mm.group(1) + asset_url(mm.group(2)) + mm.group(3), body_html)
+
+
 def render_posts(posts):
     os.makedirs(BLOG_DIR, exist_ok=True)
     footer = get_footer()
@@ -318,10 +354,10 @@ def render_posts(posts):
         if m["press"]:
             continue
         md.reset()
-        body_html = md.convert(m["_body"])
+        body_html = version_scripts(md.convert(m["_body"]))
         # optional frontmatter `css: path.css, other.css` -> extra head links
         extra_css = "".join(
-            '\n  <link rel="stylesheet" href="{}">'.format(html.escape(u.strip()))
+            '\n  <link rel="stylesheet" href="{}">'.format(html.escape(asset_url(u)))
             for u in m.get("css", "").split(",") if u.strip()
         )
         out = POST_TMPL.format(
@@ -330,8 +366,10 @@ def render_posts(posts):
             social=social_meta(m),
             extra_css=extra_css,
             fonts=FONTS,
+            act_research="", act_blog=" active",
+            back_href="../index.html#blog", back_label="All posts", header_extra="",
             date_display=html.escape(m["date_display"]),
-            draft_badge=' <span class="post-draft-badge">draft</span>' if m["draft"] else "",
+            draft_badge='<span class="post-draft-badge">draft</span>' if m["draft"] else "",
             body=body_html,
             footer=footer,
             script=EMAIL_SCRIPT + "\n" + LIGHTBOX_SCRIPT,
@@ -379,6 +417,134 @@ def ensure_scaffold(s):
     return s
 
 
+# Research feed, after itsmaks.com: entries grouped by year (the year sits in a
+# left gutter on its first entry), each with a picture, title, authors (Anna in
+# bold), a quiet venue line, a blurb, and a row of plain links.
+FEED_ITEM_TMPL = """          <li class="rfeed-item">
+            <a class="rfeed-imglink" href="{href}" tabindex="-1" aria-hidden="true">{img}</a>
+            <div class="rfeed-text">
+              <h4 class="rfeed-title"><a href="{href}">{title}</a>{draft_tag}</h4>
+{authors}              <p class="rfeed-meta">{meta}</p>
+              <p class="rfeed-blurb">{blurb}</p>
+{links}            </div>
+          </li>"""
+
+ME = "Anna Brežģis"
+
+
+def research_authors(m):
+    """frontmatter `authors: A, B, Anna Brežģis`, Anna in bold. Entries without
+    an `authors:` line (e.g. course papers) show no author line at all."""
+    names = [n.strip() for n in m.get("authors", "").split(",") if n.strip()]
+    return ", ".join("<strong>{}</strong>".format(html.escape(n)) if n.rstrip("*") == ME
+                     else html.escape(n) for n in names)
+
+
+def research_meta_line(m):
+    """'Paper · NeurReps 2026' — whichever parts the entry has."""
+    parts = [m.get("kind", ""), m.get("venue", "")]
+    return " · ".join(html.escape(p) for p in parts if p)
+
+
+def research_links(m, from_index=False):
+    """frontmatter `links: PDF | ../assets/…; OpenReview | https://…`. Paths are
+    written relative to the entry page; the homepage feed drops the leading ../"""
+    out = []
+    for item in m.get("links", "").split(";"):
+        if "|" in item:
+            label, url = (x.strip() for x in item.split("|", 1))
+            if from_index and url.startswith("../"):
+                url = url[3:]
+            out.append('<a href="{}" target="_blank" rel="noopener">{}</a>'.format(
+                html.escape(url), html.escape(label)))
+    return out
+
+
+def render_research(entries):
+    os.makedirs(RESEARCH_DIR, exist_ok=True)
+    footer = get_footer()
+    md = markdown.Markdown(extensions=["extra", "smarty", "sane_lists"])
+    for m in entries:
+        md.reset()
+        links = research_links(m)
+        extra = ""
+        if m.get("authors"):
+            extra += '\n        <p class="research-page-authors">{}</p>'.format(research_authors(m))
+        extra += '\n        <p class="research-page-meta">{}</p>'.format(research_meta_line(m))
+        if links:
+            extra += '\n        <p class="research-page-links">{}</p>'.format(
+                '<span class="rfeed-sep"> · </span>'.join(l.replace("</a>", " &#8599;</a>") for l in links))
+        if m.get("image") and m.get("hero") != "none":   # hero: none -> thumbnail only
+            extra += '\n        <img class="research-page-hero" src="../{}" alt="">'.format(html.escape(m["image"]))
+        out = POST_TMPL.format(
+            title=html.escape(m["title"]),
+            summary=html.escape(m.get("blurb") or m["summary"]),
+            social=social_meta(m, "research"),
+            extra_css='\n  <link rel="stylesheet" href="../css/research.css">' + "".join(
+                '\n  <link rel="stylesheet" href="{}">'.format(html.escape(asset_url(u)))
+                for u in m.get("css", "").split(",") if u.strip()),
+            fonts=FONTS,
+            act_research=" active", act_blog="",
+            back_href="../index.html#research", back_label="Research",
+            header_extra=extra,
+            date_display="",
+            draft_badge='<span class="post-draft-badge">draft</span>' if m["draft"] else "",
+            body=version_scripts(md.convert(m["_body"])),
+            footer=footer,
+            script=EMAIL_SCRIPT + "\n" + LIGHTBOX_SCRIPT,
+        )
+        with open(os.path.join(RESEARCH_DIR, m["slug"] + ".html"), "w", encoding="utf-8") as f:
+            f.write(out)
+
+
+def update_research_feed(entries):
+    # Grouped by year (a heading above each group), newest first. The author line only appears on co-authored work
+    # (it's Anna's own site); the venue sits under the title and any outside links at the bottom.
+    if entries:
+        def meta(m):
+            return research_meta_line(m)
+        def links(m):
+            ls = [a.replace("</a>", " &#8599;</a>") for a in research_links(m, from_index=True)]
+            return ('              <p class="rfeed-meta rfeed-links">{}</p>\n'.format(
+                '<span class="rfeed-sep"> · </span>'.join(ls)) if ls else "")
+        groups = []                       # [(year, [entries])], newest first; a heading above each
+        for m in entries:
+            year = str(m["_dt"].year) if m["_dt"] else "Drafts"
+            if not groups or groups[-1][0] != year:
+                groups.append((year, []))
+            groups[-1][1].append(m)
+        parts = []
+        for year, ms in groups:
+            items = "\n".join(FEED_ITEM_TMPL.format(
+            href="research/" + m["slug"] + ".html",
+            img=('<img class="rfeed-img" src="{}" alt="" loading="lazy">'.format(html.escape(m["image"]))
+                 if m.get("image") else '<span class="rfeed-img rfeed-img--empty"></span>'),
+            title=html.escape(m["title"]),
+            draft_tag=' <span class="draft-tag">draft</span>' if m["draft"] else "",
+            authors=('              <p class="rfeed-authors">{}</p>\n'.format(research_authors(m))
+                     if [n for n in m.get("authors", "").split(",") if n.strip() and n.strip() != ME] else ""),
+            meta=meta(m),
+            blurb=html.escape(m.get("blurb") or m["excerpt"]),
+            links=links(m),
+        ) for m in ms)
+            parts.append('        <section class="rfeed-year">\n'
+                         '          <h3 class="rfeed-yearlabel">{}</h3>\n'
+                         '          <ul class="rfeed">\n{}\n          </ul>\n'
+                         '        </section>'.format(year, items))
+        block = "\n" + "\n".join(parts) + "\n        "
+    else:
+        block = '\n        <p class="section-intro">Coming soon!</p>\n        '
+    with open(INDEX, encoding="utf-8") as f:
+        s = f.read()
+    s = re.sub(
+        r"(<!-- RESEARCH:FEED:START -->).*?(<!-- RESEARCH:FEED:END -->)",
+        lambda mm: mm.group(1) + block + mm.group(2),
+        s, flags=re.S,
+    )
+    with open(INDEX, "w", encoding="utf-8") as f:
+        f.write(s)
+
+
 def update_index(posts):
     # The in-page Blog section IS the full blog — every post, no teaser,
     # no separate /blog/ page.
@@ -399,14 +565,16 @@ def update_index(posts):
 SITEMAP = os.path.join(ROOT, "sitemap.xml")
 
 
-def write_sitemap(posts):
+def write_sitemap(posts, research=()):
     """sitemap.xml: the homepage plus every published (non-draft) post.
     Post lastmod is the post date; the homepage takes the newest post's date."""
     published = [m for m in posts if not m["draft"]]
-    newest = max((m["_dt"] for m in published), default=datetime.now())
+    research = [m for m in research if not m["draft"]]
+    newest = max((m["_dt"] for m in published + research), default=datetime.now())
     urls = [(SITE_URL + "/", newest, "weekly", "1.0")]
     urls += [("{}/blog/{}.html".format(SITE_URL, m["slug"]), m["_dt"], "yearly", "0.7")
              for m in published if not m["press"]]
+    urls += [("{}/research/{}.html".format(SITE_URL, m["slug"]), m["_dt"], "monthly", "0.8") for m in research]
     lines = ['<?xml version="1.0" encoding="UTF-8"?>',
              '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for loc, dt, freq, pri in urls:
@@ -458,15 +626,22 @@ def write_feed(posts):
 
 def main():
     posts = load_posts()
+    research = load_posts(RESEARCH_SRC) if os.path.isdir(RESEARCH_SRC) else []
     render_posts(posts)
     update_index(posts)
-    n_urls = write_sitemap(posts)
+    render_research(research)
+    update_research_feed(research)
+    n_urls = write_sitemap(posts, research)
     n_feed = write_feed(posts)
     print("Wrote feed.xml ({} entries)".format(n_feed))
     print("Wrote sitemap.xml ({} URLs)".format(n_urls))
     print("Built {} post(s) + in-page blog section:".format(len(posts)))
     for m in posts:
         flag = " [draft]" if m["draft"] else " [press]" if m["press"] else ""
+        print("  - {:<20} {}{}".format(m["slug"], m["date_short"], flag))
+    print("Built {} research entr{}:".format(len(research), "y" if len(research) == 1 else "ies"))
+    for m in research:
+        flag = " [draft]" if m["draft"] else ""
         print("  - {:<20} {}{}".format(m["slug"], m["date_short"], flag))
 
 
