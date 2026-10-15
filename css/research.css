@@ -39,7 +39,7 @@
   color: var(--text-softer);
 }
 
-/* Pill buttons — kept for dev-buttons.html (variant B); remove if unused */
+/* Pill buttons: "Read more" and "CV" */
 .research-btn {
   display: inline-flex;
   align-items: center;
@@ -65,6 +65,84 @@
 
 .research-btn svg {
   flex-shrink: 0;
+}
+
+button.research-btn { line-height: inherit; }
+
+.research-more-btn svg { transition: transform 0.25s ease; }
+.research-more-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+
+/* "Research interests" opens the write-up with the same drop-in as the nav
+   sections (`enter` in style.css; researchDrop below is a copy): the rule and each (1)-(3) block fall in on
+   the site's 0.06s rhythm, while the space for them opens smoothly (the
+   0fr -> 1fr grid trick animates height without measuring it). */
+.research-more {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.6s cubic-bezier(0.65, 0, 0.35, 1) 0.15s; /* closing: folds after the text lifts out */
+}
+
+.research-more.is-open {
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.55s cubic-bezier(0.45, 0, 0.2, 1);
+}
+
+.research-more-inner {
+  min-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease 0.3s;
+}
+
+.research-more.is-open .research-more-inner { opacity: 1; transition: none; }
+
+/* Room between the write-up and the rule before the papers. A spacer, not
+   padding: padding can't shrink, so it would show even while folded. */
+.research-more-inner::after { content: ""; display: block; height: 2.25rem; }
+
+/* The inner box is overflow:hidden, so its first rule's margin no longer
+   merges with the pills' margin; trim it so the gap matches the closed state. */
+.research-more-inner > .research-rule:first-child { margin-top: 0.25rem; }
+/* Same story for the rule after it (the grid box sits between it and the pills). */
+.research-more + .research-rule { margin-top: 0.25rem; }
+/* Above the feed, keep the breathing room but drop the line itself. */
+.research-rule:has(+ .research-feed) { border-top-color: transparent; margin-bottom: 1.5rem; }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Same motion as the site's `enter` (style.css), under its own name so it
+     replays each time the write-up opens. */
+  @keyframes researchDrop {
+    from { opacity: 0; transform: translateY(var(--enter-rise)); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  #research-more.is-open .research-rule,
+  #research-more.is-open .research-block {
+    animation: researchDrop var(--enter-dur) var(--enter-ease) both;
+  }
+  #research-more.is-open .research-rule { animation-delay: var(--enter-start); }
+  #research-more.is-open .research-block:nth-child(1) { animation-delay: calc(var(--enter-start) + 1 * var(--enter-step)); }
+  #research-more.is-open .research-block:nth-child(2) { animation-delay: calc(var(--enter-start) + 2 * var(--enter-step)); }
+  #research-more.is-open .research-block:nth-child(3) { animation-delay: calc(var(--enter-start) + 3 * var(--enter-step)); }
+
+  /* Closing: the reverse, bottom-up, drifting down slightly as they fade */
+  @keyframes researchLift {
+    from { opacity: 1; transform: translateY(0); }
+    to   { opacity: 0; transform: translateY(8px); }
+  }
+
+  #research-more.is-closing .research-rule,
+  #research-more.is-closing .research-block {
+    animation: researchLift 0.3s ease both;
+  }
+  #research-more.is-closing .research-block:nth-child(3) { animation-delay: 0s; }
+  #research-more.is-closing .research-block:nth-child(2) { animation-delay: 0.06s; }
+  #research-more.is-closing .research-block:nth-child(1) { animation-delay: 0.12s; }
+  #research-more.is-closing .research-rule { animation-delay: 0.18s; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .research-more, .research-more-inner { transition: none; }
 }
 
 /* --- Section rule (the line used on other pages) --- */
@@ -187,29 +265,180 @@
   font-weight: 400;
 }
 
-/* --- Nav entrance stagger for the new structure --- */
+/* Feed: one quiet list, newest first. Each entry is a square picture beside
+   the title, one line of venue + links, and a short blurb. */
+.rfeed {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* A year heading above each year's projects */
+.rfeed-year + .rfeed-year { margin-top: 2.25rem; }
+.rfeed-yearlabel {
+  display: flex; align-items: center; gap: 0.9rem;
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: var(--text-softer);
+  letter-spacing: 0.01em;
+  margin: 0 0 0.25rem;
+}
+.rfeed-yearlabel::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+
+.rfeed-item {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 2rem;
+  align-items: center;
+  padding: 1.75rem 0;
+}
+
+.rfeed-item + .rfeed-item { border-top: 1px solid var(--border); }
+.rfeed-item:first-child { padding-top: 0.5rem; }
+
+/* Each picture sits on a white card with a hairline warm edge, lifted
+   just off the off-white page (same treatment as the demo cards). */
+.rfeed-imglink {
+  display: block;
+  padding: 18px;
+  border-radius: 12px;
+  background: var(--card-bg);
+  border: 1px solid #ECEAE4;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.rfeed-imglink:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(45, 45, 45, 0.06); }
+
+.rfeed-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;          /* figures have labels at every edge: never crop */
+}
+
+.rfeed-img--empty { background: var(--bg-alt); }
+
+.rfeed-text p { margin: 0; }
+
+.rfeed-title {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.35rem;
+}
+
+.rfeed-title a { color: var(--text); text-decoration: none; transition: color 0.18s ease; }
+.rfeed-title a:hover { color: var(--accent-hover); }
+.rfeed-title .draft-tag { margin-left: 0.4rem; }
+
+.rfeed-authors {
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  color: var(--text-soft);
+  margin-bottom: 0.2rem;
+}
+
+.rfeed-authors strong { color: var(--text); font-weight: 600; }
+
+.rfeed-text .rfeed-meta {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--text-softer);
+}
+
+.rfeed-meta a {
+  color: var(--text-soft);
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+
+.rfeed-meta a:hover { color: var(--accent-hover); }
+.rfeed-sep { color: var(--border); }
+
+.rfeed-text .rfeed-blurb {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  color: var(--text-soft);
+  line-height: 1.65;
+  margin-top: 0.65rem;
+}
+
+@media (max-width: 700px) {
+  .rfeed-item { grid-template-columns: 180px 1fr; gap: 1.25rem; }
+  .rfeed-imglink { padding: 12px; }
+}
+
+@media (max-width: 560px) {
+  .rfeed-item { grid-template-columns: 1fr; gap: 1rem; }
+  .rfeed-imglink { max-width: 280px; }
+}
+
+/* --- Research entry pages --- */
+.research-page-authors {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  color: var(--text-soft);
+  margin-top: 0.7rem;
+}
+
+.research-page-authors strong { color: var(--text); font-weight: 600; }
+
+.research-page-meta {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-softer);
+  margin-top: 0.6rem;
+}
+
+.research-page-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+}
+
+.research-page-links a {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--accent-hover);
+  background: var(--accent-light);
+  border-radius: 999px;
+  padding: 0.25rem 0.85rem;
+  text-decoration: none;
+}
+
+.research-page-links a:hover { background: var(--accent); color: #fff; }
+
+.research-page-hero {
+  display: block;
+  width: 100%;
+  margin-top: 1.6rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+/* The section's entrance stagger lives in style.css ("Motion"). */
+
+.rfeed-img--empty { background: var(--bg-alt); }
+
+/* --- Nav entrance stagger --- */
 @media (prefers-reduced-motion: no-preference) {
   .nav-enter .research-overview,
   .nav-enter .research-actions,
-  .nav-enter .research-block,
   .nav-enter .research-feed {
     animation: navEnter 0.5s ease both;
   }
   .section-research.nav-enter .research-overview { animation-delay: 0.11s; }
   .section-research.nav-enter .research-actions { animation-delay: 0.17s; }
-  .section-research.nav-enter .research-block:nth-child(1) { animation-delay: 0.23s; }
-  .section-research.nav-enter .research-block:nth-child(2) { animation-delay: 0.29s; }
-  .section-research.nav-enter .research-block:nth-child(3) { animation-delay: 0.35s; }
-  .section-research.nav-enter .research-feed { animation-delay: 0.41s; }
-
-  /* The feed contains a .section-intro and .postlist rows, which blog.css
-     animates generically — but the per-item delays for those live only under
-     .section-blog, so inside Research they ran at 0s: their entrance played
-     out invisibly while this parent was still held at opacity 0, and the whole
-     block then appeared fully-formed at 0.41s. The feed is meant to arrive as
-     one unit, so let the children simply ride the parent. */
-  .section-research.nav-enter .research-feed .section-intro,
-  .section-research.nav-enter .research-feed .postlist li {
-    animation: none;
-  }
+  .section-research.nav-enter .research-feed { animation-delay: 0.23s; }
 }
+
+/* Entries listed before their pages are up: the thumbnail and title aren't links yet. */
+.rfeed-item--soon .rfeed-imglink:hover { transform: none; box-shadow: none; }
+.rfeed-item--soon .rfeed-blurb { color: var(--text-softer); font-style: italic; }

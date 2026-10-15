@@ -127,17 +127,19 @@
 
       <!-- Action row — pill buttons (variant B), just under the overview -->
       <div class="research-actions">
-        <a href="#research-feed" class="research-btn"
-           onclick="document.getElementById('research-feed').scrollIntoView({behavior:'smooth'}); return false;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
-          <span>Current Work</span>
-        </a>
+        <button type="button" class="research-btn research-more-btn" aria-expanded="false" aria-controls="research-more">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M6 9l6 6 6-6"/></svg>
+          <span>Research interests</span>
+        </button>
         <a href="assets/cv.pdf" class="research-btn" title="Curriculum vitae (PDF)">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
           <span>CV</span>
         </a>
       </div>
 
+      <!-- Longer write-up, folded away behind the "Research interests" pill -->
+      <div id="research-more" class="research-more" inert>
+      <div class="research-more-inner">
       <hr class="research-rule">
 
       <!-- Research description sections -->
@@ -167,22 +169,47 @@
         </div>
       </div>
 
+      </div>
+      </div>
+
       <hr class="research-rule">
 
-      <!-- Current work: blogpost-style feed -->
+      <!-- Papers and projects: just the posts -->
       <div id="research-feed" class="research-feed">
-        <h3 class="research-heading">Current work</h3>
-        <p class="section-intro research-feed-intro">Projects, papers, and preprints accumulate here, ledger-style like the blog.</p>
-        <ul class="postlist">
-          <li>
-            <div class="postlist-row tpl-row">
-              <span class="postlist-date tpl-dim"></span>
-              <span class="postlist-main">
-                <span class="postlist-title tpl-dim">Coming soon!</span>
-              </span>
+        <section class="rfeed-year">
+          <h3 class="rfeed-yearlabel">2026</h3>
+          <ul class="rfeed">
+          <li class="rfeed-item rfeed-item--soon">
+            <div class="rfeed-imglink" aria-hidden="true"><img class="rfeed-img" src="assets/img/research/neurreps-heatmap.svg" alt="" loading="lazy"></div>
+            <div class="rfeed-text">
+              <h4 class="rfeed-title">Language Organizes Color Geometry in Multilingual Encoders</h4>
+              <p class="rfeed-meta">Extended abstract · NeurReps 2026</p>
+              <p class="rfeed-blurb">Coming soon.</p>
             </div>
           </li>
-        </ul>
+          <li class="rfeed-item rfeed-item--soon">
+            <div class="rfeed-imglink" aria-hidden="true"><img class="rfeed-img" src="assets/img/research/topology-thumb.svg" alt="" loading="lazy"></div>
+            <div class="rfeed-text">
+              <h4 class="rfeed-title">Topology of Color: Cross-Linguistic Category Structure in mBERT Attention</h4>
+              <p class="rfeed-meta">Course paper · COSI 115B, Brandeis</p>
+              <p class="rfeed-blurb">Coming soon.</p>
+            </div>
+          </li>
+          </ul>
+        </section>
+        <section class="rfeed-year">
+          <h3 class="rfeed-yearlabel">2025</h3>
+          <ul class="rfeed">
+          <li class="rfeed-item rfeed-item--soon">
+            <div class="rfeed-imglink" aria-hidden="true"><img class="rfeed-img" src="assets/img/research/metaphor-thumb.svg" alt="" loading="lazy"></div>
+            <div class="rfeed-text">
+              <h4 class="rfeed-title">Detecting Metaphor in Text</h4>
+              <p class="rfeed-meta">Project · COSI 114A, Brandeis; extended 2026</p>
+              <p class="rfeed-blurb">Coming soon.</p>
+            </div>
+          </li>
+          </ul>
+        </section>
       </div>
     </div>
   </section>
@@ -284,6 +311,16 @@
           <div class="sharabara-desc">
             <p>Bots and hackers think that they have stumbled into a Solana validator worth millions... but in reality they have fallen into my trap! A real-time monitor of my Cowrie honeypot, complete with a “greatest hits” section for the most egregious hackers.</p>
             <a href="https://github.com/brezgis/honeypot-dashboard" target="_blank" rel="noopener" class="sharabara-github">repo</a>
+          </div>
+        </div>
+
+        <div class="sharabara-row">
+          <a href="https://point.brezgis.com" target="_blank" rel="noopener" class="sharabara-card sharabara-card--whattheph">
+            <span class="sharabara-card-name">what-the-ph</span>
+          </a>
+          <div class="sharabara-desc">
+            <p>Embedding clouds, served to order. Try the MNIST, Euclidean-style and CKA&rsquo;d to perfection.</p>
+            <a href="https://github.com/brezgis/what-the-ph" target="_blank" rel="noopener" class="sharabara-github">repo</a>
           </div>
         </div>
 

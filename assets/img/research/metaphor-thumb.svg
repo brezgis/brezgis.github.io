@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" width="320" height="320">
+<!-- Detecting Metaphor thumbnail: "Participatory democracy is addictive." (LCC).
+     10s loop: addictive -> democracy (metaphor, amber, 2.7/3), then Participatory -> democracy
+     (literal, blue, 0/3), each with its arc, SOURCE/TARGET roles under the words, and a label pill. -->
+<style>
+.w { font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif; font-size: 30px; text-anchor: middle; }
+.dim { fill: #A5A5A5; }
+.role { font-family: Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 10.5px; font-weight: 600; letter-spacing: 0.1em; fill: #5C5C5C; text-anchor: middle; }
+.pt { font-family: Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 500; fill: #2D2D2D; text-anchor: middle; }
+.m, .l, .mt, .lt, .mh, .lh { opacity: 0; animation: 10s ease-in-out infinite both; }
+.m { animation-name: m; }   .l { animation-name: l; }
+.mt { animation-name: mt; } .lt { animation-name: lt; }
+.mh { animation-name: mh; } .lh { animation-name: lh; }
+.arc { fill: none; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 200; animation: 10s ease-in-out infinite both; }
+.arc.am { stroke: #C47A2C; animation-name: am; }
+.arc.al { stroke: #2F6DB0; animation-name: al; }
+.wm { fill: #A5A5A5; animation: wm 10s ease-in-out infinite both; }
+.wl { fill: #A5A5A5; animation: wl 10s ease-in-out infinite both; }
+.wt { fill: #A5A5A5; animation: wt 10s ease-in-out infinite both; }
+/* metaphor 0.5-4.5s, literal 5.3-9.4s */
+@keyframes m  { 0%, 5% { opacity: 0; } 11%, 43% { opacity: 1; } 49%, 100% { opacity: 0; } }
+@keyframes l  { 0%, 53% { opacity: 0; } 59%, 90% { opacity: 1; } 96%, 100% { opacity: 0; } }
+@keyframes mt { 0%, 20% { opacity: 0; } 26%, 43% { opacity: 1; } 49%, 100% { opacity: 0; } }
+@keyframes lt { 0%, 68% { opacity: 0; } 74%, 90% { opacity: 1; } 96%, 100% { opacity: 0; } }
+@keyframes mh { 0%, 21% { opacity: 0; } 24%, 43% { opacity: 1; } 49%, 100% { opacity: 0; } }
+@keyframes lh { 0%, 69% { opacity: 0; } 72%, 90% { opacity: 1; } 96%, 100% { opacity: 0; } }
+@keyframes am { 0%, 9% { opacity: 0; stroke-dashoffset: 200; } 10% { opacity: 1; stroke-dashoffset: 200; } 23%, 43% { opacity: 1; stroke-dashoffset: 0; } 49%, 100% { opacity: 0; stroke-dashoffset: 0; } }
+@keyframes al { 0%, 57% { opacity: 0; stroke-dashoffset: 200; } 58% { opacity: 1; stroke-dashoffset: 200; } 71%, 90% { opacity: 1; stroke-dashoffset: 0; } 96%, 100% { opacity: 0; stroke-dashoffset: 0; } }
+@keyframes wm { 0%, 5% { fill: #A5A5A5; } 11%, 43% { fill: #2D2D2D; } 49%, 100% { fill: #A5A5A5; } }
+@keyframes wl { 0%, 53% { fill: #A5A5A5; } 59%, 90% { fill: #2D2D2D; } 96%, 100% { fill: #A5A5A5; } }
+@keyframes wt { 0%, 5% { fill: #A5A5A5; } 11%, 43% { fill: #2D2D2D; } 49%, 53% { fill: #A5A5A5; } 59%, 90% { fill: #2D2D2D; } 96%, 100% { fill: #A5A5A5; } }
+@media (prefers-reduced-motion: reduce) {
+  .m, .mt, .mh { animation: none; opacity: 1; }
+  .l, .lt, .lh { animation: none; opacity: 0; }
+  .arc.am { animation: none; stroke-dashoffset: 0; } .arc.al { animation: none; opacity: 0; }
+  .wm, .wt { animation: none; fill: #2D2D2D; } .wl { animation: none; }
+}
+</style>
+<g class="l"><rect x="66" y="48" width="188" height="42" rx="5" fill="#DFE8F4"/><rect x="66" y="87" width="188" height="3" fill="#2F6DB0"/></g>
+<g class="m"><rect x="78" y="110" width="164" height="42" rx="5" fill="#F6E7D6"/><rect x="78" y="149" width="164" height="3" fill="#C47A2C"/></g>
+<g class="l"><rect x="78" y="110" width="164" height="42" rx="5" fill="#DFE8F4"/><rect x="78" y="149" width="164" height="3" fill="#2F6DB0"/></g>
+<g class="m"><rect x="96" y="208" width="128" height="42" rx="5" fill="#F6E7D6"/><rect x="96" y="247" width="128" height="3" fill="#C47A2C"/></g>
+<text class="w wl" x="160" y="80">Participatory</text>
+<text class="w wt" x="160" y="142">democracy</text>
+<text class="w dim" x="160" y="192">is</text>
+<text class="w wm" x="160" y="240">addictive.</text>
+<text class="role lt" x="160" y="104">SOURCE</text>
+<text class="role mt" x="160" y="166">TARGET</text>
+<text class="role lt" x="160" y="166">TARGET</text>
+<text class="role mt" x="160" y="264">SOURCE</text>
+<path class="arc am" d="M232 226 C298 220 298 136 250 128"/>
+<path class="arc al" d="M260 64 C296 66 296 118 250 124"/>
+<path class="mh" d="M248.0 127.7 L261.8 123.9 L259.9 135.7 Z" fill="#C47A2C"/>
+<path class="lh" d="M248.0 124.3 L260.1 116.6 L261.7 128.5 Z" fill="#2F6DB0"/>
+<g class="mt"><rect x="108" y="282" width="104" height="26" rx="13" fill="#F3F2EE"/><circle cx="125" cy="295" r="5" fill="#C47A2C"/><text class="pt" x="171" y="299.5">metaphor</text></g>
+<g class="lt"><rect x="117" y="282" width="86" height="26" rx="13" fill="#F3F2EE"/><circle cx="133" cy="295" r="5" fill="#2F6DB0"/><text class="pt" x="169" y="299.5">literal</text></g>
+</svg>
