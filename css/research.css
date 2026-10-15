@@ -365,6 +365,7 @@ button.research-btn { line-height: inherit; }
   line-height: 1.65;
   margin-top: 0.65rem;
 }
+.rfeed-text .rfeed-links { margin-top: 0.6rem; }
 
 @media (max-width: 700px) {
   .rfeed-item { grid-template-columns: 180px 1fr; gap: 1.25rem; }
@@ -396,24 +397,18 @@ button.research-btn { line-height: inherit; }
 }
 
 .research-page-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  font-family: var(--sans);
+  font-size: 0.85rem;
   margin-top: 0.9rem;
 }
 
 .research-page-links a {
-  font-family: var(--sans);
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--accent-hover);
-  background: var(--accent-light);
-  border-radius: 999px;
-  padding: 0.25rem 0.85rem;
+  color: var(--text-soft);
   text-decoration: none;
+  transition: color 0.18s ease;
 }
 
-.research-page-links a:hover { background: var(--accent); color: #fff; }
+.research-page-links a:hover { color: var(--accent-hover); }
 
 .research-page-hero {
   display: block;
@@ -438,7 +433,3 @@ button.research-btn { line-height: inherit; }
   .section-research.nav-enter .research-actions { animation-delay: 0.17s; }
   .section-research.nav-enter .research-feed { animation-delay: 0.23s; }
 }
-
-/* Entries listed before their pages are up: the thumbnail and title aren't links yet. */
-.rfeed-item--soon .rfeed-imglink:hover { transform: none; box-shadow: none; }
-.rfeed-item--soon .rfeed-blurb { color: var(--text-softer); font-style: italic; }

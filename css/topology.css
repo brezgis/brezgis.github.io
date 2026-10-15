@@ -1,0 +1,152 @@
+/* Topology of Color page: filtration explainer + three charts.
+   Colors validated on #FAFAF7: blue #2F6DB0 = color terms / H0 components,
+   amber #C47A2C = control adjectives / H1 loops, gray #8A8A8A = reference
+   marks. The head heatmap is single-hue sequential blues. Text stays in the
+   text tokens, never in series colors. */
+.tc {
+  --tc-blue: #2F6DB0;
+  --tc-amber: #C47A2C;
+  --tc-ref: #8A8A8A;
+  --tc-grid: #E2E0DB;
+  margin: 2rem 0;
+}
+.tc svg { display: block; width: 100%; height: auto; overflow: visible; }
+.tc svg text { font-family: var(--sans); }
+.tc-plot { position: relative; }
+
+.tc .tc-title {
+  font-family: var(--sans); font-size: 0.95rem; font-weight: 600;
+  color: var(--text); margin: 0 0 0.2rem; line-height: 1.4;
+}
+.tc .tc-sub {
+  font-family: var(--sans); font-size: 0.85rem; color: var(--text-soft);
+  margin: 0 0 0.6rem; line-height: 1.45;
+}
+.tc-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.8rem; flex-wrap: wrap; }
+.tc-head > div { min-width: 0; }
+.tc-head .tc-toggle { margin-bottom: 0.5rem; }
+.tc-toggle sub { font-size: 0.72em; line-height: 0; }
+
+.tc .tc-legend {
+  display: flex; gap: 0.3rem 1.1rem; flex-wrap: wrap; align-items: center;
+  font-family: var(--sans); font-size: 0.8rem; color: var(--text-soft);
+  margin: 0 0 0.5rem;
+}
+.tc-legend > span { display: inline-block; white-space: nowrap; }
+.tc-legend sub { font-size: 0.72em; line-height: 0; }
+.tc-key { width: 0.7rem; height: 0.7rem; border-radius: 50%; display: inline-block; vertical-align: -0.05rem; margin-right: 0.4rem; }
+.tc-key.blue { background: var(--tc-blue); }
+.tc-key.amber { background: var(--tc-amber); }
+.tc-key.bar { width: 1.1rem; height: 0.32rem; border-radius: 2px; }
+.tc-key.hollow { width: 0.6rem; height: 0.6rem; border: 2px solid var(--tc-blue); background: var(--card-bg); }
+.tc-key.dot { width: 0.35rem; height: 0.35rem; background: var(--text); }
+.tc-key.ref { width: 0; height: 0.85rem; border-radius: 0; border-left: 1.5px dashed var(--tc-ref); vertical-align: -0.15rem; }
+.tc-key.dot { vertical-align: 0.1rem; }
+
+figure.tc > figcaption {
+  font-family: var(--sans); font-size: 0.85rem; color: var(--text-soft);
+  margin-top: 0.6rem; line-height: 1.5;
+}
+
+/* Segmented toggle (metric / homology dimension) */
+.tc-toggle {
+  display: inline-flex; flex: none;
+  border: 1px solid var(--border); border-radius: 999px; padding: 2px;
+  background: var(--card-bg);
+}
+.tc-toggle button {
+  font-family: var(--sans); font-size: 0.78rem; color: var(--text-soft);
+  background: none; border: 0; border-radius: 999px; cursor: pointer;
+  padding: 0.25rem 0.75rem; line-height: 1.4;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.tc-toggle button:hover { color: var(--text); }
+.tc-toggle button[aria-pressed="true"] { background: var(--bg-alt); color: var(--text); font-weight: 500; }
+.tc-toggle button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+/* Tooltip */
+.tc-tip {
+  position: absolute; pointer-events: none; z-index: 5;
+  background: var(--text); color: #fff;
+  font-family: var(--sans); font-size: 0.8rem; line-height: 1.4;
+  padding: 0.45rem 0.6rem; border-radius: 6px; max-width: 16rem;
+  opacity: 0; transition: opacity 0.12s ease;
+}
+.tc-tip span { color: #bbb; }
+.tc-tip.show { opacity: 1; }
+
+/* "Show as table" fallback */
+.tc-table { margin-top: 0.6rem; font-family: var(--sans); font-size: 0.85rem; }
+.tc-table summary { cursor: pointer; color: var(--text-soft); }
+.tc-table .tc-scroll { overflow-x: auto; }
+.tc-table table { border-collapse: collapse; margin-top: 0.6rem; width: 100%; }
+.tc-table th, .tc-table td {
+  text-align: left; padding: 0.35rem 0.6rem 0.35rem 0;
+  border-bottom: 1px solid var(--border); vertical-align: top;
+}
+.tc-table td.num, .tc-table th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tc-table caption { text-align: left; color: var(--text-soft); padding-top: 0.8rem; }
+.tc-table .tc-grid-table th, .tc-table .tc-grid-table td { padding: 0.2rem 0.35rem; font-size: 0.75rem; text-align: right; }
+
+/* --- 1. Filtration explainer (ambient loop) --- */
+.tc-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.2rem 1.4rem 0.5rem;
+}
+.tc-card .tc-plot { margin-top: 0.4rem; }
+.tc-foot { display: flex; justify-content: flex-end; min-height: 2rem; }
+.tc-play {
+  border: 0; background: none; cursor: pointer;
+  padding: 0.4rem; border-radius: 999px;
+  color: var(--text-softer); line-height: 0;
+  opacity: 0.6; transition: opacity 0.2s ease;
+}
+.tc-play:hover, .tc-play:focus-visible { opacity: 1; }
+.tc-play:focus-visible { outline: 2px solid var(--accent); }
+.tc-play svg { width: 14px; height: 14px; }
+.tc-play svg path { fill: currentColor; }
+.tc-ico-play { display: none; }
+.tc-paused .tc-ico-play { display: inline; }
+.tc-paused .tc-ico-pause { display: none; }
+.tc-tok { font-size: 12.5px; fill: var(--text); }
+.tc-tok.special { font-size: 10.5px; fill: var(--text-softer); }
+
+/* --- 3. Head heatmap --- */
+.tc-cell { opacity: 0; }
+.tc-ghost { fill: #EFEDE8; }
+.tc-replay {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  font-family: var(--sans); font-size: 0.78rem; color: var(--text-softer);
+  background: none; border: 0; cursor: pointer; padding: 0.3rem 0.5rem; border-radius: 999px;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+.tc-replay:hover { color: var(--text); background: var(--bg-alt); }
+.tc-replay:focus-visible { outline: 2px solid var(--accent); }
+.tc-replay svg { width: 0.9rem; height: 0.9rem; }
+
+@media (max-width: 560px) {
+  .tc-card { padding: 1rem 0.9rem 0.4rem; }
+  .tc-tok { font-size: 11.5px; }
+}
+
+/* Panel labels inside the language-effect figure (one per distance) */
+.tc-panel { font-family: var(--sans); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-soft); margin: 1rem 0 0.25rem; }
+
+/* Plain results table (same style as the metaphor page's tables) */
+.tc-tbl { font-family: var(--sans); }
+.post-body .tc-tbl table { border-collapse: collapse; width: 100%; font-size: 0.85rem; margin: 0; }
+.post-body .tc-tbl th, .post-body .tc-tbl td { text-align: left; padding: 0.35rem 0.6rem 0.35rem 0; font-weight: 400;
+  background: none; border: 0; border-bottom: 1px solid var(--border); white-space: nowrap; }
+.post-body .tc-tbl thead th { font-weight: 600; }
+.post-body .tc-tbl th:last-child, .post-body .tc-tbl td:last-child { padding-right: 0.4rem; }
+.post-body .tc-tbl .num { text-align: right; font-variant-numeric: tabular-nums; }
+.post-body .tc-tbl td.tc-hit { background: var(--accent-light); color: var(--accent-hover); font-weight: 600; padding-left: 0.4rem; border-radius: 3px; }
+.post-body .tc-tbl .tc-note { font-size: 0.8rem; color: var(--text-soft); margin: 0.5rem 0 0; }
+.post-body .tc-tbl .tc-note b { font-weight: 600; color: var(--text); }
+@media (max-width: 420px) {
+  .post-body .tc-tbl table { font-size: 0.76rem; }
+  .post-body .tc-tbl th, .post-body .tc-tbl td { padding-right: 0.35rem; }
+  .post-body .tc-tbl tbody th { white-space: normal; }
+}
