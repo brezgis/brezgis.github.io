@@ -224,6 +224,24 @@
       playEnter('blog');
     });
   }
+  // --- Research: "Research interests" pill folds the longer write-up in and out ---
+  function initResearchMore() {
+    const btn = document.querySelector('.research-more-btn');
+    const more = document.getElementById('research-more');
+    if (!btn || !more) return;
+    let closeTimer;
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') !== 'true';
+      btn.setAttribute('aria-expanded', String(open));
+      clearTimeout(closeTimer);
+      // Closing plays the opening in reverse: the blocks lift out bottom-up
+      // (.is-closing), then the space folds. Drop the class once it's done.
+      more.classList.toggle('is-closing', !open);
+      if (!open) closeTimer = setTimeout(() => more.classList.remove('is-closing'), 900);
+      more.classList.toggle('is-open', open);
+      more.inert = !open;           // closed: out of tab order and screen readers
+    });
+  }
 
   // --- Init ---
   window.addEventListener('scroll', () => {
@@ -234,6 +252,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     initScrollHint();
     initNoseEgg();
+    initResearchMore();
     handleNavScroll();
     updateActiveNav();
 
