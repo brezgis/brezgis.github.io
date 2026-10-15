@@ -142,7 +142,7 @@ figure.tc > figcaption {
 .post-body .tc-tbl thead th { font-weight: 600; }
 .post-body .tc-tbl th:last-child, .post-body .tc-tbl td:last-child { padding-right: 0.4rem; }
 .post-body .tc-tbl .num { text-align: right; font-variant-numeric: tabular-nums; }
-.post-body .tc-tbl td.tc-hit { background: var(--accent-light); color: var(--accent-hover); font-weight: 600; padding-left: 0.4rem; border-radius: 3px; }
+.post-body .tc-tbl td.tc-hit { background: #DFE8F4; color: var(--tc-blue); font-weight: 600; padding-left: 0.4rem; border-radius: 3px; }
 .post-body .tc-tbl .tc-note { font-size: 0.8rem; color: var(--text-soft); margin: 0.5rem 0 0; }
 .post-body .tc-tbl .tc-note b { font-weight: 600; color: var(--text); }
 @media (max-width: 420px) {
@@ -150,3 +150,8 @@ figure.tc > figcaption {
   .post-body .tc-tbl th, .post-body .tc-tbl td { padding-right: 0.35rem; }
   .post-body .tc-tbl tbody th { white-space: normal; }
 }
+
+/* Numbered captions, below each figure or table */
+.post-body .tc .tc-note { font-family: var(--sans); font-size: 0.8rem; color: var(--text-soft); line-height: 1.5; margin: 0.6rem 0 0; }
+.post-body .tc .tc-note b { font-weight: 600; color: var(--text); }
+.tc-filtration .tc-note { margin-top: 0.6rem; }
