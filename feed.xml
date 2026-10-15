@@ -5,8 +5,16 @@
   <link href="https://brezgis.com/"/>
   <link href="https://brezgis.com/feed.xml" rel="self"/>
   <id>https://brezgis.com/</id>
-  <updated>2026-10-13T00:00:00Z</updated>
+  <updated>2026-10-15T00:00:00Z</updated>
   <author><name>Anna Brežģis</name></author>
+  <entry>
+    <title>On Erosion and the End of All Things</title>
+    <link href="https://brezgis.com/blog/erosion.html"/>
+    <id>https://brezgis.com/blog/erosion.html</id>
+    <published>2026-10-15T00:00:00Z</published>
+    <updated>2026-10-15T00:00:00Z</updated>
+    <summary>In undergrad I took two geology classes for my science requirement, because according to Reddit, they were the easiest possible sciences for my major.</summary>
+  </entry>
   <entry>
     <title>Across Four Schools, Brandeis Grad Students Develop Through Internships</title>
     <link href="https://www.brandeis.edu/graduate-affairs/news-events/stories/2026/internships-2026.html"/>
