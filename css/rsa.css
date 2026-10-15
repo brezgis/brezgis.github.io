@@ -19,7 +19,8 @@
 }
 .rsa-tip span { color: #bbb; }
 .rsa-tip.show { opacity: 1; }
-.rsa figcaption { font-family: var(--sans); font-size: 0.85rem; color: var(--text-soft); margin-top: 0.6rem; line-height: 1.5; }
+.post-body .rsa figcaption { font-family: var(--sans); font-size: 0.8rem; color: var(--text-soft); margin-top: 0.6rem; line-height: 1.5; text-align: left; }
+.rsa figcaption b, .rp-cap b { font-weight: 600; color: var(--text); }
 .rsa-replay {
   margin-left: auto;
   display: inline-flex; align-items: center; gap: 0.35rem;
@@ -57,7 +58,7 @@
   border-radius: 50%; background: var(--bg-alt); font-size: 0.68rem; color: var(--text-soft); vertical-align: 1px;
 }
 .rp-note { margin: 0; font-family: var(--sans); font-size: 0.72rem; line-height: 1.4; color: var(--text-soft); }
-.rp-cap { font-family: var(--sans); font-size: 0.78rem; line-height: 1.5; color: var(--text-soft); margin-top: 0.8rem; }
+.post-body .rp-cap { text-align: left; font-family: var(--sans); font-size: 0.8rem; line-height: 1.5; color: var(--text-soft); margin-top: 0.8rem; }
 
 /* arrows between stations, with a travelling pulse */
 .rp-link { flex: 0 0 1.7rem; position: relative; align-self: center; height: 2px; background: var(--border); margin-top: -1.2rem; }
@@ -125,9 +126,9 @@
   .rp-return::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: var(--border); }
   .rp-ret-head { left: 50%; }
   .rp-st { flex-direction: row; flex-wrap: wrap; text-align: left; align-items: center; column-gap: 0.9rem; padding: 0.7rem 0.9rem; }
-  .rp-vis { flex: 0 0 7.5rem; width: 7.5rem; height: 4.6rem; }
-  .rp-name, .rp-note { flex: 1 1 10rem; }
-  .rp-name { order: -1; flex-basis: 100%; }
+  .rp-st { flex-wrap: nowrap; }
+  .rp-vis { flex: 0 0 9.5rem; width: 9.5rem; height: 4.6rem; }
+  .rp-name { flex: 1 1 auto; margin: 0; }
   .rp-link { flex: 0 0 1.5rem; width: 2px; height: 1.5rem; align-self: center; margin: 0; }
   .rp-link::after { right: auto; left: 50%; top: auto; bottom: -1px; transform: translateX(-50%) rotate(135deg); }
   .rp-link i { left: 50%; top: 0; margin: 0 0 0 -4px; animation-name: rp-pulse-v; }
