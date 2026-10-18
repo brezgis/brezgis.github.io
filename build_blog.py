@@ -567,7 +567,8 @@ SITEMAP = os.path.join(ROOT, "sitemap.xml")
 
 def write_sitemap(posts, research=()):
     """sitemap.xml: the homepage plus every published (non-draft) post.
-    Post lastmod is the post date; the homepage takes the newest post's date."""
+    Post lastmod is the post date; the homepage takes the newest post's date.
+    A future date (a research page dated to its conference) is capped at today."""
     published = [m for m in posts if not m["draft"]]
     research = [m for m in research if not m["draft"]]
     newest = max((m["_dt"] for m in published + research), default=datetime.now())
@@ -577,7 +578,9 @@ def write_sitemap(posts, research=()):
     urls += [("{}/research/{}.html".format(SITE_URL, m["slug"]), m["_dt"], "monthly", "0.8") for m in research]
     lines = ['<?xml version="1.0" encoding="UTF-8"?>',
              '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    today = datetime.now()
     for loc, dt, freq, pri in urls:
+        dt = min(dt, today)
         lines += ["  <url>",
                   "    <loc>{}</loc>".format(html.escape(loc)),
                   "    <lastmod>{}</lastmod>".format(dt.strftime("%Y-%m-%d")),
