@@ -5,8 +5,16 @@
   <link href="https://brezgis.com/"/>
   <link href="https://brezgis.com/feed.xml" rel="self"/>
   <id>https://brezgis.com/</id>
-  <updated>2026-10-13T00:00:00Z</updated>
+  <updated>2026-10-18T00:00:00Z</updated>
   <author><name>Anna Brežģis</name></author>
+  <entry>
+    <title>What is Persistent Homology?</title>
+    <link href="https://brezgis.com/blog/what-is-persistent-homology.html"/>
+    <id>https://brezgis.com/blog/what-is-persistent-homology.html</id>
+    <published>2026-10-18T00:00:00Z</published>
+    <updated>2026-10-18T00:00:00Z</updated>
+    <summary>If persistent homology (PH) is the data analyst&#x27;s gateway drug to topological data analysis (TDA), then TDA is the gateway drug to algebraic topology.</summary>
+  </entry>
   <entry>
     <title>Across Four Schools, Brandeis Grad Students Develop Through Internships</title>
     <link href="https://www.brandeis.edu/graduate-affairs/news-events/stories/2026/internships-2026.html"/>

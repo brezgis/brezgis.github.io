@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GKLF5RCLQJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-GKLF5RCLQJ');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What is Persistent Homology? — Anna Brežģis</title>
+  <meta name="description" content="If persistent homology (PH) is the data analyst&#x27;s gateway drug to topological data analysis (TDA), then TDA is the gateway drug to algebraic topology.">
+  <link rel="canonical" href="https://brezgis.com/blog/what-is-persistent-homology.html">
+  <link rel="alternate" type="application/atom+xml" title="Anna Brežģis" href="../feed.xml">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Anna Brežģis">
+  <meta property="og:title" content="What is Persistent Homology?">
+  <meta property="og:description" content="If persistent homology (PH) is the data analyst&#x27;s gateway drug to topological data analysis (TDA), then TDA is the gateway drug to algebraic topology.">
+  <meta property="og:url" content="https://brezgis.com/blog/what-is-persistent-homology.html">
+  <meta property="og:image" content="https://brezgis.com/assets/img/blog/ph-explaining.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@annabrezgis">
+  <meta name="twitter:title" content="What is Persistent Homology?">
+  <meta name="twitter:description" content="If persistent homology (PH) is the data analyst&#x27;s gateway drug to topological data analysis (TDA), then TDA is the gateway drug to algebraic topology.">
+  <meta name="twitter:image" content="https://brezgis.com/assets/img/blog/ph-explaining.jpg">
+  <link rel="icon" type="image/png" href="../assets/icons/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="stylesheet" href="../css/ph-widgets.css?v=1792377823">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <ul>
+      <li><a href="../index.html#home" class="nav-link">Home</a></li>
+      <li><a href="../index.html#research" class="nav-link">Research</a></li>
+      <li><a href="../index.html#blog" class="nav-link active">Blog</a></li>
+      <li><a href="../index.html#sharabara" class="nav-link">Шара-бара</a></li>
+    </ul>
+  </nav>
+
+  <article class="post">
+    <div class="container post-container">
+      <a class="post-back" href="../index.html#blog">← All posts</a>
+      <header class="post-header">
+        <p class="post-date">October 2026</p>
+        <h1 class="post-title">What is Persistent Homology?</h1>
+      </header>
+      <div class="post-body">
+<p>If persistent homology (PH) is the data analyst&rsquo;s gateway drug to topological data analysis (TDA), then TDA is the gateway drug to algebraic topology. And I do mean <em>drug</em>, because algebraic topology can be transcendent, mind-bending, and somehow highly addictive. It can also leave you staring hopelessly at the ceiling, hoping your head will stop spinning, so be careful how much you take, and pace yourself.</p>
+<p>For anyone wanting to go on a trip, check out my point cloud extravaganza, <a href="https://point.brezgis.com">what-the-ph</a>, with real data projected into 3D, distance metrics, and analysis methods.</p>
+<p>TDA can be a useful approach when you have particularly noisy or high-dimensional data, and you want to know what kind of shape-invariant features it might have. The main idea is looking for features that are preserved under continuous deformation, usually expressed as <em>without puncturing, tearing, or gluing</em>. In other words, you may not make new holes, you may not destroy the ones already there, and you may not stick separate components together. Persistent homology is the computational mechanism by which you calculate the shape across every scale in a continuous sweep, and then consider the lifetimes of the shape&rsquo;s features. This is usually expressed in a barcode graph or a persistence diagram.</p>
+<figure>
+  <img src="../assets/img/blog/ph-explaining.jpg" alt="Charlie Day in It's Always Sunny in Philadelphia, wild-eyed in a shirt and tie, gesturing at a conspiracy wall of documents and red string. Pinned to the wall and joined by a length of red string are three photos: a scatter of points arranged in a ring, a glazed doughnut, and a pink coffee mug.">
+  <figcaption>What I must look like trying to explain persistent homology to non-TDA people.</figcaption>
+</figure>
+
+<h2>The Memes</h2>
+<p>If people encounter topology at all, they usually do for the first time through some variation of these memes:</p>
+<figure>
+<div class="post-figs">
+  <figure style="flex: 0.894">
+    <img src="../assets/img/blog/topologist-same-picture.jpg" alt="The 'they're the same picture' meme from The Office. Two printouts, one of a white coffee mug and one of a glazed doughnut, above the caption 'Corporate needs you to find the differences between this picture and this picture.' Below, Pam, labelled 'Topologist', says 'They're the same picture.'">
+  </figure>
+  <figure style="flex: 1.298">
+    <img src="../assets/img/blog/topologist-morning-routine.jpg" alt="A meme titled 'Topologist's Morning Routine' showing green 3D surfaces: a one-holed torus labelled 'Cup of Coffee', a two-holed surface labelled 'Pants', a three-holed surface labelled 'Shirt', and two plain discs labelled 'Socks'.">
+  </figure>
+</div>
+<figcaption>The essential Topology Memes™</figcaption>
+</figure>
+
+<p>These are popular because they take things that are completely familiar and abstract them to the point of absurdity. The shape of these objects is obvious. We all know what a coffee cup and a donut look like, and to equate one with the other is almost offensive. (Also, notice that the pair of pants is drawn here as a surface with two holes, which, squashed flat, is a figure eight. We&rsquo;ll come back to this later.)</p>
+<p>However, in the joke lies the most important aspect of topology. The reason these memes are so funny and easy to comprehend is that the viewer has already implicitly done the topology. They looked at the abstractions, compared them with their own understanding of the real-life thing, and immediately understood the most salient features of each object. Topology explicitly tells us something that no other area of mathematics can tell us about a shape: the number of connected components, and the presence of <strong><em>holes</em></strong>.</p>
+<p>A hole is a bit of a strange thing to be concerned with, because it&rsquo;s the one feature that is defined by an absence. There is even an ongoing argument in ontology about whether holes even <a href="https://plato.stanford.edu/entries/holes/"><em>exist</em></a>, but that is beside the point. In applied topology, we say that the holes exist, and we&rsquo;ll be damned if we can&rsquo;t find them.</p>
+<p>Below are twenty-four points in two-dimensional space. Immediately, you can notice something special about how they are arranged.</p>
+<figure class="ph-fig" id="ph-shape">
+<div class="fig-panel"><canvas id="shape-canvas" class="plane" height="360" aria-label="A scatter of points arranged in a rough ring."></canvas></div>
+<div class="controls" role="group" aria-label="Summaries to overlay">
+<button class="chip" data-overlay="mean">the average</button>
+<button class="chip" data-overlay="trend">the trend line</button>
+<button class="chip" data-overlay="eye">what your eye sees</button>
+</div>
+</figure>
+
+<p>Taking an average (or computing a centroid) lands in the one place where there is no data at all. A trend line splits the points in half, seemingly arbitrarily. Means, variances, and regressions can tell you where the data is geometrically, but none of these methods has the power to indicate that there is a hole in the middle. Indicating holes requires understanding shape, and that requires topological methods.</p>
+<h2>A hole is where something passes through</h2>
+<p>Consider the following objects: a coffee mug, a donut, a single penne noodle, a train tunnel, a closed padlock, and a hair tie.</p>
+<figure>
+  <img src="../assets/img/blog/six-holes-collage.jpg" alt="A grid of six photographs: a coffee mug with a handle, a ring doughnut, whole-wheat penne showing its tube openings, the stone portal of a railway tunnel, a closed padlock, and four hair elastics.">
+  <figcaption>A collection of holy items. &beta;<sub>1</sub> = 1.</figcaption>
+</figure>
+
+<p>This strange assortment of objects, much like the donut and coffee mug of our morning routine meme, is topologically equivalent. Why?</p>
+<p>They were designed specifically so that something could go through them. Oil goes through the donut so it <a href="https://www.smithsonianmag.com/arts-culture/the-history-of-the-doughnut-150405177/">doesn&rsquo;t turn soggy</a>. Your fingers pass through the handle of a mug. Boiling water rolls through penne. There is a shared function preventing the distribution of material at the center of these objects. The hole, in this way, indicates <em>passage</em>. If you really think about it, the human culinary tradition has optimized donuts and penne (and many other delicious things!) into tori because of their need to be cooked evenly.</p>
+<p>This all sounds a little silly when the objects are as simple as a torus. But real-world data is high-dimensional and abstract, and often a lot more topologically complex. Sometimes, we don&rsquo;t even know the shape of the data to begin with.</p>
+<h2>Why you should care about holes</h2>
+<p>Holes are awesome. We can also call them by a more dignified and mathematical name, which is <em>cycles</em>. A cycle is a path that goes somewhere and comes back without repeating itself. No point on a cycle is the beginning or the end, which is what distinguishes it from a line (in homology terms, a cycle has no boundary).</p>
+<p>Cycles are everywhere in the natural world. They appear in physical objects like anatomical structures, but they can also represent phenomena that recur or are periodic.</p>
+<p>For example, life cycle diagrams abstract the inherently spatio-temporal process of birth-growth-reproduction-death into a graph structure (morbid!). This figure from the <a href="https://hmnh.harvard.edu/glass-flowers">Glass Flowers</a> exhibit at the Harvard Museum of Natural History shows the life cycle of <em>Marchantia polymorpha</em>, the umbrella liverwort, which can reproduce in two different ways.</p>
+<p>Male and female <em>Marchantia polymorpha</em> are genetically distinct and undergo divergent reproductive processes. This is shown at the fork at the spore stage.</p>
+<p>What this diagram simplifies is that both male and female marchantia can reproduce vegetatively (clone themselves, basically). On the bottom leaves of the plant, there are little cup structures called gemma cups. When it rains, the water splashes out gemmae, which eventually grow into a genetic copy of the parent. A male gemma makes another male plant and vice versa.</p>
+<figure class="fig-narrow fig-tall">
+  <img src="../assets/img/blog/marchantia-lifecycle.jpg" alt="A museum display case holding a placard titled 'Marchantia polymorpha: Life Cycle', with a large circular diagram of the liverwort life cycle numbered 1 through 12, blue and red arrows running around the ring, and a smaller inner loop through the gemma cup. A dried specimen sits on a card beside it.">
+  <figcaption>I took this photo at the <a href="https://hmnh.harvard.edu/glass-flowers">Glass Flowers</a> exhibit at the Harvard Museum of Natural History.</figcaption>
+</figure>
+
+<figure>
+  <img src="../assets/img/blog/marchantia-gemma-cups.jpg" alt="A colony of Marchantia growing on damp ground. Dozens of umbrella-like stalks with finger-shaped rays rise above a flat, lobed green thallus, and small round gemma cups dot the thallus surface.">
+  <figcaption><em>Marchantia polymorpha</em>. Photo: <a href="https://research.fs.usda.gov/">USDA Forest Service</a>.</figcaption>
+</figure>
+
+<p>If we were to draw both the male and female cycles and their vegetative variants, with roughly one node per stage of development and one edge per possible transition, we would have eight stages and eleven transitions, looping back around to the primitive <em>egg</em> stage. The number of independent cycles is:</p>
+<div class="ph-eq">
+$$\beta_1 = E - V + C = 11 - 8 + 1 = 4$$
+</div>
+
+<p>We would have four loops: one female marchantia loop, one male marchantia loop, and two small vegetative cloning loops, one for each sex. This count is called the first Betti number (&beta;<sub>1</sub>), and we&rsquo;ll talk about it more later. What&rsquo;s important to know now is that it counts the independent cycles in the object.</p>
+<p>Of course, the loops are partly a product of the graphical abstraction, because the choice of representation always matters. No organism literally turns back into an egg. But given our chosen representation, the realness comes from what is <em>not</em> happening in the life cycle of the marchantia. It is biologically impossible for a marchantia to directly transform from one non-adjacent stage to another. For example, an archegonium cannot become spores without first transforming through intermediate stages. Nor can a stage in the vegetative cycle jump straight into the sexual cycle. It&rsquo;s right there in the name for us: life <em>cycle</em>.</p>
+<p>Structure, plainly, is what happens around what doesn&rsquo;t happen.</p>
+<h2>When the shape of the data is unknown</h2>
+<p>Even when you suspect there&rsquo;s a shape in your data, you usually can&rsquo;t see it immediately.</p>
+<p>Real-world data can only ever represent observations. Data collection can be slow and imperfect, and we never seem to be able to satisfy our need for it. Predicting unobserved cases is a very familiar problem if you know some elementary probability theory. When you assume your measurements are drawn from a Gaussian (i.e., they center around a mean and have predictable proportions relative to the standard deviation), you are smoothing out your distribution to make room for the data you did not see. A very strange observation is very unlikely, but it often isn&rsquo;t impossible, and the tail end of the curve allocates a little room for it.</p>
+<p>Geometry follows the same intuition via the <em>manifold hypothesis</em>. The manifold hypothesis says that high-dimensional data generally occupies a much lower-dimensional space (the intrinsic dimension) than the one it&rsquo;s sitting in (the ambient dimension). Like the sidewalk or your kitchen floor can be flat when the Earth is round, a manifold looks flat and low-dimensional up close, even when it curves through a much higher-dimensional space. So in this analogy, your points are samples from a manifold, and along the manifold you can interpolate to points that were never observed.</p>
+<figure>
+  <img src="../assets/img/blog/gaussian-and-manifold.jpg" alt="A two-by-two figure. Top row: a histogram of samples, then the same histogram faded with a smooth normal curve drawn over it. Bottom row: a point cloud scattered in a rough ring, then the same points faded with a clean circle drawn through them.">
+  <figcaption>Boom! Math nerds unite!</figcaption>
+</figure>
+
+<p>In the image above, we assume that our points are samples from an underlying cyclical structure, because our existing observations seem to suggest so. If we were to observe a few points in the middle, we might consider them to be <em>noise</em>.</p>
+<p>This is a very satisfying idea in theory, because our example data is still pretty simple. In two or three dimensions, we can easily visualize where the generalization should end. With real data, often at minimum a few hundred dimensions (and thousands for large model hidden states), there&rsquo;s no easy way of telling which scale best describes it, or how far from your observations you can generalize.</p>
+<p>Because PH performs a <em>continuous</em> sweep, it frees you from choosing a scale. What it doesn&rsquo;t free you from is the burden of interpreting your data, or of forming a hypothesis about what kind of structure to look for in the first place.</p>
+<h2>The main idea of persistent homology</h2>
+<p>We don&rsquo;t know which is the correct scale to consider our data from, so we will just consider all of them at once.</p>
+<p>To compute persistent homology, grow an n-dimensional sphere around every point from zero to infinity. At zero, the points are infinitely tiny and infinitely separate. At infinity, there is just one singular, all-encompassing blob, which is equally uninformative. In between, at some distance ε, that network of spheres best approximates the manifold underneath. (Two points count as connected once they&rsquo;re within ε of each other, so each sphere really has radius ε/2.)</p>
+<p>This sweep from zero to infinity is called a <em>filtration</em>. During the filtration, you record ε at the moment a feature appears (its birth) and the moment it disappears by merging with another feature (its death). Cycles are born when a ring of spheres meets, and die when the hole in the middle fills in. The time between a feature&rsquo;s birth and death is called its <em>persistence</em>.</p>
+<p>In practice, this is usually done as a Vietoris–Rips filtration, which builds a simplicial complex over the points. When two spheres overlap, draw an edge between their centers. When three overlap pairwise, fill in the triangle between them. A hole is a ring of edges with no triangles filling it. Remember the &beta;<sub>1</sub> count of the marchantia graph, with eight nodes and eleven edges? This is essentially the same thing.</p>
+<figure class="ph-fig" id="ph-grow">
+<div class="fig-panel"><canvas id="grow-canvas" class="plane" height="340" aria-label="Points with growing disks around them, merging into blobs as the scale increases."></canvas></div>
+<div class="controls">
+<label>scale <em>ε</em>
+<input type="range" id="grow-r" min="0" max="0.60" step="0.002" value="0.04">
+</label>
+<span class="readout" id="grow-read">ε = 0.04</span>
+</div>
+</figure>
+
+<p>The output of a filtration is a <em>persistence diagram</em>, which can also be shown as a <em>barcode</em>. Each bar (or dot) is a topological feature, and its length on the barcode (or height above the diagonal) is how long that feature survived during the filtration. Together they form a distribution of birth/death pairs that characterizes the shape of the point cloud across every possible scale.</p>
+<figure class="ph-fig" id="ph-merge">
+<div class="fig-panel">
+<canvas id="merge-canvas" class="plane" height="330" aria-label="Two clusters of points with a few stragglers, with disks growing as the slider moves."></canvas>
+<canvas id="merge-bars" height="240" aria-label="Barcode of connected components and loops. Each bar is one feature's lifespan. Hover a bar to highlight its feature."></canvas>
+</div>
+<div class="controls">
+<label>scale <em>ε</em>
+<input type="range" id="merge-r" min="0" max="0.64" step="0.002" value="0.03">
+</label>
+<span class="readout" id="merge-read">ε = 0.03</span>
+<span class="spacer"></span>
+<span class="counter">hover a bar ⤴</span>
+</div>
+</figure>
+
+<p>Connected components are counted by H<sub>0</sub> and loops are counted by H<sub>1</sub>. The number of H<sub>n</sub> features alive at any moment is that shape&rsquo;s n-th Betti number. A barcode shows the Betti numbers of the point cloud throughout the entire filtration.</p>
+<p>To step back for a moment: <em>homology</em> is an algebraic way of counting holes in each dimension (H<sub>0</sub> counts components, H<sub>1</sub> loops, H<sub>2</sub> voids, like the hollow inside a basketball). Plain homology counts them for one fixed shape, at one fixed scale. <em>Persistent</em> means tracking them across every scale. Persistent homology, then, is a calculation of the n-dimensional holes of an object at every scale from zero to infinity.</p>
+<p>This is why PH is more powerful than plain theoretical topology. The filtration parameter encodes distance (with embeddings, usually cosine distance), so the barcode also encodes geometric information. Two clusters sitting very far apart in Euclidean space stay alive as distinct H<sub>0</sub> features for much longer than two clusters that are close together. This is as much a feature of the Vietoris–Rips construction as it is of the design of the embedding space: similar points are close and dissimilar points far apart.</p>
+<h2>Persistent homology and noise</h2>
+<p>Which brings us back to pants and plants&hellip;</p>
+<p>You may have seen this other version of the &ldquo;topologist&rsquo;s morning routine&rdquo; meme. Notice the additional holes on the pants.</p>
+<figure class="fig-small">
+  <img src="../assets/img/blog/pants-belt-loops.jpg" alt="A variant of the topologist's morning routine meme. 'Pants' is drawn as a blue surface with eight holes, 'Shirt' as a green surface with three, and 'Socks' as two plain discs.">
+  <figcaption>The universe in which the topologist wears Levi's. &beta;<sub>0</sub> = 1, &beta;<sub>1</sub> = 8.</figcaption>
+</figure>
+
+<p>I think the extra six holes are meant to represent belt loops on jeans (judging by the color). But empirically speaking, I don&rsquo;t really care about belt loops. I would never define a pair of pants as &ldquo;two holes for legs and 6–8 belt loops&rdquo;. Belt loops might come up very low on a list of the &ldquo;defining features of pants&rdquo; (if I ever had to write one for some reason). In this metaphor, belt loops are <em>noise</em>.</p>
+<figure>
+  <img src="../assets/img/blog/family-feud-pants.jpg" alt="The Family Feud stage, with Steve Harvey at the podium in front of the blank answer board. Meme text reads: We asked 100 people about the most salient features of pants.">
+  <figcaption>Potential survey board topic for <em>Family Feud</em>?</figcaption>
+</figure>
+
+<p>Much like the life cycle of the marchantia, where both male and female plants have a simple and equivalent vegetative reproductive cycle, this is noise at our level of abstraction. The artist of the diagram even intuitively knew this, collapsing the male-vegetative and female-vegetative cycles into one. Which means, strangely, that the marchantia life cycle is topologically equivalent to our early-bird topologist&rsquo;s pair of pants. Two distinctive holes are the most important features of both.</p>
+<figure>
+  <img src="../assets/img/blog/pants-equals-plants.jpg" alt="Left: the topologist's morning routine meme with the two-holed 'Pants' figure circled in red. A red arrow points right. Right: a close-up of the marchantia life cycle placard with a heavy dark line traced over the diagram, showing two loops that share the same return arc.">
+  <figcaption>Pants = Plants</figcaption>
+</figure>
+
+<p>It&rsquo;s true that everything has holes and everything has shape. Given any real point cloud, it is basically impossible that you will find <em>zero</em> cycles. What&rsquo;s important in analyzing data is separating the features that are definitive or most salient from the relatively unimportant low-level details (or artifacts of a lossy embedding). On the barcode, the pant legs or the main male–female marchantia cycles appear as long bars, and the belt loops/vegetative cycles appear as short bars.</p>
+<figure class="ph-fig" id="ph-sandbox">
+<div class="controls" role="group" aria-label="Presets">
+<button class="chip" data-preset="pants">pants</button>
+<button class="chip" data-preset="plants">plants</button>
+<button class="chip" data-preset="clusters">clusters</button>
+<button class="chip" data-preset="random">random</button>
+<button class="chip" data-preset="clear">clear</button>
+<span class="spacer"></span>
+<span class="counter" id="sand-count">0 / 60 points</span>
+</div>
+<div class="fig-panel">
+<canvas id="sand-canvas" class="plane" height="330" aria-label="Drawing area. Click to add points, click a point to remove it."></canvas>
+<canvas id="sand-bars" height="300" aria-label="Barcodes of components and loops for the drawn points, or the persistence diagram."></canvas>
+</div>
+<div class="controls">
+<label>scale <em>ε</em>
+<input type="range" id="sand-r" min="0" max="0.60" step="0.002" value="0.10">
+</label>
+<span class="readout" id="sand-read">ε = 0.10</span>
+<span class="spacer"></span>
+<span role="group" aria-label="View">
+<button class="chip active" data-view="bars">barcodes</button>
+<button class="chip" data-view="diagram">diagram</button>
+</span>
+</div>
+<figcaption>Click to place points, click a point to remove it. H<sub>0</sub> in the lighter blue, H<sub>1</sub> in the darker.</figcaption>
+</figure>
+
+<p>However, the belt loops/vegetative cycles are less noisy than, for example, a vaguely loop-like cluster on a life cycle, or maybe a loose thread attached at both ends of the denim. It really depends on what level of sensitivity your research requires, and what you are truly willing to write off as noise.</p>
+<h2>A PH superpower: the stability theorem</h2>
+<p>PH in H<sub>0</sub> is definitionally fancy continuous clustering, and that&rsquo;s usually the one-sentence explanation I give when asked about it. The persistence values of homology zero are equivalent to the sorted edge weights of the Euclidean minimum spanning tree (MST). The reason the output of PH is preferable to the MST (depending on the specifics of the application) is that persistence diagrams obey a stability theorem.</p>
+<p>At a static threshold ε, even a small perturbation can severely affect the clustering behavior of an MST. Distinct clusters may merge, or a coherent cluster may split. However, taking the entire diagram guarantees the following:</p>
+<div class="ph-eq">
+$$d_B\bigl(\mathrm{Dgm}(X),\, \mathrm{Dgm}(Y)\bigr) \;\le\; 2\, d_{\mathrm{GH}}(X, Y)$$
+</div>
+
+<p>In words, this says that the bottleneck distance between two persistence diagrams (PDs) is bounded by the distance between the underlying point clouds. The <em>bottleneck distance</em> asks: if you had to slide the dots of one diagram onto the dots of the other (and any leftover dots onto the diagonal), what&rsquo;s the furthest any single dot has to travel, under the best possible matching? The <em>Gromov–Hausdorff distance</em> asks the same kind of question about the point clouds themselves: how different are they as shapes, ignoring where they sit or which way they face? This is Cohen-Steiner, Edelsbrunner and Harer&rsquo;s bottleneck stability theorem (<a href="https://link.springer.com/article/10.1007/s00454-006-1276-5"><em>Stability of Persistence Diagrams</em></a>, 2007), extended to point clouds and Vietoris–Rips filtrations by Chazal, de Silva and Oudot (<a href="https://arxiv.org/abs/1207.3885"><em>Persistence Stability for Geometric Complexes</em></a>, 2014). It&rsquo;s an upper bound, so a little noise to the point cloud can only perturb the PD a little. (A lot of noise <em>can</em> perturb it a lot, but it doesn&rsquo;t have to.) This holds across all dimensions, and it&rsquo;s the mechanism by which you can compute a barcode from noisy data and still be able to trust the long bar.</p>
+<figure class="ph-fig" id="ph-stability">
+<div class="fig-panel">
+<canvas id="stab-canvas" class="plane" height="300" aria-label="A ring of points. Each original point is faint, with a shaded disc of radius delta around it, and the nudged point drawn solid."></canvas>
+<canvas id="stab-diagram" height="320" aria-label="Persistence diagram. Hollow circles are the original features, filled circles the perturbed ones, and each shaded box is the region the theorem allows a feature to move within."></canvas>
+</div>
+<div class="controls">
+<label>perturbation <em>δ</em>
+<input type="range" id="stab-d" min="0" max="0.10" step="0.001" value="0">
+</label>
+<span class="readout" id="stab-read">δ = 0</span>
+</div>
+<figcaption>Drag δ to nudge every point by at most that much. Hollow circles are the features before, filled circles after. The shaded box around each one is the bound the theorem promises: 2δ in each direction. There's always a matching that keeps everything inside its box.</figcaption>
+</figure>
+
+<h2>A PH caveat: the curse of dimensionality</h2>
+<p>High-dimensional space is weird. As the number of dimensions grows, the distances between random points all bunch up around the same value. Every point ends up roughly equally far from every other point (Beyer et al., <a href="https://link.springer.com/10.1007/3-540-49257-7_15"><em>When Is &ldquo;Nearest Neighbor&rdquo; Meaningful?</em></a>, 1999). In two dimensions, &ldquo;near&rdquo; and &ldquo;far&rdquo; can mean something. In hundreds or thousands of dimensions, everything is kind of medium-far.</p>
+<p>For PH, this squashes the filtration. All the action happens in one narrow window of ε, where everything is born at about the same time and dies at about the same time. The gap between long bars and short bars, which is the whole point of the pants-and-plants argument, shrinks. The pant legs start to look like belt loops, not because they <em>are</em> belt loops, but because the space has squashed the scale.</p>
+<figure class="ph-fig" id="ph-dims">
+<div class="fig-panel">
+<canvas id="dims-canvas" height="260" aria-label="Thirty points laid out to keep their distances in D dimensions, with the Rips complex at scale epsilon drawn over them."></canvas>
+<canvas id="dims-chart" height="210" aria-label="Histogram of all pairwise distances, and the loop bars below it, both measured as a fraction of the largest distance."></canvas>
+</div>
+<div class="controls">
+<label>dimensions <em>D</em>
+<input type="range" id="dims-d" min="0" max="10" step="1" value="0">
+</label>
+<span class="readout" id="dims-read">D = 2</span>
+<label>scale <em>ε</em>
+<input type="range" id="dims-e" min="0" max="1" step="0.005" value="0.4">
+</label>
+<span class="readout" id="dims-eread">ε = 0.40</span>
+<span class="spacer"></span>
+<span class="counter" id="dims-note"></span>
+</div>
+<figcaption>Thirty points on a ring, with a little noise (σ = 0.02) in every coordinate. Drag D to add dimensions: the points are laid out flat so as to keep their distances in D dimensions, and the Rips complex grows on top as you drag ε. Everything is measured as a fraction of the largest distance. As D grows, the pairwise distances (the histogram) bunch up, so nothing connects for a long time and then everything connects at once, and the loop's bar shrinks.</figcaption>
+</figure>
+
+<p>It also takes some of the comfort out of the stability theorem. The theorem bounds how much the diagram moves by how far the points move. If every coordinate gets just a little noise σ, each point moves by about σ√D in total. In two dimensions that&rsquo;s nothing. In 768 dimensions that&rsquo;s about 28σ, so the guarantee gets weaker as D grows. Noise that&rsquo;s tiny in every coordinate can be large overall.</p>
+<p>On top of that, language model embeddings have their own quirks. They tend to be anisotropic, sitting in a narrow cone rather than spreading out evenly (Ethayarajh, <a href="https://arxiv.org/abs/1909.00512"><em>How Contextual are Contextualized Word Representations?</em></a>, 2019). And cosine similarity between them is often dominated by a handful of &ldquo;rogue&rdquo; dimensions (Timkey and van Schijndel, <a href="https://arxiv.org/abs/2109.04404"><em>All Bark and No Bite</em></a>, 2021). Both bend the distances that PH is built on.</p>
+<p>Here are a few more things that may bite you when you use PH. Figuring out how to control for them is a huge part of the analytic process:</p>
+<ul>
+<li><strong>Outliers.</strong> The stability theorem gives no protection here. It measures how far two point clouds are from each other by their most divergent point, so a single stray point counts as a huge change. One outlier can split off as its own long H<sub>0</sub> bar, or sit inside a loop and kill it early. (The fix is to filter by density instead of raw distance; see Chazal, Cohen-Steiner and Mérigot, <a href="https://link.springer.com/10.1007/s10208-011-9098-0"><em>Geometric Inference for Probability Measures</em></a>, 2011.)</li>
+<li><strong>Sampling.</strong> If you don&rsquo;t have enough points around a loop, it never closes, and you never see it. This is part of why PH works best when you already suspect there&rsquo;s a cycle in the world you&rsquo;re measuring: you know to sample all the way around it.</li>
+<li><strong>Density.</strong> Vietoris–Rips uses one ε for everything. A loop in a crowded region and a loop in a sparse region close at different scales, so bar length partly reflects how dense the data is, not just how big the hole is.</li>
+<li><strong>What you did to the data first.</strong> The metric (cosine or Euclidean), normalization, and especially dimensionality reduction all matter. And dimensionality reduction is a huge deal! Methods like t-SNE and UMAP are notoriously sensitive to their parameters, and can create or tear loops. PCA is deterministic, but it can flatten structure.</li>
+</ul>
+<p>None of this means PH is untrustworthy. It means that a persistent feature is a claim, and like any claim it needs robust control conditions.</p>
+<h2>Show me the money! (i.e. potential use cases in ML)</h2>
+<p>In machine learning more generally, the point cloud is usually some embedding feature of a model: learned representations, hidden states, attention signatures. This data is high-dimensional, often noisy, and has no ground-truth geometry whatsoever. Unsupervised geometric and topological methods can be especially helpful when working with this kind of data.</p>
+<p>The property that makes TDA especially attractive to CL/NLP researchers is that topology is <em>coordinate-invariant</em>. Persistence diagrams (with respect to a common dataset) computed on different models can be compared directly. This is an approach I&rsquo;ve been leaning on more recently, inspired by Shimon Edelman&rsquo;s <a href="https://doi.org/10.1017/S0140525X98001253"><em>Representation is Representation of Similarities</em></a> (1998).</p>
+<p>In general, PH is used either as a feature input or as a confirmatory method for structure we already know exists in the world. The latter follows neuroscience and biology, which have shown some really cool applications of PH recently.</p>
+<figure>
+<div class="post-figs">
+  <figure style="flex: 1.17">
+    <img src="../assets/img/blog/grid-cell-torus-gardner.jpg" alt="Top: three views of a doughnut-shaped point cloud of grid-cell population activity, with black dots marking when one cell fired. Bottom: barcodes for three grid modules, each with one long H0 bar, two long H1 bars and one long H2 bar marked by arrows, standing out against grey shading from shuffled data.">
+    <figcaption><a href="https://doi.org/10.1038/s41586-021-04268-7">Toroidal Topology of Population Activity in Grid Cells</a> (Gardner et al., 2022)</figcaption>
+  </figure>
+  <figure style="flex: 1.39">
+    <img src="../assets/img/blog/skull-networks-lee.jpg" alt="Three rows. Each shows a skull in side view, the same skull drawn as a network of labelled bones joined where they touch, and the network again with nodes coloured by module. The rows are Aetosaurus, Plateosaurus and a chicken; the chicken's network has far fewer bones.">
+    <figcaption><a href="https://doi.org/10.1038/s41598-020-73083-3">Evolutionary and Ontogenetic Changes of the Anatomical Organization and Modularity in the Skull of Archosaurs</a> (Lee, Esteve-Altava &amp; Abzhanov, 2020)</figcaption>
+  </figure>
+</div>
+</figure>
+
+<figure>
+  <img src="../assets/img/blog/malaria-loops-damrich.jpg" alt="Figure 9 of the Damrich et al. paper. Four columns labelled Correlation, DTM, Effective resistance and Diffusion. Each shows the two most persistent loops drawn over a UMAP embedding of the malaria dataset, with a persistence diagram beneath. In the first two columns the loops sit on the diagonal; in the last two they lift well above it.">
+  <figcaption><a href="https://openreview.net/forum?id=ARV1gJSOzV">Persistent Homology for High-dimensional Data Based on Spectral Methods</a> (Damrich, Berens &amp; Kobak, 2024)</figcaption>
+</figure>
+
+<p>One of PH&rsquo;s superpowers is its efficacy on <em>graph structure</em>. This has been especially effective in analyzing the attention signatures of language models, which can be represented as a graph of all the connections between words: tokens are the nodes, and attention weights (the softmaxed query–key scores) are the edges. This has worked especially well for detecting machine-generated text, and even for working out which model wrote it. Kushnareva et al. (<a href="https://arxiv.org/abs/2109.04825"><em>Artificial Text Detection via Examining the Topology of Attention Maps</em></a>, 2021) turned BERT&rsquo;s attention maps into graphs and used their topological features to tell human text from machine text. Tulchinskii et al. (<a href="https://arxiv.org/abs/2306.04723"><em>Intrinsic Dimension Estimation for Robust Detection of AI-Generated Texts</em></a>, 2023) went further with a quantity built from PH, the &ldquo;persistent homology dimension&rdquo; of a text&rsquo;s token embeddings: human text comes out consistently higher-dimensional than generated text. And Uchendu et al.&rsquo;s <a href="https://arxiv.org/abs/2309.12934"><em>TopFormer</em></a> (2023) adds topological features to a transformer classifier to attribute deepfake text to the model that generated it.</p>
+<figure>
+<div class="post-figs">
+  <figure style="flex: 1">
+    <img src="../assets/img/blog/attention-map-kushnareva.jpg" alt="A five-by-five attention map from BERT for the sentence 'I love you', with the [CLS] and [SEP] tokens; each cell shows an attention weight between two tokens.">
+    <figcaption><a href="https://arxiv.org/abs/2109.04825">Artificial Text Detection via Examining the Topology of Attention Maps</a> (Kushnareva et al., 2021)</figcaption>
+  </figure>
+  <figure style="flex: 2.87">
+    <img src="../assets/img/blog/phd-tulchinskii.jpg" alt="Two token paths drawn as point clouds. Left, the AI-generated sentence 'As an AI language model I don't have an opinion' lies flat on a pink plane. Right, the human sentence 'As a human being I have an opinion on everything' wanders over a green sphere.">
+    <figcaption><a href="https://arxiv.org/abs/2306.04723">Intrinsic Dimension Estimation for Robust Detection of AI-Generated Texts</a> (Tulchinskii et al., 2023)</figcaption>
+  </figure>
+</div>
+</figure>
+
+<figure>
+  <img src="../assets/img/blog/topformer-uchendu.jpg" alt="A pipeline diagram: an article goes through a transformer, its weights are reshaped into a point cloud, a topological layer builds a simplicial complex, and the output is a persistence diagram used as TDA features.">
+  <figcaption><a href="https://arxiv.org/abs/2309.12934">TopFormer: Topology-Aware Authorship Attribution of Deepfake Texts with Diverse Writing Styles</a> (Uchendu et al., 2023)</figcaption>
+</figure>
+
+<p>One of my favorite works in applied topology is this 2024 paper by Draganov &amp; Skiena (<a href="https://arxiv.org/abs/2404.00500"><em>The Shape of Word Embeddings</em></a>), which rebuilds the family tree of 81 Indo-European languages from nothing but the shape of their static word embeddings. The trees aren&rsquo;t perfect, but they are significantly closer to the real one than chance. It makes me weep tears of beauty every time I read it. It&rsquo;s <em>The Godfather</em> of the applied-math-meets-linguistics niche.</p>
+<figure class="fig-tall">
+  <img src="../assets/img/blog/draganov-significance.jpg" alt="Figure 2 of Draganov and Skiena: three panels for 30, 50 and 81 languages. Each row is one combination of distance, homology dimension and tree metric; each coloured dot is one rebuilt family tree, placed by how many standard deviations better than shuffled trees it scores. Almost all dots sit to the right of zero, many beyond the dashed line at two standard deviations, and several carry stars.">
+  <figcaption><a href="https://arxiv.org/abs/2404.00500">The Shape of Word Embeddings: Quantifying Non-Isometry with Topological Data Analysis</a> (Draganov &amp; Skiena, 2024)</figcaption>
+</figure>
+
+<p>Like I said, one thing that PH is really good at is finding cycles. In language, not many processes generate <em>cycles</em>, except for those with a natural periodicity, like days of the week or months of the year. Goodfire&rsquo;s <a href="https://www.goodfire.com/research/the-world-inside-neural-networks"><em>The World Inside Neural Networks</em></a> (2026) collects some of the shapes interpretability researchers have found inside models: days of the week and months sit on circular loops, years in history on smooth curves, and colors on surfaces organized by hue, saturation and lightness.</p>
+<figure>
+  <img src="../assets/img/blog/lm-feature-geometry-goodfire.jpg" alt="Seven 3D scatter projections of language-model representation space, each casting a grey shadow onto a floor plane. They are labelled GEOGRAPHY, DAYS OF THE WEEK, FORMALITY, TEMPERATURE, COLOR, YEARS and AGE; several form arcs, rings or curves rather than blobs.">
+  <figcaption><a href="https://www.goodfire.com/research/the-world-inside-neural-networks">The World Inside Neural Networks</a> (Geiger et al., Goodfire, 2026)</figcaption>
+</figure>
+
+<p>Numbers are even stranger. Kantamneni and Tegmark (<a href="https://arxiv.org/abs/2502.00873"><em>Language Models Use Trigonometry to Do Addition</em></a>, 2025) found that language models represent numbers on a <em>helix</em>: a straight line for size, wrapped in circles with periods of 2, 5, 10 and 100 (loops!). To add two numbers, the model rotates around those circles, which is where the trigonometry in the title comes from. Neither of these used PH.</p>
+<figure>
+  <img src="../assets/img/blog/helix-subspace-kantamneni.jpg" alt="Figure 3 of the Kantamneni and Tegmark paper. Four panels plot sine against cosine for the numbers 0 to 99 projected onto a fitted helix subspace at periods 2, 5, 10 and 100; the last panel arranges the numbers around a clear circle. A wide bottom panel shows the same numbers along a single rising linear component.">
+  <figcaption><a href="https://arxiv.org/abs/2502.00873">Language Models Use Trigonometry to Do Addition</a> (Kantamneni &amp; Tegmark, 2025)</figcaption>
+</figure>
+
+<p>But it&rsquo;s important to note that the helix lives in a small subspace (a handful of dimensions out of thousands) that the authors fit specifically to find it. I suspect that pointing the PH bazooka at the whole embedding cloud would not give the same kind of result.</p>
+<h2>Your first hit</h2>
+<p>Most data analysis is about what&rsquo;s there. Topology is about how it&rsquo;s arranged, including the parts that are missing. Persistent homology won&rsquo;t find structure that doesn&rsquo;t exist, and it&rsquo;s easy to over-read what it does find. But used carefully, with a hypothesis and a baseline, it gives you something rare: a way to check whether the shape of your data is the shape of the world. Sometimes it is. Sometimes it isn&rsquo;t. Either way, you learned something.</p>
+<p>Consider this your first hit. Don&rsquo;t worry, it&rsquo;s not meth, it&rsquo;s just math.</p>
+<figure class="fig-small">
+  <img src="../assets/img/blog/dime-bag-barcode.jpg" alt="A tiny clear zip-top baggie with a persistence barcode inside: one long H0 bar with an arrow, a stack of short ones, and two long H1 bars among a few short ones.">
+</figure>
+
+<h2>Resources</h2>
+<p>Below are some tools I use for computing PH on model internals. I maintain forks of many of these (in the links provided), because many TDA tools are not made for language models, and they need a little bit of tinkering to be applicable to studying LLMs. I also turn research code into reusable, abstracted APIs, and add some expanded data visualization for my own purposes.</p>
+<ul>
+<li><a href="https://github.com/berenslab/eff-ph">eff-ph</a>: effective PH pipelines; evaluated on toy examples and biological data with ground truth.</li>
+<li><a href="https://github.com/FoxHound0x00/hole">HOLE</a>: visualising the topology of neural nets in H<sub>0</sub>; originally evaluated on image-classification networks.</li>
+<li><a href="https://github.com/brezgis/tda4atd">PH on attention maps</a>: persistent homology applied to transformer attention maps.</li>
+<li><a href="https://arxiv.org/abs/2109.04825">Artificial Text Detection via Examining the Topology of Attention Maps</a>: Kushnareva et al.&rsquo;s paper, the starting point for most attention-map topology.</li>
+</ul>
+<p>For a broad introduction to TDA for NLP, start with Adaku Uchendu and Thai Le&rsquo;s survey, <a href="https://arxiv.org/abs/2411.10298">Unveiling Topological Structures from Language: A Comprehensive Survey of Topological Data Analysis Applications in NLP</a>, and her companion list, <a href="https://github.com/AdaUchendu/AwesomeTDA4NLP">AwesomeTDA4NLP</a>.</p>
+<p>And for the mathematics itself, I really enjoy <a href="https://youtube.com/playlist?list=PLpRLWqLFLVTCL15U6N3o35g4uhMSBVA2b">Pierre Albin&rsquo;s course on YouTube</a>, or basically any of the <a href="https://www.youtube.com/watch?v=OkDs9Wj5G1U">Applied Algebraic Topology Network&rsquo;s</a> videos. Robert Ghrist&rsquo;s essay <a href="https://www2.math.upenn.edu/~ghrist/preprints/barcodes.pdf">Barcodes: the persistent topology of data</a> said basically everything I said here more coherently and with fewer memes.</p>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, { delimiters: [
+    {left: '$$', right: '$$', display: true},
+    {left: '\\(', right: '\\)', display: false}
+  ], throwOnError: false });"></script>
+<script src="../js/ph/engine.js?v=1792377823"></script>
+<script src="../js/ph/viz.js?v=1792377823"></script>
+<script src="../js/ph/widgets.js?v=1792377823"></script>
+      </div>
+    </div>
+  </article>
+
+  <footer class="footer" id="footer">
+    <div class="container footer-inner">
+      <p class="footer-note">Built by a strange loop, for a strange loop. · © 2026 Anna Brežģis</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+    // --- Email: shown obfuscated, assembled only on click and copied to the
+    // clipboard (never written into the HTML source). ---
+    function copyToClipboard(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(text).then(() => true).catch(() => false);
+      }
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        const ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        return Promise.resolve(ok);
+      } catch (_) { return Promise.resolve(false); }
+    }
+    function copyEmail(e) {
+      e.preventDefault();
+      const addr = ['anna', 'brezgis.com'].join('@');
+      const clicked = e.currentTarget;
+      const label = clicked.querySelector('#email-text');
+      copyToClipboard(addr).then((ok) => {
+        if (label) {
+          const shown = label.textContent;
+          label.textContent = ok ? 'Copied ✓' : addr;
+          window.setTimeout(() => { label.textContent = shown; }, 1200);
+        } else {
+          clicked.title = ok ? 'Copied!' : addr;
+          window.setTimeout(() => { clicked.title = 'Click to copy email'; }, 1200);
+        }
+      });
+    }
+    window.copyEmail = copyEmail;
+    })();
+  </script>
+  <script>
+    (function () {
+      var imgs = document.querySelectorAll('.post-body figure img, .post-body .fig-pair-imgs img');
+      if (!imgs.length) return;
+      var box = document.createElement('div');
+      box.className = 'lightbox';
+      box.innerHTML = '<button class="lightbox-close" type="button" aria-label="Close">&times;</button><img alt="">';
+      document.body.appendChild(box);
+      var boxImg = box.querySelector('img');
+      function open(im) { boxImg.src = im.currentSrc || im.src; boxImg.alt = im.alt || ''; box.classList.add('open'); document.body.style.overflow = 'hidden'; }
+      function close() { box.classList.remove('open'); document.body.style.overflow = ''; boxImg.removeAttribute('src'); }
+      imgs.forEach(function (im) { im.addEventListener('click', function () { open(im); }); });
+      box.querySelector('.lightbox-close').addEventListener('click', close);
+      box.addEventListener('click', function (e) { if (e.target === box) close(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && box.classList.contains('open')) close(); });
+    })();
+  </script>
+
+</body>
+</html>
