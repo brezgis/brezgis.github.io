@@ -37,9 +37,18 @@
 
   // Wraps a canvas: DPR-aware sizing (CSS height taken from the height
   // attribute; without one, the canvas fills whatever height CSS gives it),
-  // redraw on resize and theme change.
-  function makeCanvas(canvas, drawFn) {
-    const attrH = parseInt(canvas.getAttribute('height'), 10);
+  // redraw on resize and theme change. opts.fit = worldW shrinks the height
+  // on narrow screens to what a mapper(env, worldW, opts.pad) drawing needs,
+  // so phones don't get a tall panel with a small picture in the middle;
+  // opts.fitH(width) does the same for any other layout.
+  function makeCanvas(canvas, drawFn, opts) {
+    opts = opts || {};
+    // Setting canvas.height (the backing buffer) rewrites the height
+    // attribute, so remember the authored CSS height the first time we see
+    // the canvas; a second env on the same canvas must not read the
+    // DPR-scaled value back.
+    if (!canvas.dataset.cssH) canvas.dataset.cssH = canvas.getAttribute('height') || '';
+    const attrH = parseInt(canvas.dataset.cssH, 10);
     const cssH = Number.isFinite(attrH) ? attrH : 0;
     if (cssH) canvas.style.height = cssH + 'px';
     const env = {
@@ -68,7 +77,14 @@
     const resize = () => {
       if (!env._enabled) return;
       const w = canvas.clientWidth || canvas.parentElement.clientWidth;
-      const h = cssH || canvas.clientHeight;
+      let h = cssH || canvas.clientHeight;
+      if (cssH && w) {
+        const pad = opts.pad === undefined ? 20 : opts.pad;
+        if (opts.fit) h = Math.min(cssH, Math.round((w - 2 * pad) / opts.fit + 2 * pad + 24));
+        else if (opts.fitH) h = Math.min(cssH, Math.round(opts.fitH(w)));
+        // always (re)assert: envs sharing a canvas may want different heights
+        if (canvas.style.height !== h + 'px') canvas.style.height = h + 'px';
+      }
       if (!w || !h) return;
       env.dpr = window.devicePixelRatio || 1;
       env.w = w; env.h = h;
@@ -119,7 +135,7 @@
       for (const i of opts.highlight) {
         const x = map.x(pts[i][0]), y = map.y(pts[i][1]);
         ctx.beginPath(); ctx.arc(x, y, rad + 0.8, 0, 2 * Math.PI); ctx.fill();
-        ctx.beginPath(); ctx.arc(x, y, rad + 4.2, 0, 2 * Math.PI); ctx.stroke();
+        ctx.beginPath(); ctx.arc(x, y, rad + 3, 0, 2 * Math.PI); ctx.stroke();
       }
     }
   }
@@ -188,6 +204,34 @@
   const SANS = '11px system-ui, sans-serif';
   const MONO = '11px ui-monospace, Menlo, Consolas, monospace';
 
+  // text with a paper-colored halo, so labels stay legible over points and
+  // lines; x is clamped so the text never runs off the canvas.
+  function label(env, text, x, y, opts) {
+    opts = opts || {};
+    const ctx = env.ctx, C = Theme.get();
+    ctx.font = opts.font || SANS;
+    ctx.textBaseline = opts.baseline || 'middle';
+    const w = ctx.measureText(text).width, m = 6;
+    let left = opts.align === 'right' ? x - w : opts.align === 'center' ? x - w / 2 : x;
+    left = Math.max(m, Math.min(env.w - m - w, left));
+    ctx.textAlign = 'left';
+    if (opts.box) {
+      // tooltip: a paper chip with a hairline, for labels over dense marks
+      const bh = 16, by = ctx.textBaseline === 'middle' ? y - bh / 2 : y - bh + 3;
+      ctx.fillStyle = C.paper; ctx.strokeStyle = C.hair; ctx.lineWidth = 1;
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(left - 4.5, by, w + 9, bh, 3); else ctx.rect(left - 4.5, by, w + 9, bh);
+      ctx.fill(); ctx.stroke();
+    } else {
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = C.paper; ctx.lineWidth = 4;
+      ctx.strokeText(text, left, y);
+    }
+    ctx.fillStyle = opts.color || C.inkSoft;
+    ctx.fillText(text, left, y);
+    return { left, right: left + w };
+  }
+
   function niceStep(max) {
     for (const s of [0.02, 0.05, 0.1, 0.2, 0.5]) if (max / s <= 7) return s;
     return 1;
@@ -197,8 +241,8 @@
 
   // ---------- barcode ----------
 
-  // Bars arrive in engine units (Rips scale ε); displayed in disk-radius
-  // units r = ε/2. opts: { dims: [0,1], rMax, panelLabels }
+  // Bars and axes are in Rips scale ε (= pairwise distance).
+  // opts: { dims: [0,1], rMax, panelLabels }
   function Barcode(canvas, opts) {
     const self = {
       bars: [], sweepR: 0, hover: null,
@@ -214,7 +258,7 @@
       const eps = 1e-9;
       // drop zero-persistence pairs and anything born beyond the plotted window
       const out = self.bars.filter(b =>
-        b.dim === dim && b.death - b.birth > eps && b.birth / 2 <= rMax);
+        b.dim === dim && b.death - b.birth > eps && b.birth <= rMax);
       if (dim === 0) out.sort((a, b) => b.death - a.death);
       else out.sort((a, b) => (a.birth - b.birth) || (b.death - a.death));
       return out;
@@ -228,6 +272,7 @@
       const X = (r) => PAD_L + Math.min(r / rMax, 1) * plotW;
       const panelH = (H - PAD_T - AXIS_H - GAP * (dims.length - 1)) / dims.length;
       self._rows = [];
+      let tip = null;
 
       // axis
       const step = niceStep(rMax);
@@ -241,9 +286,10 @@
         ctx.fillStyle = C.inkFaint;
         ctx.fillText(fmt(v), x, axisY);
       }
+      // unit at the far left, under the panel labels, clear of the last tick
       ctx.fillStyle = C.inkFaint;
-      ctx.textAlign = 'right';
-      ctx.fillText('r', W - 4, axisY);
+      ctx.textAlign = 'left';
+      ctx.fillText('ε', 6, axisY);
 
       dims.forEach((dim, pi) => {
         const top = PAD_T + pi * (panelH + GAP);
@@ -263,9 +309,9 @@
         bars.forEach((b, ri) => {
           const y = top + ri * rowH + rowH / 2;
           if (y > top + panelH) return;
-          const x0 = X(b.birth / 2);
+          const x0 = X(b.birth);
           const inf = b.death === Infinity;
-          const x1 = inf ? W - PAD_R + 8 : X(b.death / 2);
+          const x1 = inf ? W - PAD_R + 8 : X(b.death);
           const isHover = self.hover === b;
           ctx.strokeStyle = isHover ? C.hi : col;
           ctx.lineWidth = isHover ? barTh + 1.6 : barTh;
@@ -276,14 +322,15 @@
             ctx.closePath(); ctx.fillStyle = isHover ? C.hi : col; ctx.fill();
           }
           if (isHover) {
-            ctx.font = MONO; ctx.fillStyle = C.hi;
-            ctx.textBaseline = 'bottom';
-            const label = inf
-              ? `born ${fmt(b.birth / 2)} · lives forever`
-              : `${fmt(b.birth / 2)} → ${fmt(b.death / 2)}`;
-            ctx.textAlign = x0 < W / 2 ? 'left' : 'right';
-            const lx = x0 < W / 2 ? Math.max(x0, PAD_L) + 4 : Math.min(x1, W - PAD_R) - 4;
-            ctx.fillText(label, lx, Math.max(y - 4, top + 11));
+            const text = inf
+              ? `born ${fmt(b.birth)} · lives forever`
+              : `${fmt(b.birth)} → ${fmt(b.death)}`;
+            const above = y - barTh / 2 - 12 >= top + 4;
+            const ly = above ? y - barTh / 2 - 12 : y + barTh / 2 + 12;
+            const left = x0 < W / 2;
+            // drawn after everything else, so later rows can't paint over it
+            tip = [text, left ? Math.max(x0, PAD_L) + 4 : Math.min(x1, W - PAD_R) - 4, ly,
+              { font: MONO, color: C.hi, align: left ? 'left' : 'right', box: true }];
           }
           self._rows.push({ bar: b, y, h: Math.max(rowH, 5), top, panelH });
         });
@@ -295,6 +342,7 @@
       ctx.setLineDash([4, 3]);
       ctx.beginPath(); ctx.moveTo(sx, PAD_T - 2); ctx.lineTo(sx, axisY - 2); ctx.stroke();
       ctx.setLineDash([]);
+      if (tip) label(env, ...tip);
     }
 
     self.env = makeCanvas(canvas, draw);
@@ -330,10 +378,14 @@
 
   // ---------- persistence diagram ----------
 
+  // opts: { rMax, dims }. Optionally set self.ghost (bars drawn hollow, as
+  // "before") and self.box (half-width, in ε, of the region each ghost may
+  // move within), for the stability figure.
   function Diagram(canvas, opts) {
-    const self = { bars: [], hover: null, onHover: null, env: null, _pts: [] };
+    const self = { bars: [], ghost: [], box: 0, hover: null, onHover: null, env: null, _pts: [] };
     const rMax = opts.rMax;
     const dims = opts.dims || [0, 1];
+    const shown = (b) => dims.indexOf(b.dim) >= 0 && b.death - b.birth > 1e-9 && b.birth <= rMax;
     const PAD_L = 46, PAD_R = 18, PAD_T = 26, PAD_B = 34;
 
     function draw(env) {
@@ -346,6 +398,26 @@
       const Y = (r) => oy + side - (r / rMax) * side;
       self._pts = [];
 
+      // allowed region around each "before" point: one path of rects filled
+      // once, so overlapping boxes read as a single flat wash; clipped to the
+      // frame (H₀ points sit on the left edge, at birth 0).
+      const ghosts = self.ghost.filter(b => shown(b) && b.death !== Infinity);
+      if (self.box > 0 && ghosts.length) {
+        const w = (self.box / rMax) * side;
+        ctx.save();
+        ctx.beginPath(); ctx.rect(ox, oy, side, side); ctx.clip();
+        ctx.fillStyle = C.wash;
+        ctx.beginPath();
+        for (const b of ghosts) ctx.rect(X(b.birth) - w, Y(Math.min(b.death, rMax)) - w, 2 * w, 2 * w);
+        ctx.fill();
+        ctx.strokeStyle = C.inkFaint; ctx.lineWidth = 1; ctx.setLineDash([3, 3]);
+        for (const b of ghosts) {
+          if (b.dim !== 1) continue; // outline the loops only; H₀ boxes pile up
+          ctx.strokeRect(X(b.birth) - w, Y(Math.min(b.death, rMax)) - w, 2 * w, 2 * w);
+        }
+        ctx.setLineDash([]);
+        ctx.restore();
+      }
       // frame + grid
       ctx.strokeStyle = C.hair; ctx.lineWidth = 1;
       const step = niceStep(rMax);
@@ -377,25 +449,35 @@
       ctx.fillText('death', 0, 0);
       ctx.restore();
 
+      for (const b of ghosts) {
+        const px = X(b.birth), py = Y(Math.min(b.death, rMax));
+        ctx.strokeStyle = C.inkFaint; ctx.lineWidth = 1.3;
+        if (b.dim === 0) { ctx.beginPath(); ctx.arc(px, py, 4.2, 0, 2 * Math.PI); }
+        else tri(ctx, px, py, 5.4);
+        ctx.stroke();
+      }
+
       // legend in the always-empty lower-right triangle
       ctx.font = SANS; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-      const lx = ox + side - 78, ly = oy + side - 26;
+      const lx = ox + side - (self.ghost.length ? 128 : 78), ly = oy + side - 26;
       ctx.fillStyle = C.h0;
       ctx.beginPath(); ctx.arc(lx, ly, 4, 0, 2 * Math.PI); ctx.fill();
       ctx.fillStyle = C.inkSoft; ctx.fillText('H₀', lx + 9, ly + 0.5);
       ctx.fillStyle = C.h1;
       tri(ctx, lx + 38, ly, 4.6); ctx.fill();
       ctx.fillStyle = C.inkSoft; ctx.fillText('H₁', lx + 47, ly + 0.5);
+      if (self.ghost.length) {
+        ctx.strokeStyle = C.inkFaint; ctx.lineWidth = 1.3;
+        ctx.beginPath(); ctx.arc(lx + 78, ly, 4.2, 0, 2 * Math.PI); ctx.stroke();
+        ctx.fillStyle = C.inkSoft; ctx.fillText('before', lx + 87, ly + 0.5);
+      }
 
       // points
-      const eps = 1e-9;
       for (const b of self.bars) {
-        if (dims.indexOf(b.dim) < 0) continue;
-        if (b.death - b.birth <= eps) continue;
-        if (b.birth / 2 > rMax) continue; // born beyond the plotted window
+        if (!shown(b)) continue;
         const inf = b.death === Infinity;
-        const px = X(b.birth / 2);
-        const py = inf ? yInf : Y(Math.min(b.death / 2, rMax));
+        const px = X(b.birth);
+        const py = inf ? yInf : Y(Math.min(b.death, rMax));
         const isHover = self.hover === b;
         ctx.fillStyle = isHover ? C.hi : (b.dim === 0 ? C.h0 : C.h1);
         if (b.dim === 0) {
@@ -405,13 +487,12 @@
         }
         self._pts.push({ bar: b, px, py });
         if (isHover) {
-          ctx.font = MONO; ctx.fillStyle = C.hi;
-          ctx.textAlign = px < ox + side / 2 ? 'left' : 'right';
-          ctx.textBaseline = 'bottom';
-          const label = inf
-            ? `H${b.dim === 0 ? '₀' : '₁'} · born ${fmt(b.birth / 2)} · ∞`
-            : `H${b.dim === 0 ? '₀' : '₁'} · ${fmt(b.birth / 2)} → ${fmt(b.death / 2)}`;
-          ctx.fillText(label, px + (px < ox + side / 2 ? 8 : -8), py - 6);
+          const text = inf
+            ? `H${b.dim === 0 ? '₀' : '₁'} · born ${fmt(b.birth)} · ∞`
+            : `H${b.dim === 0 ? '₀' : '₁'} · ${fmt(b.birth)} → ${fmt(b.death)}`;
+          const left = px < ox + side / 2;
+          label(env, text, px + (left ? 10 : -10), py - 14,
+            { font: MONO, color: C.hi, align: left ? 'left' : 'right', box: true });
         }
       }
     }
@@ -424,7 +505,8 @@
       ctx.closePath();
     }
 
-    self.env = makeCanvas(canvas, draw);
+    // a square plot: on narrow screens, only as tall as its width needs
+    self.env = makeCanvas(canvas, draw, { fitH: (w) => w - PAD_L - PAD_R + PAD_T + PAD_B });
 
     canvas.addEventListener('mousemove', (ev) => {
       if (!self.env.enabled) return;
@@ -455,7 +537,7 @@
 
   window.VIZ = {
     Theme, reducedMotion, makeCanvas, mapper,
-    drawPoints, drawEdges, unionDisks, unionTris,
+    drawPoints, drawEdges, unionDisks, unionTris, label,
     Barcode, Diagram, fmt, SANS, MONO,
   };
 })();

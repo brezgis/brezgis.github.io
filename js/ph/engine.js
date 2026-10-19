@@ -1,8 +1,8 @@
-/* engine.js — persistent homology over Z/2 for 2-D point clouds.
+/* engine.js — persistent homology over Z/2 for point clouds (2-D in the widgets).
  *
  * Vietoris–Rips filtration up to dimension 2 (optionally 3), reduced with the
- * standard column algorithm. Times are Rips scale ε = pairwise distance; the
- * page draws disks of radius r = ε/2, so the UI divides every time by 2.
+ * standard column algorithm. Times are Rips scale ε = pairwise distance, which
+ * is also what the page displays; drawn disks have radius ε/2.
  *
  * Exposed as window.PH in the browser and module.exports under node.
  */
@@ -11,9 +11,12 @@
 
   // ---------- utilities ----------
 
+  // Euclidean, in however many coordinates the points have (the widgets are
+  // 2-D; the dimensionality figure lifts a ring into hundreds of dimensions)
   function dist(a, b) {
-    const dx = a[0] - b[0], dy = a[1] - b[1];
-    return Math.sqrt(dx * dx + dy * dy);
+    let s = 0;
+    for (let i = 0; i < a.length; i++) { const d = a[i] - b[i]; s += d * d; }
+    return Math.sqrt(s);
   }
 
   // mulberry32 — tiny seeded RNG so presets are reproducible
