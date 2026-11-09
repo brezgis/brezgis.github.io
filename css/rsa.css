@@ -137,3 +137,6 @@
 @media (prefers-reduced-motion: reduce) {
   .rp-st, .rp *, .rp-rdm rect { animation: none !important; }
 }
+
+/* Paused by js/rsa.js while the pipeline is offscreen or the tab is hidden. */
+.rp.rp-paused, .rp.rp-paused * { animation-play-state: paused !important; }

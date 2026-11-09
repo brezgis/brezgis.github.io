@@ -65,7 +65,7 @@ POST_TMPL = """<!DOCTYPE html>
       <li><a href="../index.html#home" class="nav-link">Home</a></li>
       <li><a href="../index.html#research" class="nav-link{act_research}">Research</a></li>
       <li><a href="../index.html#blog" class="nav-link{act_blog}">Blog</a></li>
-      <li><a href="../index.html#sharabara" class="nav-link">Шара-бара</a></li>
+      <li><a href="../index.html#sharabara" class="nav-link" lang="ru">Шара-бара</a></li>
     </ul>
   </nav>
 
@@ -346,6 +346,53 @@ def version_scripts(body_html):
                   lambda mm: mm.group(1) + asset_url(mm.group(2)) + mm.group(3), body_html)
 
 
+_IMG_TAG = re.compile(r"<img\b[^>]*>", re.I)
+_IMG_SIZE_CACHE = {}
+
+
+def _img_size(src):
+    """Intrinsic (w, h) of a local raster image referenced from blog/, or None."""
+    if not src or re.match(r"^(https?:)?//|^data:", src) or src.lower().endswith(".svg"):
+        return None
+    path = os.path.normpath(os.path.join(BLOG_DIR, src.split("?")[0].split("#")[0]))
+    if path not in _IMG_SIZE_CACHE:
+        try:
+            from PIL import Image
+            with Image.open(path) as im:
+                _IMG_SIZE_CACHE[path] = im.size
+        except Exception:
+            _IMG_SIZE_CACHE[path] = None
+    return _IMG_SIZE_CACHE[path]
+
+
+def enhance_imgs(body_html):
+    """Give post images intrinsic width/height (so the page doesn't jump as they
+    arrive; CSS keeps height:auto), decoding="async", and loading="lazy" on all
+    but the first, so a photo-heavy post only fetches what's near the screen.
+    Attributes already written by hand in the markdown are left alone."""
+    seen = [0]
+
+    def fix(m):
+        tag = m.group(0)
+        seen[0] += 1
+        has = lambda a: re.search(r"\s{}\s*=".format(a), tag, re.I)
+        add = []
+        src = re.search(r'\ssrc\s*=\s*"([^"]*)"', tag, re.I)
+        size = _img_size(html.unescape(src.group(1))) if src else None
+        if size and not has("width") and not has("height"):
+            add.append('width="{}" height="{}"'.format(*size))
+        if not has("loading") and seen[0] > 1:
+            add.append('loading="lazy"')
+        if not has("decoding"):
+            add.append('decoding="async"')
+        if not add:
+            return tag
+        end = -2 if tag.endswith("/>") else -1
+        return tag[:end].rstrip() + " " + " ".join(add) + tag[end:]
+
+    return _IMG_TAG.sub(fix, body_html)
+
+
 def render_posts(posts):
     os.makedirs(BLOG_DIR, exist_ok=True)
     footer = get_footer()
@@ -354,7 +401,7 @@ def render_posts(posts):
         if m["press"]:
             continue
         md.reset()
-        body_html = version_scripts(md.convert(m["_body"]))
+        body_html = enhance_imgs(version_scripts(md.convert(m["_body"])))
         # optional frontmatter `css: path.css, other.css` -> extra head links
         extra_css = "".join(
             '\n  <link rel="stylesheet" href="{}">'.format(html.escape(asset_url(u)))

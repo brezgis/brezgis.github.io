@@ -774,6 +774,91 @@ a:hover {
   background: #AF797E;
 }
 
+/* The rainbow: red, orange, yellow, green, blue, indigo, violet, softened to
+   the site's earthy register. Every colour has the same OKLCH chroma (0.08) so
+   none shouts louder than the rest; lightness follows a real rainbow (yellow
+   brightest, indigo deepest). Bands are even: slot widths are tuned (by measuring
+   which colour each pixel reads as) so every colour shows ~50px, and each one
+   eases (smoothstep, in OKLCH, precomputed) into the next with no
+   hard corners, so long hue jumps like green->blue don't read as wider bands. One
+   cycle is 350px, about the card's diagonal span. An SVG turbulence filter
+   (#sb-wobble in index.html) gently bends the bands; the ::before never moves,
+   so only the colours flow through the bends, shifted by exactly one
+   horizontal period per loop, so it's continuous with no snap. */
+.sharabara-card--rainbow {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: #C9A962;
+  cursor: pointer;
+}
+
+.sharabara-card--rainbow::before {
+  content: "";
+  position: absolute;
+  inset: -50px;
+  z-index: -1;
+  /* Plain linear-gradient with the OKLCH blend precomputed as sRGB stops:
+     Firefox/Zen mis-draws repeating-linear-gradient with "in oklch" (it stops
+     repeating, leaving a flat red block), so no fancy features here. The tile's
+     gradient line spans exactly two 350px periods, 0-50% and 50-100%. */
+  background: linear-gradient(110deg,
+    #B4776C 0.00%, #B5786C 0.78%, #B77A6C 1.57%, #BA7E6C 2.35%, #BD836C 3.13%,
+    #C0886D 3.91%, #C38D6D 4.70%, #C6926E 5.48%, #C7966F 6.26%, #C99970 7.05%,
+    #C99A70 7.83%, #CA9B70 8.41%, #CB9E72 9.00%, #CDA374 9.58%,
+    #CFA877 10.16%, #D1AE7A 10.74%, #D3B47E 11.33%, #D5BA81 11.91%,
+    #D6BF85 12.49%, #D7C287 13.08%, #D7C388 13.66%, #D5C287 14.56%,
+    #CEC185 15.46%, #C4BF82 16.36%, #B8BC80 17.26%, #ABB97F 18.16%,
+    #9DB67F 19.06%, #90B37F 19.96%, #86B081 20.86%, #7FAE82 21.76%,
+    #7CAD82 22.66%, #79AD84 23.31%, #72AC88 23.97%, #68AB8E 24.63%,
+    #5EA996 25.28%, #55A69E 25.94%, #50A2A6 26.59%, #4F9EAB 27.25%,
+    #519AAF 27.91%, #5397B1 28.56%, #5496B2 29.22%, #5495B2 29.84%,
+    #5592B2 30.47%, #568EB1 31.10%, #588AB0 31.72%, #5B84AE 32.35%,
+    #5D7FAC 32.98%, #607AA9 33.60%, #6276A7 34.23%, #6373A5 34.86%,
+    #6472A4 35.48%, #6572A4 36.31%, #6972A5 37.14%, #6F72A6 37.97%,
+    #7573A7 38.80%, #7C73A8 39.63%, #8374A8 40.46%, #8974A7 41.29%,
+    #8E75A7 42.12%, #9275A6 42.95%, #9375A6 43.78%, #9575A5 44.40%,
+    #9974A2 45.02%, #9F739C 45.64%, #A67295 46.27%, #AB728C 46.89%,
+    #B07382 47.51%, #B27479 48.13%, #B47572 48.76%, #B4766E 49.38%,
+    #B4776C 50.00%, #B5786C 50.78%, #B77A6C 51.57%, #BA7E6C 52.35%,
+    #BD836C 53.13%, #C0886D 53.91%, #C38D6D 54.70%, #C6926E 55.48%,
+    #C7966F 56.26%, #C99970 57.05%, #C99A70 57.83%, #CA9B70 58.41%,
+    #CB9E72 59.00%, #CDA374 59.58%, #CFA877 60.16%, #D1AE7A 60.74%,
+    #D3B47E 61.33%, #D5BA81 61.91%, #D6BF85 62.49%, #D7C287 63.08%,
+    #D7C388 63.66%, #D5C287 64.56%, #CEC185 65.46%, #C4BF82 66.36%,
+    #B8BC80 67.26%, #ABB97F 68.16%, #9DB67F 69.06%, #90B37F 69.96%,
+    #86B081 70.86%, #7FAE82 71.76%, #7CAD82 72.66%, #79AD84 73.31%,
+    #72AC88 73.97%, #68AB8E 74.63%, #5EA996 75.28%, #55A69E 75.94%,
+    #50A2A6 76.59%, #4F9EAB 77.25%, #519AAF 77.91%, #5397B1 78.56%,
+    #5496B2 79.22%, #5495B2 79.84%, #5592B2 80.47%, #568EB1 81.10%,
+    #588AB0 81.72%, #5B84AE 82.35%, #5D7FAC 82.98%, #607AA9 83.60%,
+    #6276A7 84.23%, #6373A5 84.86%, #6472A4 85.48%, #6572A4 86.31%,
+    #6972A5 87.14%, #6F72A6 87.97%, #7573A7 88.80%, #7C73A8 89.63%,
+    #8374A8 90.46%, #8974A7 91.29%, #8E75A7 92.12%, #9275A6 92.95%,
+    #9375A6 93.78%, #9575A5 94.40%, #9974A2 95.02%, #9F739C 95.64%,
+    #A67295 96.27%, #AB728C 96.89%, #B07382 97.51%, #B27479 98.13%,
+    #B47572 98.76%, #B4766E 99.38%, #B4776C 100%);
+  /* Tile = exactly one stripe period in each direction (350px / sin 70deg wide,
+     350px / cos 70deg tall), so tiles join without a seam as they slide. */
+  background-size: 372.462px 1023.332px;
+  background-position: 0 0;
+  filter: url(#sb-wobble);
+  animation: sharabara-rainbow 32s linear infinite;
+}
+
+@keyframes sharabara-rainbow {
+  from { background-position: 0 0; }
+  to   { background-position: 372.462px 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sharabara-card--rainbow::before { animation: none; }
+}
+
+.sharabara-card--rainbow .sharabara-card-name {
+  text-shadow: 0 1px 6px rgba(60, 45, 35, 0.35);
+}
+
 .sharabara-card-name {
   font-family: var(--sans);
   font-size: 1.2rem;
@@ -829,3 +914,23 @@ a:hover {
 
 /* The email pill copies the address on click */
 .link-pill.email-link { cursor: copy; }
+
+/* Touch screens: invisible extended hit areas so small links/buttons meet a
+   ~40-48px tap target without changing how anything looks. (.scroll-hint is
+   already absolutely positioned, which also anchors its ::after.) */
+@media (pointer: coarse) {
+  .nav-link, .sharabara-github, .post-back { position: relative; }
+  .nav-link::after, .sharabara-github::after, .post-back::after, .scroll-hint::after {
+    content: "";
+    position: absolute;
+  }
+  .nav-link::after          { inset: -8px 0; }
+  .sharabara-github::after  { inset: -12px -8px; }
+  .post-back::after         { inset: -10px -6px; }
+  .scroll-hint::after       { inset: -10px; }
+}
+
+/* The hero's bobbing chevron honours reduced motion like everything else. */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-hint { animation: none; }
+}
