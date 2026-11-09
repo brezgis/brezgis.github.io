@@ -445,30 +445,32 @@
           </div>
           <script>
             // random: on click, point the card at a project picked uniformly from the
-            // Шара-бара cards above (recursite included) plus the recursite's projects
-            // and wiicursite (copied from recursite.brezgis.com's index; update both
-            // together). Deliberately left out: the recursite's collection pages
-            // (favorite-words, links, ...), usenet/ (the hidden "U" door) and
-            // kaomoji-nonsense/ (commented out there).
+            // Шара-бара cards above (recursite included) plus the recursite's own
+            // Collection and its modes (wiicursite, rokursite). The recursite's list is
+            // read from recursite.brezgis.com's index itself, so it is never copied here:
+            // its first ul.collection and its p.wiicursite links. Left out by
+            // construction: the Miscellaneous collection pages, usenet/ (the hidden "U"
+            // door) and anything commented out there. The index is fetched the first time
+            // someone reaches for the card (hover, focus, touch), since the link has to be
+            // known by the time the click lands; if it can't be had, the pick is made from
+            // the cards on this page.
             (function () {
               var card = document.getElementById('sharabara-random');
               if (!card) return;
-              var recursite = [
-                'https://brezgis.com/dino-train-table/',
-                'https://tv.brezgis.com',
-                'https://recursite.brezgis.com/lascaux/',
-                'https://party.brezgis.com',
-                'https://cafe.brezgis.com',
-                'https://gallery.brezgis.com',
-                'https://flock.brezgis.com',
-                'https://fly.brezgis.com',
-                'https://noosphere.brezgis.com',
-                'https://hash.brezgis.com',
-                'https://club.brezgis.com',
-                'https://sound.brezgis.com',
-                'https://snail.brezgis.com',
-                'https://recursite.brezgis.com/wiicursite/'
-              ];
+              var RECURSITE = 'https://recursite.brezgis.com/', recursite = [], asked = false;
+              function fetchRecursite() {
+                if (asked || !window.fetch || !window.DOMParser) return;
+                asked = true;
+                fetch(RECURSITE).then(function (r) { if (!r.ok) throw r.status; return r.text(); }).then(function (t) {
+                  var doc = new DOMParser().parseFromString(t, 'text/html'), list = doc.querySelector('ul.collection');
+                  var links = (list ? Array.prototype.slice.call(list.querySelectorAll('a.proj')) : [])
+                    .concat(Array.prototype.slice.call(doc.querySelectorAll('p.wiicursite a')));
+                  recursite = links.map(function (a) { return new URL(a.getAttribute('href'), RECURSITE).href; });
+                }).catch(function () { asked = false; });   // try again next time
+              }
+              ['pointerenter', 'focus', 'touchstart'].forEach(function (ev) {
+                card.addEventListener(ev, fetchRecursite, { passive: true });
+              });
               card.addEventListener('click', function () {
                 var pool = {};
                 Array.prototype.forEach.call(
