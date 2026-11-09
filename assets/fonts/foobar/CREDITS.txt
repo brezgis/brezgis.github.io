@@ -5,9 +5,11 @@ and Sébastien Riollier. Distributed by Velvetyne.
 https://velvetyne.fr/fonts/compagnon/
 See Compagnon-LICENSE.txt.
 
-JuliaMono by cormullion.
-https://juliamono.netlify.app/
-See JuliaMono-LICENSE.txt.
+FoobarMono-Medium.woff2 is a subset of JuliaMono Medium by cormullion
+(https://juliamono.netlify.app/), trimmed to the characters this page needs
+and renamed, as the SIL Open Font License requires for modified versions,
+since "JuliaMono" is a Reserved Font Name. Licensed under the same OFL; see
+JuliaMono-LICENSE.txt.
 
 Piazzolla, Young Serif, and Commissioner are served by Google Fonts.
 https://fonts.google.com/specimen/Piazzolla

@@ -204,25 +204,44 @@
     sec.classList.add('nav-enter');
   }
 
+  // The section named in the URL's #hash, or '' if none / unknown / garbled
+  // (decodeURIComponent throws on malformed escapes like #%E0).
+  function hashSection() {
+    let id = '';
+    try { id = decodeURIComponent(location.hash.slice(1)); } catch (_) { return ''; }
+    const el = id && document.getElementById(id);
+    return el && el.classList.contains('section') ? id : '';
+  }
+
+  // Open a section and record it in the URL, so reload stays put and the
+  // browser's Back button steps back through the sections you visited.
+  function openSection(id) {
+    if (location.hash !== '#' + id) history.pushState(null, '', '#' + id);
+    showNavSection(id);
+    playEnter(id);
+  }
+
   navLinks.forEach((link) => {
     link.addEventListener('click', (e) => {
       const href = link.getAttribute('href');
       if (href && href.startsWith('#')) {
         e.preventDefault();
-        const id = href.slice(1);
-        showNavSection(id);
-        playEnter(id);
+        openSection(href.slice(1));
       }
     });
+  });
+
+  // Back/Forward, or a typed/linked #hash: show whichever section the URL names.
+  window.addEventListener('popstate', () => {
+    const id = hashSection() || 'home';
+    showNavSection(id);
+    playEnter(id);
   });
 
   // The hero's "see more" chevron opens Blog the same way the nav tab does.
   const scrollHint = document.querySelector('.scroll-hint');
   if (scrollHint) {
-    scrollHint.addEventListener('click', () => {
-      showNavSection('blog');
-      playEnter('blog');
-    });
+    scrollHint.addEventListener('click', () => openSection('blog'));
   }
   // --- Research: "Research interests" pill folds the longer write-up in and out ---
   function initResearchMore() {
@@ -258,8 +277,8 @@
 
     // Deep-link support: visiting /#sharabara (etc.) — e.g. clicking a nav tab
     // from a blog post page — opens that section directly, with its entrance.
-    const initialHash = decodeURIComponent(location.hash.slice(1));
-    if (initialHash && document.getElementById(initialHash)) {
+    const initialHash = hashSection();
+    if (initialHash) {
       showNavSection(initialHash);
       playEnter(initialHash);
     } else {

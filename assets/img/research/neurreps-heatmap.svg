@@ -1,15 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 366 401" width="366" height="401">
 <!-- NeurReps 2026 second-order similarity (6 languages x 5 encoders), thumbnail.
-     Ambient loop: squares bloom in at random, hold, dissolve, re-bloom (18s). A faint ghost grid, the labels and the scale stay. -->
+     Squares bloom in once, at random, over ~5s, then the finished heatmap holds (an
+     infinite loop of 900 animated cells cost ~15% CPU while the Research view was open).
+     A faint ghost grid, the labels and the scale stay. -->
 <style>
-.c { animation: bloom 18s ease-in-out infinite both; }
+.c { animation: bloom 1.4s ease-out both; }
 text { font-family: Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 15px; font-weight: 600; fill: #5C5C5C; letter-spacing: 0.04em; }
 text.t { font-size: 13px; font-weight: 500; fill: #8A8A8A; letter-spacing: 0; }
 @keyframes bloom {
-  0%   { opacity: 0; }
-  7%   { opacity: 1; }
-  78%  { opacity: 1; }
-  88%, 100% { opacity: 0; }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) { .c { animation: none; } }
 </style>

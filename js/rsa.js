@@ -160,3 +160,14 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
 })();
+
+// The pipeline diagram (figure.rp) loops its rp-* CSS animations forever; pause
+// them while it's scrolled offscreen or the tab is hidden so the page idles at ~0 CPU.
+(function () {
+  var fig = document.getElementById('rsa-pipe');
+  if (!fig || !('IntersectionObserver' in window)) return;
+  var visible = true;
+  function apply() { fig.classList.toggle('rp-paused', !visible || document.hidden); }
+  new IntersectionObserver(function (es) { visible = es[es.length - 1].isIntersecting; apply(); }).observe(fig);
+  document.addEventListener('visibilitychange', apply);
+})();

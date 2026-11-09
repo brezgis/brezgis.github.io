@@ -14,6 +14,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Anna Brežģis</title>
   <meta name="description" content="Anna Brežģis — Computational Linguistics graduate student at Brandeis University.">
+  <link rel="canonical" href="https://brezgis.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Anna Brežģis">
+  <meta property="og:title" content="Anna Brežģis">
+  <meta property="og:description" content="Anna Brežģis — Computational Linguistics graduate student at Brandeis University.">
+  <meta property="og:url" content="https://brezgis.com/">
+  <meta property="og:image" content="https://brezgis.com/assets/img/photo.jpg">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@annabrezgis">
   <link rel="icon" type="image/png" href="assets/icons/favicon.png">
   <link rel="alternate" type="application/atom+xml" title="Anna Brežģis" href="feed.xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,7 +40,7 @@
       <li><a href="#home" class="nav-link active">Home</a></li>
       <li><a href="#research" class="nav-link">Research</a></li>
       <li><a href="#blog" class="nav-link">Blog</a></li>
-      <li><a href="#sharabara" class="nav-link">Шара-бара</a></li>
+      <li><a href="#sharabara" class="nav-link" lang="ru">Шара-бара</a></li>
     </ul>
   </nav>
 
@@ -49,7 +58,7 @@
         </div>
         <div class="home-name">
           <h1 class="name-primary">Anna Brežģis</h1>
-          <p class="name-russian">Анна Брежгис</p>
+          <p class="name-russian" lang="ru">Анна Брежгис</p>
         </div>
       </div>
       <div class="home-text">
@@ -281,10 +290,10 @@
   <section id="sharabara" class="section section-sharabara nav-section" style="display:none;">
     <div class="container">
       <div class="sharabara-header">
-        <h2 class="sharabara-word">Шара-бара</h2>
+        <h2 class="sharabara-word" lang="ru">Шара-бара</h2>
         <p class="sharabara-phonetic">/ʃa.ra.ˈba.ra/</p>
         <div class="sharabara-def">
-          <p class="sharabara-def-ru">сущ. — вак-төяк, хлам, рухлядь; мелочи, всякая всячина</p>
+          <p class="sharabara-def-ru" lang="ru">сущ. — вак-төяк, хлам, рухлядь; мелочи, всякая всячина</p>
           <p class="sharabara-def-en">n. — odds and ends; junk; bits and bobs; miscellaneous small things</p>
           <p class="sharabara-def-source"><a href="https://tatar_explanatory.academic.ru/23463/%D1%88%D0%B0%D1%80%D0%B0-%D0%B1%D0%B0%D1%80%D0%B0" target="_blank" rel="noopener">Tatar/Russian dialectal</a> · Vasmer, Vyatka/Perm/Orenburg</p>
         </div>
@@ -308,7 +317,7 @@
           </a>
           <div class="sharabara-desc">
             <p>A digital twin of Brežģa krogs.</p>
-            <p class="sharabara-epigraph"><em>&ldquo;Senāk mežos te ganījās tauri. Izzuda tauri, tik palika vārds&rdquo;</em><br>&mdash; Kārlis Bormanis, 1925</p>
+            <p class="sharabara-epigraph"><em lang="lv">&ldquo;Senāk mežos te ganījās tauri. Izzuda tauri, tik palika vārds&rdquo;</em><br>&mdash; Kārlis Bormanis, 1925</p>
             <a href="https://github.com/brezgis/brezgis-lv" target="_blank" rel="noopener" class="sharabara-github">repo</a>
           </div>
         </div>
@@ -419,6 +428,59 @@
           </div>
         </div>
         -->
+
+        <div class="sharabara-row">
+          <a href="#sharabara" target="_blank" rel="noopener" class="sharabara-card sharabara-card--rainbow" id="sharabara-random">
+            <span class="sharabara-card-name">serendipity</span>
+          </a>
+          <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+            <filter id="sb-wobble" x="-5%" y="-5%" width="110%" height="110%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.003 0.005" numOctaves="1" seed="11"/>
+              <feDisplacementMap in="SourceGraphic" scale="28" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+          </svg>
+          <div class="sharabara-desc">
+            <p>random.choice(шара_бара)</p>
+            <a href="https://docs.python.org/3/library/random.html#random.choice" target="_blank" rel="noopener" class="sharabara-github">docs</a>
+          </div>
+          <script>
+            // random: on click, point the card at a project picked uniformly from the
+            // Шара-бара cards above (recursite included) plus the recursite's projects
+            // and wiicursite (copied from recursite.brezgis.com's index; update both
+            // together). Deliberately left out: the recursite's collection pages
+            // (favorite-words, links, ...), usenet/ (the hidden "U" door) and
+            // kaomoji-nonsense/ (commented out there).
+            (function () {
+              var card = document.getElementById('sharabara-random');
+              if (!card) return;
+              var recursite = [
+                'https://brezgis.com/dino-train-table/',
+                'https://tv.brezgis.com',
+                'https://recursite.brezgis.com/lascaux/',
+                'https://party.brezgis.com',
+                'https://cafe.brezgis.com',
+                'https://gallery.brezgis.com',
+                'https://flock.brezgis.com',
+                'https://fly.brezgis.com',
+                'https://noosphere.brezgis.com',
+                'https://hash.brezgis.com',
+                'https://club.brezgis.com',
+                'https://sound.brezgis.com',
+                'https://snail.brezgis.com',
+                'https://recursite.brezgis.com/wiicursite/'
+              ];
+              card.addEventListener('click', function () {
+                var pool = {};
+                Array.prototype.forEach.call(
+                  document.querySelectorAll('#sharabara .sharabara-card[href^="http"]'),
+                  function (a) { if (a !== card) pool[a.href.replace(/\/$/, '')] = 1; });
+                recursite.forEach(function (u) { pool[u.replace(/\/$/, '')] = 1; });
+                var picks = Object.keys(pool);
+                card.href = picks[Math.floor(Math.random() * picks.length)];
+              });
+            })();
+          </script>
+        </div>
 
       </div>
     </div>

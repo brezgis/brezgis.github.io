@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Commissioner:ital,wght@0,400;0,500;0,600;0,800;1,800&family=Piazzolla:ital,wght@0,400;0,500;0,600;1,400&family=Young+Serif&family=Source+Sans+3:wght@200;400;500;800&display=swap');
 @font-face{font-family:Compagnon;src:url('../assets/fonts/foobar/Compagnon-Roman.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:JuliaMono;src:url('../assets/fonts/foobar/JuliaMono-Medium.woff2') format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:FoobarMono;src:url('../assets/fonts/foobar/FoobarMono-Medium.woff2') format('woff2');font-weight:500;font-display:swap}
 
 /* ===== Foobar collage: the ACL-post pattern ================================
    Several .post-grid blocks (two .pg-col columns, vertically centred against
@@ -12,7 +12,7 @@
 .foo-collage .font-book{--face:'Piazzolla',Georgia,serif;--k:1.02;font-weight:500}
 .foo-collage .font-display{--face:'Young Serif',Georgia,serif;--k:.94}
 .foo-collage .font-type{--face:'Compagnon',ui-monospace,monospace;--k:.95}
-.foo-collage .font-mono{--face:'JuliaMono',ui-monospace,monospace;--k:.86}
+.foo-collage .font-mono{--face:'FoobarMono',ui-monospace,monospace;--k:.86}
 .foo-collage .font-sans{--face:'Commissioner',sans-serif;--k:.98;font-weight:500}
 .foo-collage .tone-sage{--tone:var(--sage)} .foo-collage .tone-terracotta{--tone:var(--terracotta)} .foo-collage .tone-ochre{--tone:var(--ochre)}
 .foo-collage .tone-slate{--tone:var(--slate)} .foo-collage .tone-plum{--tone:var(--plum)} .foo-collage .tone-umber{--tone:var(--umber)}
@@ -72,10 +72,10 @@
 /* a tile's title leading its text (tiles whose picture carries no caption) */
 .foo-caption-lead{margin:0 0 .45rem}
 /* the foo/bar code example in the intro */
-.post-body > pre{font-family:'JuliaMono',ui-monospace,monospace;font-size:.88rem;line-height:1.55;background:color-mix(in srgb,var(--slate,#586C83) 8%,transparent);border-radius:8px;padding:.85rem 1.1rem;margin:0 0 1.5rem;overflow-x:auto}
+.post-body > pre{font-family:'FoobarMono',ui-monospace,monospace;font-size:.88rem;line-height:1.55;background:color-mix(in srgb,var(--slate,#586C83) 8%,transparent);border-radius:8px;padding:.85rem 1.1rem;margin:0 0 1.5rem;overflow-x:auto}
 .post-body > pre code{font:inherit;background:none;padding:0}
 /* cursor trail (js/foo-trail.js) */
-.foo-trail{position:fixed;z-index:9999;pointer-events:none;user-select:none;font:500 11px/1 'JuliaMono',ui-monospace,monospace;letter-spacing:.02em;white-space:nowrap;opacity:0;will-change:transform,opacity}
+.foo-trail{position:fixed;z-index:9999;pointer-events:none;user-select:none;font:500 11px/1 'FoobarMono',ui-monospace,monospace;letter-spacing:.02em;white-space:nowrap;opacity:0;will-change:transform,opacity}
 
 /* the little yard sign stuck crooked in a patch of grass at the very end of the post */
 .foo-lawn{width:min(520px,100%);margin:11rem auto 1rem;display:flex;flex-direction:column}
@@ -151,7 +151,7 @@
 .foo-record-play .i-pause,.foo-song.is-playing .foo-record-play .i-play{display:none}
 .foo-song.is-playing .foo-record-play .i-pause{display:block}
 .foo-record-seek{flex:1;min-width:0;accent-color:#c9302c;margin:0}
-.foo-record-time{flex:none;font:500 11px/1 'JuliaMono',ui-monospace,monospace;color:#7a7266;font-variant-numeric:tabular-nums;min-width:2.6em;text-align:right}
+.foo-record-time{flex:none;font:500 11px/1 'FoobarMono',ui-monospace,monospace;color:#7a7266;font-variant-numeric:tabular-nums;min-width:2.6em;text-align:right}
 
 /* the foobar / FUBAR Ngram chart (js/foo-ngram.js adds the hover readout) */
 .post-body .foo-ngram{position:relative;margin:0;padding:.6rem .5rem .4rem;border:1px solid #e6e2d8;border-radius:6px;background:#fcfcf9}
@@ -246,7 +246,7 @@
 .post-body .foo-closing{margin-top:1rem}
 
 /* the intro's code example, colored like VS Code's default light theme (Light+) on a soft paper background */
-.post-body pre.foo-vscode{background:#f3f0e8;color:#1f1f1f;border:1px solid #e4dfd3;font-family:'JuliaMono',Menlo,Consolas,ui-monospace,monospace;font-size:.86rem;line-height:1.6;border-radius:8px;padding:.9rem 1.1rem .9rem .6rem;overflow-x:auto;margin:0 0 1.5rem;white-space:pre}
+.post-body pre.foo-vscode{background:#f3f0e8;color:#1f1f1f;border:1px solid #e4dfd3;font-family:'FoobarMono',Menlo,Consolas,ui-monospace,monospace;font-size:.86rem;line-height:1.6;border-radius:8px;padding:.9rem 1.1rem .9rem .6rem;overflow-x:auto;margin:0 0 1.5rem;white-space:pre}
 .post-body pre.foo-vscode code{font:inherit;color:inherit;background:none;padding:0}
 .foo-vscode .ln{display:inline-block;width:2.2em;margin-right:1em;text-align:right;color:#8a9aa6;user-select:none}
 .foo-vscode .tk-k{color:#0000ff}
