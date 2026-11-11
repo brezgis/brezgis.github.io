@@ -448,9 +448,10 @@
             // Шара-бара cards above (recursite included) plus the recursite's own
             // Collection and its modes (wiicursite, rokursite). The recursite's list is
             // read from recursite.brezgis.com's index itself, so it is never copied here:
-            // its first ul.collection and its p.wiicursite links. Left out by
-            // construction: the Miscellaneous collection pages, usenet/ (the hidden "U"
-            // door) and anything commented out there. The index is fetched the first time
+            // every ul.collection whose heading is not Miscellaneous (The Collection,
+            // Real Talk and any section added later) and its p.wiicursite links. Left out
+            // by construction: the Miscellaneous collection pages, usenet/ (the hidden
+            // "U" door) and anything commented out there. The index is fetched the first time
             // someone reaches for the card (hover, focus, touch), since the link has to be
             // known by the time the click lands; if it can't be had, the pick is made from
             // the cards on this page.
@@ -462,9 +463,14 @@
                 if (asked || !window.fetch || !window.DOMParser) return;
                 asked = true;
                 fetch(RECURSITE).then(function (r) { if (!r.ok) throw r.status; return r.text(); }).then(function (t) {
-                  var doc = new DOMParser().parseFromString(t, 'text/html'), list = doc.querySelector('ul.collection');
-                  var links = (list ? Array.prototype.slice.call(list.querySelectorAll('a.proj')) : [])
-                    .concat(Array.prototype.slice.call(doc.querySelectorAll('p.wiicursite a')));
+                  var doc = new DOMParser().parseFromString(t, 'text/html'), links = [];
+                  Array.prototype.forEach.call(doc.querySelectorAll('ul.collection'), function (ul) {
+                    var h = ul.previousElementSibling;
+                    while (h && h.tagName !== 'H2') h = h.previousElementSibling;
+                    if (h && h.textContent.trim() === 'Miscellaneous') return;
+                    links = links.concat(Array.prototype.slice.call(ul.querySelectorAll('a.proj')));
+                  });
+                  links = links.concat(Array.prototype.slice.call(doc.querySelectorAll('p.wiicursite a')));
                   recursite = links.map(function (a) { return new URL(a.getAttribute('href'), RECURSITE).href; });
                 }).catch(function () { asked = false; });   // try again next time
               }
